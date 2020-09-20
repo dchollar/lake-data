@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: lake-data
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pipe_lake?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: lake_data_app
+    password: Pa$$word8
+    hikari:
+      connection-test-query: select 1
+      maximum-pool-size: 15
+      connection-init-sql: select 1
+    tomcat:
+      jmx-enabled: false
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  groovy:
+    template:
+      check-template-location: false
+server:
+  compression:
+    enabled: true
+  port: 8081
+  servlet:
+    application-display-name: lake-data
+    context-path: /lake-data
