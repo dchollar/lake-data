@@ -1,6 +1,7 @@
 package com.lake.controller
 
 import com.lake.dto.MeasurementDto
+import com.lake.dto.SavedMeasurementDto
 import com.lake.dto.UnitDto
 import com.lake.entity.UnitType
 import com.lake.service.MeasurementService
@@ -8,9 +9,8 @@ import com.lake.service.UnitService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.security.access.annotation.Secured
+import org.springframework.web.bind.annotation.*
 
 import javax.xml.bind.ValidationException
 import java.time.LocalDate
@@ -24,6 +24,21 @@ class MeasurementController {
     @Autowired
     MeasurementService measurementService
 
+    @Secured('ROLE_REPORTER')
+    @PostMapping(value = '/api/measurements')
+    void save(@RequestBody SavedMeasurementDto dto) {
+        List valid = isValid(dto.siteId, dto.unitId, dto.locationId, null, null)
+        String errorMessage = valid[1] as String
+        if (!dto.collectionDate) {
+            errorMessage += 'Collection Date is missing '
+        }
+        if (dto.collectionDate && valid[0]) {
+            measurementService.save(dto)
+        } else {
+            throw new ValidationException(errorMessage)
+        }
+    }
+
     @GetMapping(value = '/public/api/measurements')
     Collection<MeasurementDto> getMeasurement(@RequestParam(name = 'siteId', required = true) Integer siteId,
                                               @RequestParam(name = 'unitId', required = true) Integer unitId,
@@ -31,28 +46,36 @@ class MeasurementController {
                                               @RequestParam(name = 'fromDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
 
-        if (isValid(siteId, unitId, locationId, fromDate, toDate)) {
-            Collection<MeasurementDto> results = measurementService.doSearch(siteId, unitId, locationId, fromDate, toDate)
-            log.info("Got this many results back: ${results.size()}")
-            return results
+        List valid = isValid(siteId, unitId, locationId, fromDate, toDate)
+        if (valid[0]) {
+            return measurementService.doSearch(siteId, unitId, locationId, fromDate, toDate)
         } else {
-            throw new ValidationException("Invalid choices")
+            throw new ValidationException(valid[1] as String)
         }
     }
 
-    private boolean isValid(Integer siteId, Integer unitId, Integer locationId, LocalDate fromDate, LocalDate toDate) {
+    private List isValid(Integer siteId, Integer unitId, Integer locationId, LocalDate fromDate, LocalDate toDate) {
+        String message = ''
+        if (!unitId) {
+            message += 'Unit is missing '
+            return [false, message]
+        }
         boolean valid = true
         UnitDto unitDto = unitService.getById(unitId)
         if (!siteId) {
+            message += 'site is missing '
             valid = false
         } else if (fromDate && toDate && fromDate.isAfter(toDate)) {
+            message += 'from date is after to date '
             valid = false
         } else if (unitDto.type == UnitType.EVENT && locationId) {
+            message += 'Not supposed to have a location '
             valid = false
         } else if (unitDto.type != UnitType.EVENT && !locationId) {
+            message += 'location is missing '
             valid = false
         }
-        return valid
+        return [valid,message]
     }
 
 }

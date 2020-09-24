@@ -26,6 +26,14 @@ class ConverterUtil {
         return dtos
     }
 
+    static Collection<ReporterDto> convertReportersForMaintenance(Collection<Reporter> entities) {
+        Set<ReporterDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convertForMaintenance(it))
+        }
+        return dtos
+    }
+
     static Set<SiteDto> convertSites(Collection<Site> sites) {
         Set<SiteDto> dtos = new TreeSet<>()
         sites.each {
@@ -61,7 +69,11 @@ class ConverterUtil {
     }
 
     static LocationDto convert(Location location) {
-        return new LocationDto(id: location.id, description: location.description)
+        LocationDto dto = new LocationDto(id: location.id, description: location.description)
+        location.unitLocations.each {
+            dto.units.add(convert(it.unit))
+        }
+        return dto
     }
 
     static UnitDto convert(Unit unit) {
@@ -89,6 +101,20 @@ class ConverterUtil {
         return dto
     }
 
+    static ReporterDto convertForMaintenance(Reporter reporter) {
+        ReporterDto dto = new ReporterDto()
+        dto.id = reporter.id
+        dto.firstName = reporter.firstName
+        dto.lastName = reporter.lastName
+        dto.emailAddress = reporter.emailAddress
+        dto.phoneNumber = reporter.phoneNumber
+        dto.username = reporter.username
+        dto.password = reporter.password //TODO need to decode
+        dto.enabled = reporter.enabled
+        dto.roles = reporter.roles.collect { it.role }
+        return dto
+    }
+
     static MeasurementDto convert(Measurement measurement) {
         MeasurementDto dto = new MeasurementDto()
         dto.id = measurement.id
@@ -96,8 +122,8 @@ class ConverterUtil {
         dto.value = measurement.value
         dto.depth = measurement.depth
         dto.comment = StringUtils.stripToEmpty(measurement.comment)
-        dto.location = convert(measurement.location)
-        dto.unit = convert(measurement.unit)
+        dto.unit = convert(measurement.unitLocation.unit)
+        dto.location = convert(measurement.unitLocation.location)
         dto.reporter = convert(measurement.reporter)
         return dto
     }

@@ -1,15 +1,17 @@
 package com.lake.service
 
 import com.lake.dto.MeasurementDto
-import com.lake.entity.Location
-import com.lake.entity.Site
-import com.lake.entity.Unit
-import com.lake.entity.UnitType
+import com.lake.dto.SavedMeasurementDto
+import com.lake.entity.*
 import com.lake.repository.*
 import com.lake.util.ConverterUtil
 import groovy.util.logging.Slf4j
+import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.annotation.Secured
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import java.time.LocalDate
 
@@ -29,7 +31,8 @@ class MeasurementService {
     @Autowired
     EventRepository eventRepository
     @Autowired
-    LocationRepository locationRepository
+    ReporterRepository reporterRepository
+
 
     Collection<MeasurementDto> doSearch(final Integer siteId,
                                         final Integer unitId,
@@ -45,8 +48,36 @@ class MeasurementService {
             log.info('Getting event measurement data')
             return ConverterUtil.convertEvents(eventRepository.findAllBySiteAndUnitAndValueBetween(site, unit, fromDate, toDate))
         } else {
-            Location location = locationRepository.getOne(locationId)
-            return ConverterUtil.convertMeasurements(measurementRepository.findAllByLocationAndUnitAndCollectionDateBetween(location, unit, fromDate, toDate))
+            UnitLocation unitLocation = unit.unitLocations.find {it.location.id == locationId}
+            return ConverterUtil.convertMeasurements(measurementRepository.findAllByUnitLocationAndCollectionDateBetween(unitLocation, fromDate, toDate))
+        }
+    }
+
+    @Secured('ROLE_REPORTER')
+    @Transactional
+    void save(SavedMeasurementDto dto) {
+        Unit unit = unitRepository.getOne(dto.unitId)
+        Reporter reporter = reporterRepository.findByUsername(SecurityContextHolder.getContext().authentication.name)
+        if (dto.locationId) {
+            // must be a measurement
+            Measurement measurement = new Measurement()
+            measurement.comment = StringUtils.stripToEmpty(dto.comment)
+            measurement.value = dto.value
+            measurement.collectionDate = dto.collectionDate
+            measurement.depth = dto.depth ?: -1
+            measurement.unitLocation = unit.unitLocations.find {it.location.id == dto.locationId}
+            measurement.reporter = reporter
+            measurementRepository.save(measurement)
+        } else {
+            // must be an event
+            Event event = new Event()
+            event.value = dto.collectionDate
+            event.year = dto.collectionDate.year
+            event.comment = StringUtils.stripToEmpty(dto.comment)
+            event.site = siteRepository.getOne(dto.siteId)
+            event.unit = unit
+            event.reporter = reporter
+            eventRepository.save(event)
         }
     }
 }

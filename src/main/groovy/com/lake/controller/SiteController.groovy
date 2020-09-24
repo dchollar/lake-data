@@ -26,5 +26,4 @@ class SiteController {
         return service.getLocations(siteId)
     }
 
-
 }

@@ -32,13 +32,6 @@ class Unit {
     @Column(name = "type", nullable = false, length = 50)
     UnitType type
 
-    // TODO DO NOT USE ????
-    @Deprecated
     @OneToMany(mappedBy = "unit")
-    Collection<Event> events
-
-    // TODO DO NOT USE ????
-    @Deprecated
-    @OneToMany(mappedBy = "unit")
-    Collection<Measurement> measurements
+    Set<UnitLocation> unitLocations
 }

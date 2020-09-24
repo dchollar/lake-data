@@ -34,7 +34,7 @@ $(document).ready(function () {
             });
     });
 
-    $('#submitButton').on('click', function (event) {
+    $('#submitButton').on('click', function () {
         if (siteId && unitId) {
             let url = buildSubmitUrl();
             $.ajax(
@@ -45,15 +45,16 @@ $(document).ready(function () {
                     success: function (measurements) {
                         buildResultDiv(measurements);
                     },
-                    error: function (response) {
-                        console.log(response);
+                    error: function (xhr, resp, text) {
+                        console.log(xhr, resp, text);
+                        $("#message").text("There was an issue saving your data. Check your submission. " + xhr.responseText).show();
                     }
                 });
         }
     });
 
     function buildSubmitUrl() {
-        let url = "public/api/measurements?siteId=" + siteId + "&unitId=" + unitId
+        let url = "public/api/measurements?siteId=" + siteId + "&unitId=" + unitId;
         if (selectedUnit && selectedUnit.type !== 'EVENT') {
             let locationId = $('#locationsChoice').val();
             url += '&locationId=' + locationId;
@@ -89,13 +90,17 @@ $(document).ready(function () {
     }
 
     function buildLocationsChoice(locations) {
-        let locationOptions = '<label for="locationsChoice"><h5>Location:</h5></label>'
-        locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">'
+        let locationOptions = '<label for="locationsChoice"><h5>Location:</h5></label>';
+        locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">';
         locationOptions += '<option value=""></option>';
         for (let location of locations) {
-            locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
+            for (let unit of location.units) {
+                if (selectedUnit.id === unit.id) {
+                    locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
+                }
+            }
         }
-        locationOptions += '</select>'
+        locationOptions += '</select>';
         $('#locationSelectionDiv').html(locationOptions);
     }
 
@@ -104,15 +109,15 @@ $(document).ready(function () {
         if (measurements === undefined || measurements.length === 0) {
             allResultData += '<hr><h4>No Data Found</h4>';
         } else {
-            allResultData += buildResultSection(measurements)
+            allResultData += buildResultSection(measurements);
         }
-
 
         $('#resultDiv').html(allResultData);
     }
 
     function buildResultSection(measurements) {
         let resultHtml = '';
+        resultHtml += '<h3>Results for ' + selectedUnit.shortDescription + ': ' + selectedUnit.longDescription + '</h3>';
         resultHtml += '<table id="resultTable" class="table table-responsive table-bordered table-striped">';
         resultHtml += buildTableHeader();
         resultHtml += buildTableBody(measurements);
@@ -121,7 +126,8 @@ $(document).ready(function () {
     }
 
     function buildTableHeader() {
-        let tableHeaderHtml = '<thead class="thead-dark"><tr>'
+        let tableHeaderHtml = '<thead class="thead-dark"><tr>';
+        tableHeaderHtml += '<th>Id</th>';
         tableHeaderHtml += '<th>Collection Date</th>';
         if (selectedUnit.type !== 'EVENT') {
             tableHeaderHtml += '<th>' + selectedUnit.unitDescription + '</th>';
@@ -139,6 +145,7 @@ $(document).ready(function () {
         let tableBodyHtml = '<tbody>';
         for (let measurement of measurements) {
             tableBodyHtml += '<tr>';
+            tableBodyHtml += '<td>' + measurement.id + '</td>';
             tableBodyHtml += '<td>' + measurement.collectionDate + '</td>';
             if (selectedUnit.type !== 'EVENT') {
                 tableBodyHtml += '<td>' + measurement.value + '</td>';

@@ -15,13 +15,11 @@ class Location {
     @Column(name = "description", nullable = false, length = 100)
     String description
 
-    // TODO DO NOT USE ????
-    @Deprecated
-    @OneToMany(mappedBy = "location")
-    Collection<Measurement> measurements
-
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
     Site site
+
+    @OneToMany(mappedBy = "location")
+    Set<UnitLocation> unitLocations
 
 }
