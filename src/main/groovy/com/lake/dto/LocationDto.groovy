@@ -3,7 +3,7 @@ package com.lake.dto
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 
-@EqualsAndHashCode
+@EqualsAndHashCode(includes = ['id'])
 @Sortable(includes = ['description'])
 class LocationDto {
     Integer id

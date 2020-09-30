@@ -1,7 +1,9 @@
 package com.lake.dto
 
 import com.lake.entity.RoleType
+import groovy.transform.EqualsAndHashCode
 
+@EqualsAndHashCode(includes = ['id'])
 class ReporterDto {
     Integer id
     String firstName
