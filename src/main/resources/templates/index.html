@@ -42,30 +42,27 @@
         <div id="selectionDiv" class="col-sm-2 bg-secondary text-light">
             <div class="container">
                 <div id="siteSelectionDiv" class="row form-group pt-3">
-                    <label for="sitesChoice"><h5>Site:</h5></label>
+                    <h5><label for="sitesChoice">Site:</label></h5>
                     <select name="sitesChoice" id="sitesChoice" class="form-control">
                         <option value=""></option>
                         <option th:each="site : ${sites}" th:value="${site.id}" th:utext="${site.description}"/>
                     </select>
                 </div>
                 <div id="unitSelectionDiv" class="row form-group">
-                    <label for="unitsChoice"><h5>Unit:</h5></label>
-                    <select name="unitsChoice" id="unitsChoice" class="form-control">
-                        <option value=""></option>
-                        <option th:each="unit : ${units}" th:value="${unit.id}" th:utext="${unit.longDescription}"/>
-                    </select>
+                    <h5><label for="unitsChoice">Unit:</label></h5>
+                    <select name="unitsChoice" id="unitsChoice" class="form-control"></select>
                 </div>
 
                 <div id="locationSelectionDiv" class="row form-group">
                 </div>
 
                 <div id="fromDateSelectionDiv" class="row form-group">
-                    <label for="fromDateChoice"><h5>From Date:</h5></label>
+                    <h5><label for="fromDateChoice">From Date:</label></h5>
                     <input th:type="date" name="fromDateChoice" id="fromDateChoice" class="form-control"/>
                 </div>
 
                 <div id="toDateSelectionDiv" class="row form-group">
-                    <label for="toDateChoice"><h5>To Date:</h5></label>
+                    <h5><label for="toDateChoice">To Date:</label></h5>
                     <input th:type="date" name="toDateChoice" id="toDateChoice" class="form-control"/>
                 </div>
                 <div id="submitSelectionDiv" class="row form-group pt-3">

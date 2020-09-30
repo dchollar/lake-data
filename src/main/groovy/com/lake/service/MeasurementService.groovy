@@ -72,7 +72,6 @@ class MeasurementService {
             // must be an event
             Event event = new Event()
             event.value = dto.collectionDate
-            event.year = dto.collectionDate.year
             event.comment = StringUtils.stripToEmpty(dto.comment)
             event.site = siteRepository.getOne(dto.siteId)
             event.unit = unit

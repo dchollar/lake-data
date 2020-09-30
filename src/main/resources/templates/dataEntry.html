@@ -41,14 +41,14 @@
         <div id="selectionDiv" class="col-sm-2 bg-secondary text-light">
             <div class="container">
                 <div id="siteSelectionDiv" class="row form-group pt-3">
-                    <label for="sitesChoice"><h5>Site:</h5></label>
+                    <h5><label for="sitesChoice">Site:</label></h5>
                     <select name="sitesChoice" id="sitesChoice" class="form-control">
                         <option value=""></option>
                         <option th:each="site : ${sites}" th:value="${site.id}" th:utext="${site.description}"/>
                     </select>
                 </div>
                 <div id="unitSelectionDiv" class="row form-group">
-                    <label for="unitsChoice"><h5>Unit:</h5></label>
+                    <h5><label for="unitsChoice">Unit:</label></h5>
                     <select name="unitsChoice" id="unitsChoice" class="form-control">
                         <option value=""></option>
                         <option th:each="unit : ${units}" th:value="${unit.id}" th:utext="${unit.longDescription}"/>

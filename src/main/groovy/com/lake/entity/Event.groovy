@@ -17,10 +17,6 @@ class Event {
     LocalDate value
 
     @Basic
-    @Column(name = "year", nullable = false)
-    Integer year
-
-    @Basic
     @Column(name = "comment", nullable = true, length = 4000)
     String comment
 

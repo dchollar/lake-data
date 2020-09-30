@@ -19,4 +19,8 @@ class UnitService {
         ConverterUtil.convert(repository.getOne(id))
     }
 
+    Set<UnitDto> getUnitsBySite(Integer siteId) {
+        ConverterUtil.convertUnits(repository.findUnitsBySite(siteId, siteId))
+    }
+
 }

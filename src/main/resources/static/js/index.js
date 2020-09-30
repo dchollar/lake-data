@@ -6,11 +6,9 @@ $(document).ready(function () {
 
     $('#sitesChoice').on('change', function () {
         siteId = $(this).val();
-        if (unitId) {
-            getLocations();
-        } else {
-            $('#locationSelectionDiv').html('');
-        }
+        unitId = undefined;
+        getUnits();
+        $('#locationSelectionDiv').html('');
     });
 
     $('#unitsChoice').on('change', function () {
@@ -47,7 +45,7 @@ $(document).ready(function () {
                     },
                     error: function (xhr, resp, text) {
                         console.log(xhr, resp, text);
-                        $("#message").text("There was an issue saving your data. Check your submission. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                     }
                 });
         }
@@ -70,6 +68,29 @@ $(document).ready(function () {
         return url
     }
 
+    function getUnits() {
+        $.ajax(
+            {
+                type: "GET",
+                url: "public/api/sites/" + siteId + "/units",
+                dataType: "json",
+                success: function (units) {
+                    buildUnitsChoice(units);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+    }
+
+    function buildUnitsChoice(units) {
+        let unitOptions = '<option value=""></option>';
+        for (let unit of units) {
+            unitOptions += '<option value="' + unit.id + '">' + unit.longDescription + '</option>';
+        }
+        $('#unitsChoice').html(unitOptions);
+    }
+
     function getLocations() {
         if (selectedUnit && selectedUnit.type !== 'EVENT') {
             $.ajax(
@@ -90,7 +111,7 @@ $(document).ready(function () {
     }
 
     function buildLocationsChoice(locations) {
-        let locationOptions = '<label for="locationsChoice"><h5>Location:</h5></label>';
+        let locationOptions = '<h5><label for="locationsChoice">Location:</label></h5>';
         locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">';
         locationOptions += '<option value=""></option>';
         for (let location of locations) {

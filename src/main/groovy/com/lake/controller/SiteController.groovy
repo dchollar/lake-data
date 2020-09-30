@@ -2,7 +2,9 @@ package com.lake.controller
 
 import com.lake.dto.LocationDto
 import com.lake.dto.SiteDto
+import com.lake.dto.UnitDto
 import com.lake.service.SiteService
+import com.lake.service.UnitService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -15,6 +17,8 @@ class SiteController {
 
     @Autowired
     SiteService service
+    @Autowired
+    UnitService unitService
 
     @GetMapping(value = '/api/sites', produces = APPLICATION_JSON_VALUE)
     Collection<SiteDto> getAll() {
@@ -24,6 +28,11 @@ class SiteController {
     @GetMapping(value = '/public/api/sites/{siteId}/locations', produces = APPLICATION_JSON_VALUE)
     Collection<LocationDto> getSiteLocations(@PathVariable(name = 'siteId', required = true) Integer siteId) {
         return service.getLocations(siteId)
+    }
+
+    @GetMapping(value = '/public/api/sites/{siteId}/units', produces = APPLICATION_JSON_VALUE)
+    Collection<UnitDto> getSiteUnits(@PathVariable(name = 'siteId', required = true) Integer siteId) {
+        return unitService.getUnitsBySite(siteId)
     }
 
 }
