@@ -1,3 +1,3 @@
 ps -ef | grep java | grep lake | grep -v grep | awk '{print $2}' | xargs kill
-sudo cp ./build/libs/lake-1.0.0.jar /usr/local/bin/lake-data/lake.jar
+cp ./build/libs/lake-data-1.0.0.jar /usr/local/bin/lake-data/lake-data.jar
 /usr/local/bin/lake-data/startup
