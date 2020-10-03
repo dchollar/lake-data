@@ -21,10 +21,3 @@ spring:
   groovy:
     template:
       check-template-location: false
-server:
-  compression:
-    enabled: true
-  port: 8081
-  servlet:
-    application-display-name: lake-data
-    context-path: /lake-data
