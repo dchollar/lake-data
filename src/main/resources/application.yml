@@ -13,7 +13,7 @@ spring:
     tomcat:
       jmx-enabled: false
   jpa:
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       naming:
