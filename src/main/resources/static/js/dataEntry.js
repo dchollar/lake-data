@@ -5,6 +5,7 @@ $(document).ready(function () {
     let selectedUnit
 
     $('#sitesChoice').on('change', function () {
+        $("#message").text("").hide();
         siteId = $(this).val();
         if (unitId) {
             getLocations();
@@ -14,6 +15,7 @@ $(document).ready(function () {
     });
 
     $('#unitsChoice').on('change', function () {
+        $("#message").text("").hide();
         unitId = $(this).val();
         $.ajax(
             {
@@ -37,6 +39,7 @@ $(document).ready(function () {
     });
 
     $('#submitButton').on('click', function () {
+        $("#message").text("").hide();
         if (siteId && unitId) {
             let data = buildSubmitData();
             $.ajax(
