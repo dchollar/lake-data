@@ -15,3 +15,5 @@ Technologies Used:
 
 look into this for maintaining data http://js-grid.com/
 
+Wisconsin DNR data site is https://dnrx.wisconsin.gov/swims/login.jsp
+

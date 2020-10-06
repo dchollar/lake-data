@@ -160,7 +160,7 @@ $(document).ready(function () {
             tableHeaderHtml += '<th>Depth</th>';
         }
         tableHeaderHtml += '<th>Comment</th>';
-        tableHeaderHtml += '<th>Reporter</th>';
+        //tableHeaderHtml += '<th>Reporter</th>';
         tableHeaderHtml += '</tr></thead>';
         return tableHeaderHtml;
     }
@@ -178,10 +178,11 @@ $(document).ready(function () {
                 tableBodyHtml += '<td>' + measurement.depth + '</td>';
             }
             tableBodyHtml += '<td>' + measurement.comment + '</td>';
-            tableBodyHtml += '<td>' + measurement.reporter.firstName + ' ' + measurement.reporter.lastName + '</td>';
+            //tableBodyHtml += '<td>' + measurement.reporter.firstName + ' ' + measurement.reporter.lastName + '</td>';
             tableBodyHtml += '</tr>';
         }
         tableBodyHtml += '</tbody>';
+
         return tableBodyHtml;
     }
 
