@@ -22,7 +22,7 @@ $(function () {
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: "/api/units",
+                    url: "api/units",
                     data: filter
                 });
             },
@@ -30,7 +30,7 @@ $(function () {
             insertItem: function (item) {
                 return $.ajax({
                     type: "POST",
-                    url: "/api/units",
+                    url: "api/units",
                     contentType: 'application/json',
                     data: JSON.stringify(item)
                 });
@@ -39,7 +39,7 @@ $(function () {
             updateItem: function (item) {
                 return $.ajax({
                     type: "PUT",
-                    url: "/api/units/" + item.id,
+                    url: "api/units/" + item.id,
                     contentType: 'application/json',
                     data: JSON.stringify(item)
                 });
@@ -48,7 +48,7 @@ $(function () {
             deleteItem: function (item) {
                 return $.ajax({
                     type: "DELETE",
-                    url: "/api/units/" + item.id
+                    url: "api/units/" + item.id
                 });
             },
         },

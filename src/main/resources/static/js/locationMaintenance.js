@@ -23,7 +23,7 @@ $(function () {
                 // getSites()
                 return $.ajax({
                     type: "GET",
-                    url: "/api/locations",
+                    url: "api/locations",
                     data: filter
                 });
             },
@@ -31,7 +31,7 @@ $(function () {
             insertItem: function (item) {
                 return $.ajax({
                     type: "POST",
-                    url: "/api/locations",
+                    url: "api/locations",
                     contentType: 'application/json',
                     data: JSON.stringify(item)
                 });
@@ -40,7 +40,7 @@ $(function () {
             updateItem: function (item) {
                 return $.ajax({
                     type: "PUT",
-                    url: "/api/locations/" + item.id,
+                    url: "api/locations/" + item.id,
                     contentType: 'application/json',
                     data: JSON.stringify(item)
                 });
@@ -49,7 +49,7 @@ $(function () {
             deleteItem: function (item) {
                 return $.ajax({
                     type: "DELETE",
-                    url: "/api/locations/" + item.id
+                    url: "api/locations/" + item.id
                 });
             },
         },
