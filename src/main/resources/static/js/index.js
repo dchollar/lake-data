@@ -121,6 +121,7 @@ $(document).ready(function () {
             for (let unit of location.units) {
                 if (selectedUnit.id === unit.id) {
                     locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
+                    break;
                 }
             }
         }

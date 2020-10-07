@@ -1,6 +1,5 @@
 package com.lake.dto
 
-import com.lake.entity.RoleType
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 
@@ -15,5 +14,7 @@ class ReporterDto {
     String username
     String password
     Boolean enabled
-    Set<RoleType> roles
+    Boolean roleReporter
+    Boolean rolePowerUser
+    Boolean roleAdmin
 }

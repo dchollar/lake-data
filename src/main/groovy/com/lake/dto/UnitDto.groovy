@@ -6,7 +6,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 
 @EqualsAndHashCode(includes = ['id', 'longDescription'])
-@Sortable(includes = ['type', 'longDescription'])
+@Sortable(includes = ['type', 'longDescription', 'id'])
 class UnitDto {
     Integer id
     String unitDescription

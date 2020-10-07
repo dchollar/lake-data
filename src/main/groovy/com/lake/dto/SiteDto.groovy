@@ -5,7 +5,7 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 
 @EqualsAndHashCode(includes = ['id', 'description'])
-@Sortable(includes = ['description'])
+@Sortable(includes = ['description', 'id'])
 class SiteDto {
     Integer id
     String description

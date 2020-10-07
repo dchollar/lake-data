@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
     <script th:src="@{/js/locationMaintenance.js}"></script>
 </head>
 <body>
@@ -27,9 +26,9 @@
             <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown active">
                 <a id="nav-maintenance" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
-                    <a class="dropdown-item text-light" th:href="@{/users}">Users</a>
-                    <a class="dropdown-item text-light" th:href="@{/units}">Measurement Units</a>
-                    <a class="dropdown-item text-light" th:href="@{/locations}">Locations</a>
+                    <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
+                    <a class="dropdown-item text-light" th:href="@{/unitMaintenance}">Measurement Units</a>
+                    <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
                 </div>
             </li>
         </ul>
@@ -42,23 +41,14 @@
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div id="selectionDiv" class="col-sm-2 bg-secondary text-light">
-            <div class="container">
-                <div id="siteSelectionDiv" class="row form-group pt-3">
-                    <h5><label for="sitesChoice">Site:</label></h5>
-                    <select name="sitesChoice" id="sitesChoice" class="form-control">
-                        <option value=""></option>
-                        <option th:each="site : ${sites}" th:value="${site.id}" th:utext="${site.description}"/>
-                    </select>
-                </div>
-                <div id="submitSelectionDiv" class="row form-group pt-3">
-                    <button id='submitButton' name='submitButton' type="button" class="btn btn-primary">Submit</button>
-                </div>
-            </div>
+        <div id="selectionDiv" class="col-sm-1 bg-secondary text-light">
+            <div class="container"></div>
         </div>
 
-        <div id="resultDiv" class="col-sm-10 text-left">
-
+        <div id="resultDiv" class="col-sm-11 text-left">
+            <div class="container-fluid">
+                <div id="jsGrid"></div>
+            </div>
         </div>
     </div>
 </div>

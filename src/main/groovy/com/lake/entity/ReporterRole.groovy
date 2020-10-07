@@ -16,7 +16,6 @@ class ReporterRole {
     @Column(name = 'role', nullable = false, length = 50)
     RoleType role
 
-    // TODO DO NOT USE ????
     @Deprecated
     @ManyToOne
     @JoinColumn(name = "reporter_id", referencedColumnName = "id", nullable = false)

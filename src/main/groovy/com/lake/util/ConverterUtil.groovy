@@ -4,6 +4,7 @@ import com.lake.dto.*
 import com.lake.entity.*
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
+import org.springframework.security.crypto.password.PasswordEncoder
 
 @Slf4j
 class ConverterUtil {
@@ -69,11 +70,22 @@ class ConverterUtil {
     }
 
     static LocationDto convert(Location location) {
-        LocationDto dto = new LocationDto(id: location.id, description: location.description)
+        LocationDto dto = new LocationDto()
+        dto.id = location.id
+        dto.description = location.description
+        dto.siteId = location.site.id
+        dto.siteDescription = location.site.description
         location.unitLocations.each {
             dto.units.add(convert(it.unit))
         }
         return dto
+    }
+
+    static Location convert(LocationDto dto) {
+        Location location = new Location()
+        location.id = dto.id
+        location.description = dto.description
+        return location
     }
 
     static UnitDto convert(Unit unit) {
@@ -87,17 +99,22 @@ class ConverterUtil {
         return dto
     }
 
+    static Unit convert(UnitDto dto) {
+        Unit unit = new Unit()
+        unit.id = dto.id
+        unit.unitDescription = dto.unitDescription
+        unit.longDescription = dto.longDescription
+        unit.shortDescription = dto.shortDescription
+        unit.enableDepth = dto.enableDepth
+        unit.type = dto.type
+        return unit
+    }
+
     static ReporterDto convert(Reporter reporter) {
         ReporterDto dto = new ReporterDto()
         dto.id = reporter.id
         dto.firstName = reporter.firstName
         dto.lastName = reporter.lastName
-        //dto.emailAddress = reporter.emailAddress
-        //dto.phoneNumber = reporter.phoneNumber
-        //dto.username = reporter.username
-        //dto.password = reporter.password
-        //dto.enabled = reporter.enabled
-        //dto.roles = reporter.roles.collect { it.role }
         return dto
     }
 
@@ -109,10 +126,37 @@ class ConverterUtil {
         dto.emailAddress = reporter.emailAddress
         dto.phoneNumber = reporter.phoneNumber
         dto.username = reporter.username
-        dto.password = reporter.password //TODO need to decode
+        dto.password = ''
         dto.enabled = reporter.enabled
-        dto.roles = reporter.roles.collect { it.role }
+        dto.roleAdmin = reporter.roles.any {it.role == RoleType.ROLE_ADMIN}
+        dto.rolePowerUser = reporter.roles.any {it.role == RoleType.ROLE_POWER_USER}
+        dto.roleReporter = reporter.roles.any {it.role == RoleType.ROLE_REPORTER}
         return dto
+    }
+
+    static Reporter convert(ReporterDto dto) {
+        Reporter reporter = new Reporter()
+        reporter.id = dto.id
+        reporter.firstName = dto.firstName
+        reporter.lastName = dto.lastName
+        reporter.emailAddress = dto.emailAddress
+        reporter.phoneNumber = dto.phoneNumber
+        reporter.username = dto.username
+        reporter.password = dto.password
+        reporter.enabled = dto.enabled
+
+        reporter.roles = []
+        if (dto.roleReporter) {
+            reporter.roles.add(new ReporterRole(reporter: reporter, role: RoleType.ROLE_REPORTER))
+        }
+        if (dto.rolePowerUser) {
+            reporter.roles.add(new ReporterRole(reporter: reporter, role: RoleType.ROLE_POWER_USER))
+        }
+        if (dto.roleAdmin) {
+            reporter.roles.add(new ReporterRole(reporter: reporter, role: RoleType.ROLE_ADMIN))
+        }
+
+        return reporter
     }
 
     static MeasurementDto convert(Measurement measurement) {

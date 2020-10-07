@@ -39,6 +39,6 @@ class Reporter {
     @Column(name = "enabled", nullable = false)
     Boolean enabled
 
-    @OneToMany(mappedBy = "reporter")
+    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<ReporterRole> roles
 }

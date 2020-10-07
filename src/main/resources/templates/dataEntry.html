@@ -23,9 +23,9 @@
             <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item dropdown">
                 <a id="nav-maintenance" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
-                    <a class="dropdown-item text-light" th:href="@{/users}">Users</a>
-                    <a class="dropdown-item text-light" th:href="@{/units}">Measurement Units</a>
-                    <a class="dropdown-item text-light" th:href="@{/locations}">Locations</a>
+                    <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
+                    <a class="dropdown-item text-light" th:href="@{/unitMaintenance}">Measurement Units</a>
+                    <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
                 </div>
             </li>
         </ul>

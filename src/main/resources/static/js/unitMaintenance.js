@@ -13,17 +13,16 @@ $(function () {
 
         filtering: false,
         editing: true,
-        inserting: false, //TODO be able to insert new ones
+        inserting: true,
         sorting: true,
         paging: false,
         autoload: true,
 
         controller: {
             loadData: function (filter) {
-                // getSites()
                 return $.ajax({
                     type: "GET",
-                    url: "/api/locations",
+                    url: "/api/units",
                     data: filter
                 });
             },
@@ -31,7 +30,7 @@ $(function () {
             insertItem: function (item) {
                 return $.ajax({
                     type: "POST",
-                    url: "/api/locations",
+                    url: "/api/units",
                     contentType: 'application/json',
                     data: JSON.stringify(item)
                 });
@@ -40,7 +39,7 @@ $(function () {
             updateItem: function (item) {
                 return $.ajax({
                     type: "PUT",
-                    url: "/api/locations/" + item.id,
+                    url: "/api/units/" + item.id,
                     contentType: 'application/json',
                     data: JSON.stringify(item)
                 });
@@ -49,16 +48,18 @@ $(function () {
             deleteItem: function (item) {
                 return $.ajax({
                     type: "DELETE",
-                    url: "/api/locations/" + item.id
+                    url: "/api/units/" + item.id
                 });
             },
         },
 
         fields: [
-            {title: "Id", name: "id", type: "number", visible: false},
-            {title: "Description", name: "description", type: "text", width: 200, validate: "required"},
-            {title: "Site Id", name: "siteId", type: "number", visible: false},
-            {title: "Site", name: "siteDescription", type: "text", width: 200, editing: false},
+            {title: "Id", name: "id", type: "number", width: 75, visible: false},
+            {title: "Unit Description", name: "unitDescription", type: "text", width: 75, validate: "required"},
+            {title: "Long Description", name: "longDescription", type: "text", width: 300, validate: "required"},
+            {title: "Short Description", name: "shortDescription", type: "text", width: 75, validate: "required"},
+            {title: "Enable Depth", name: "enableDepth", type: "checkbox", width: 75},
+            {title: "Type", name: "type", validate: "required", type: "select", items: unitTypes, valueField: "id", textField: "name", valueType: "string"},
             {type: "control"}
         ]
     });

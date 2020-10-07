@@ -23,7 +23,6 @@ class PageController {
     @GetMapping(['/', '/index', '/home'])
     String index(Model model) {
         model.addAttribute('sites', siteService.getAllSites())
-        model.addAttribute('units', unitService.getAllUnits())
         return 'index'
     }
 
@@ -36,23 +35,20 @@ class PageController {
     }
 
     @Secured('ROLE_ADMIN')
-    @GetMapping('/users')
-    String userMaintenance(Model model) {
-        model.addAttribute('reporters', reporterService.getAllReporters())
+    @GetMapping('/userMaintenance')
+    String userMaintenance() {
         return 'userMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
-    @GetMapping('/locations')
-    String locationrMaintenance(Model model) {
-        model.addAttribute('sites', siteService.getAllSites())
+    @GetMapping('/locationMaintenance')
+    String locationMaintenance() {
         return 'locationMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
-    @GetMapping('/units')
-    String unitMaintenance(Model model) {
-        model.addAttribute('sites', siteService.getAllSites())
+    @GetMapping('/unitMaintenance')
+    String unitMaintenance() {
         return 'unitMaintenance'
     }
 

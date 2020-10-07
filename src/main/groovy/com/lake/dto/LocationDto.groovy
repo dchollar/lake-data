@@ -4,10 +4,11 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 
 @EqualsAndHashCode(includes = ['id'])
-@Sortable(includes = ['description'])
+@Sortable(includes = ['description', 'id'])
 class LocationDto {
     Integer id
     String description
-    SiteDto site
+    Integer siteId
+    String siteDescription
     Set<UnitDto> units = new TreeSet<>()
 }

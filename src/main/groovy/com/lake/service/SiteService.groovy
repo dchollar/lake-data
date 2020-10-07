@@ -19,10 +19,4 @@ class SiteService {
         ConverterUtil.convertSites(repository.findAll())
     }
 
-    @Cacheable("locations")
-    Set<LocationDto> getLocations(Integer siteId) {
-        Site site = repository.getOne(siteId)
-        return ConverterUtil.convertLocations(site.locations)
-    }
-
 }
