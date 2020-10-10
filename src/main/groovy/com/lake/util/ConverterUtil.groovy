@@ -4,7 +4,6 @@ import com.lake.dto.*
 import com.lake.entity.*
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
-import org.springframework.security.crypto.password.PasswordEncoder
 
 @Slf4j
 class ConverterUtil {
@@ -75,6 +74,7 @@ class ConverterUtil {
         dto.description = location.description
         dto.siteId = location.site.id
         dto.siteDescription = location.site.description
+        dto.comment = location.comment
         location.unitLocations.each {
             dto.units.add(convert(it.unit))
         }
@@ -85,6 +85,7 @@ class ConverterUtil {
         Location location = new Location()
         location.id = dto.id
         location.description = dto.description
+        location.comment = dto.comment
         return location
     }
 
@@ -128,9 +129,9 @@ class ConverterUtil {
         dto.username = reporter.username
         dto.password = ''
         dto.enabled = reporter.enabled
-        dto.roleAdmin = reporter.roles.any {it.role == RoleType.ROLE_ADMIN}
-        dto.rolePowerUser = reporter.roles.any {it.role == RoleType.ROLE_POWER_USER}
-        dto.roleReporter = reporter.roles.any {it.role == RoleType.ROLE_REPORTER}
+        dto.roleAdmin = reporter.roles.any { it.role == RoleType.ROLE_ADMIN }
+        dto.rolePowerUser = reporter.roles.any { it.role == RoleType.ROLE_POWER_USER }
+        dto.roleReporter = reporter.roles.any { it.role == RoleType.ROLE_REPORTER }
         return dto
     }
 

@@ -15,6 +15,10 @@ class Location {
     @Column(name = "description", nullable = false, length = 100)
     String description
 
+    @Basic
+    @Column(name = "comment", nullable = true, length = 200)
+    String comment
+
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
     Site site

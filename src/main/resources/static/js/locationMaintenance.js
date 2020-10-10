@@ -57,6 +57,7 @@ $(function () {
         fields: [
             {title: "Id", name: "id", type: "number", visible: false},
             {title: "Description", name: "description", type: "text", width: 200, validate: "required"},
+            {title: "Comment", name: "comment", type: "text", width: 200},
             {title: "Site Id", name: "siteId", type: "number", visible: false},
             {title: "Site", name: "siteDescription", type: "text", width: 200, editing: false},
             {type: "control"}

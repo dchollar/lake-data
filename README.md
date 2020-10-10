@@ -16,6 +16,7 @@ web application for maintaining lake water quality data on pipe lake.
  - add more data???
     - stream flow data
     - DNR SWIMS data
+ - add graphs
 
 # Technologies Used:
 - Groovy

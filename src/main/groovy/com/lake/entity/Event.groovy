@@ -20,6 +20,10 @@ class Event {
     @Column(name = "comment", nullable = true, length = 4000)
     String comment
 
+    @Basic
+    @Column(name = 'year', nullable = false)
+    Integer year
+
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
     Site site

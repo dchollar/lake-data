@@ -8,7 +8,6 @@ import com.lake.repository.ReporterRepository
 import com.lake.util.ConverterUtil
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.cache.annotation.CacheEvict
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -50,7 +49,7 @@ class ReporterService {
 
         syncRoles(reporter, RoleType.ROLE_REPORTER, dto.roleReporter)
         syncRoles(reporter, RoleType.ROLE_POWER_USER, dto.rolePowerUser)
-        syncRoles(reporter, RoleType.ROLE_ADMIN, dto.roleReporter)
+        syncRoles(reporter, RoleType.ROLE_ADMIN, dto.roleAdmin)
 
         ConverterUtil.convertForMaintenance(repository.saveAndFlush(reporter))
     }
@@ -61,11 +60,11 @@ class ReporterService {
     }
 
     private static void syncRoles(Reporter reporter, RoleType roleType, boolean add) {
-        boolean exists = reporter.roles.any {it.role == roleType}
+        boolean exists = reporter.roles.any { it.role == roleType }
         if (add && !exists) {
             reporter.roles.add(new ReporterRole(reporter: reporter, role: roleType))
         } else if (!add && exists) {
-            for (ReporterRole role: reporter.roles) {
+            for (ReporterRole role : reporter.roles) {
                 if (role.role == roleType) {
                     reporter.roles.removeElement(role)
                     break

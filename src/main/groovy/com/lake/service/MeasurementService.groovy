@@ -74,6 +74,7 @@ class MeasurementService {
             event.value = dto.collectionDate
             event.comment = StringUtils.stripToEmpty(dto.comment)
             event.site = siteRepository.getOne(dto.siteId)
+            event.year = dto.collectionDate.year
             event.unit = unit
             event.reporter = reporter
             eventRepository.save(event)

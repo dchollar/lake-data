@@ -44,6 +44,7 @@ class LocationService {
     LocationDto update(Integer id, LocationDto dto) {
         Location location = repository.getOne(id)
         location.description = dto.description
+        location.comment = dto.comment
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
 

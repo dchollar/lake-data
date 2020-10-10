@@ -25,7 +25,7 @@
                 <a id="nav-maintenance" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
                     <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
-                    <a class="dropdown-item text-light" th:href="@{/unitMaintenance}">Measurement Units</a>
+                    <a class="dropdown-item text-light" th:href="@{/unitMaintenance}">Characteristics</a>
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
                 </div>
             </li>
@@ -50,7 +50,7 @@
                     </select>
                 </div>
                 <div id="unitSelectionDiv" class="row form-group">
-                    <h5><label for="unitsChoice">Unit:</label></h5>
+                    <h5><label for="unitsChoice">Characteristic:</label></h5>
                     <select name="unitsChoice" id="unitsChoice" class="form-control"></select>
                 </div>
 
@@ -98,9 +98,9 @@
 
                 <p>
                     This data is collected by fellow citizens of the lake community and some of this data is reported
-                    to the Wisconsin DNR and can be accessed on the
-                    <a href="https://dnrx.wisconsin.gov/swims/login.jsp">Surface Water Integrated Monitoring System (SWIMS)</a>.
-                    You will need to get a Wisconsin User ID to access the data on that site, but not this site.
+                    to the Wisconsin DNR and can be accessed on the Surface Water Integrated Monitoring System (SWIMS) for
+                    <a href="https://dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=2490500&page=more">Pipe Lake</a> and
+                    <a href="https://dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=2485700&page=more">North Pipe Lake</a>.
                 </p>
 
                 <p>

@@ -8,6 +8,7 @@ import groovy.transform.Sortable
 class LocationDto {
     Integer id
     String description
+    String comment
     Integer siteId
     String siteDescription
     Set<UnitDto> units = new TreeSet<>()
