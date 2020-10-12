@@ -50,6 +50,10 @@ $(document).ready(function () {
                     data: JSON.stringify(data),
                     success: function (results) {
                         alert("Your data has been saved.");
+                        // $('#collectionDateField').value = '';
+                        // $('#locationsChoice').value = '';
+                        // $('#depthField').value = '';
+                        // $('#commentField').value = '';
                         window.location = "dataEntry";
                     },
                     error: function (xhr, resp, text) {
@@ -120,7 +124,10 @@ $(document).ready(function () {
         let divHtml = '';
         if (selectedUnit.type !== 'EVENT') {
             divHtml = '<div class="col-sm-12">'
-            divHtml += '<label for="valueField"><b>Actual Measurement Value:</b></label>';
+            divHtml += '<label for="valueField"><b>Actual Measurement Value for ';
+            divHtml += selectedUnit.shortDescription;
+            divHtml += ' in ' + selectedUnit.unitDescription + ':';
+            divHtml += '</b></label>';
             divHtml += '<input id="valueField" type="number" required class="form-control">';
             divHtml += '</div>';
         }
@@ -131,7 +138,7 @@ $(document).ready(function () {
         let divHtml = '';
         if (selectedUnit.enableDepth) {
             divHtml = '<div class="col-sm-12">'
-            divHtml += '<label for="depthField"><b>Depth of Measurement:</b></label>';
+            divHtml += '<label for="depthField"><b>Depth of Measurement in feet:</b></label>';
             divHtml += '<input id="depthField" type="number" required  class="form-control">';
             divHtml += '</div>';
         }
