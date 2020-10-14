@@ -1,1 +1,2 @@
+./gradlew clean build
 cp ./build/libs/lake-data-1.0.0.war /var/lib/tomcat9/webapps/lake-data.war

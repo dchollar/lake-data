@@ -11,6 +11,7 @@ class MeasurementDto {
 
     Integer id
     LocalDate collectionDate
+    Integer dayOfYear
     BigDecimal value
     BigDecimal depth
     String comment

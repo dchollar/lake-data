@@ -163,7 +163,11 @@ $(document).ready(function () {
                 } else {
                     labels.push(measurement.collectionDate);
                 }
-                data.push(measurement.value);
+                if (selectedUnit.type === 'EVENT') {
+                    data.push(measurement.dayOfYear);
+                } else {
+                    data.push(measurement.value);
+                }
             }
             buildChartSection(data, labels);
         }

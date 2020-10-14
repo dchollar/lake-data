@@ -164,6 +164,7 @@ class ConverterUtil {
         MeasurementDto dto = new MeasurementDto()
         dto.id = measurement.id
         dto.collectionDate = measurement.collectionDate
+        dto.dayOfYear = measurement.collectionDate.dayOfYear
         dto.value = measurement.value
         dto.depth = measurement.depth
         dto.comment = StringUtils.stripToEmpty(measurement.comment)
@@ -177,6 +178,7 @@ class ConverterUtil {
         MeasurementDto dto = new MeasurementDto()
         dto.id = event.id
         dto.collectionDate = event.value
+        dto.dayOfYear = event.value.dayOfYear
         dto.comment = StringUtils.stripToEmpty(event.comment)
         dto.unit = convert(event.unit)
         dto.reporter = convert(event.reporter)
