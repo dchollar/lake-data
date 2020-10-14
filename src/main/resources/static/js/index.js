@@ -45,6 +45,7 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (measurements) {
                         buildResultDiv(measurements);
+                        buildChartDiv(measurements);
                     },
                     error: function (xhr, resp, text) {
                         console.log(xhr, resp, text);
@@ -130,14 +131,14 @@ $(document).ready(function () {
     }
 
     function buildResultDiv(measurements) {
-        let allResultData = '';
+        let html = '';
         if (measurements === undefined || measurements.length === 0) {
-            allResultData += '<hr><h4>No Data Found</h4>';
+            html += '<h4>No Data Found</h4>';
         } else {
-            allResultData += buildResultSection(measurements);
+            html += buildResultSection(measurements);
         }
 
-        $('#resultDiv').html(allResultData);
+        $('#resultDiv').html(html);
     }
 
     function buildResultSection(measurements) {
@@ -150,15 +151,55 @@ $(document).ready(function () {
         return resultHtml
     }
 
+    function buildChartDiv(measurements) {
+        if (measurements === undefined || measurements.length === 0) {
+            $('#resultDiv').html('<h4>No Data Found</h4>');
+        } else {
+            let data = [];
+            let labels = [];
+            for (let measurement of measurements) {
+                if (selectedUnit.enableDepth) {
+                    labels.push(measurement.collectionDate + ' | ' + measurement.depth);
+                } else {
+                    labels.push(measurement.collectionDate);
+                }
+                data.push(measurement.value);
+            }
+            buildChartSection(data, labels);
+        }
+    }
+
+    function buildChartSection(data, labels) {
+
+        let label = selectedUnit.shortDescription + ' ' + selectedUnit.longDescription + ' ' + selectedUnit.unitDescription;
+        var ctx = document.getElementById('myChart');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data
+                }]
+            },
+
+            // Configuration options go here
+            options: {}
+        });
+    }
+
     function buildTableHeader() {
         let tableHeaderHtml = '<thead class="thead-dark"><tr>';
         tableHeaderHtml += '<th>Id</th>';
         tableHeaderHtml += '<th>Collection Date</th>';
-        if (selectedUnit.type !== 'EVENT') {
-            tableHeaderHtml += '<th>' + selectedUnit.unitDescription + '</th>';
-        }
         if (selectedUnit.enableDepth) {
             tableHeaderHtml += '<th>Depth</th>';
+        }
+        if (selectedUnit.type !== 'EVENT') {
+            tableHeaderHtml += '<th>' + selectedUnit.unitDescription + '</th>';
         }
         tableHeaderHtml += '<th>Comment</th>';
         //tableHeaderHtml += '<th>Reporter</th>';
@@ -172,11 +213,11 @@ $(document).ready(function () {
             tableBodyHtml += '<tr>';
             tableBodyHtml += '<td>' + measurement.id + '</td>';
             tableBodyHtml += '<td>' + measurement.collectionDate + '</td>';
-            if (selectedUnit.type !== 'EVENT') {
-                tableBodyHtml += '<td>' + measurement.value + '</td>';
-            }
             if (selectedUnit.enableDepth) {
                 tableBodyHtml += '<td>' + measurement.depth + '</td>';
+            }
+            if (selectedUnit.type !== 'EVENT') {
+                tableBodyHtml += '<td>' + measurement.value + '</td>';
             }
             tableBodyHtml += '<td>' + measurement.comment + '</td>';
             //tableBodyHtml += '<td>' + measurement.reporter.firstName + ' ' + measurement.reporter.lastName + '</td>';
