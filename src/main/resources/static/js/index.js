@@ -3,6 +3,7 @@ $(document).ready(function () {
     let siteId;
     let unitId;
     let selectedUnit
+    let chart
 
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
@@ -152,6 +153,9 @@ $(document).ready(function () {
     }
 
     function buildChartDiv(measurements) {
+        if (chart) {
+            chart.destroy()
+        }
         if (measurements === undefined || measurements.length === 0) {
             $('#resultDiv').html('<h4>No Data Found</h4>');
         } else {
@@ -174,14 +178,10 @@ $(document).ready(function () {
     }
 
     function buildChartSection(data, labels) {
-
         let label = selectedUnit.shortDescription + ' ' + selectedUnit.longDescription + ' ' + selectedUnit.unitDescription;
-        var ctx = document.getElementById('myChart');
-        var chart = new Chart(ctx, {
-            // The type of chart we want to create
+        let ctx = document.getElementById('myChart').getContext('2d');
+        chart = new Chart(ctx, {
             type: 'line',
-
-            // The data for our dataset
             data: {
                 labels: labels,
                 datasets: [{
@@ -189,8 +189,6 @@ $(document).ready(function () {
                     data: data
                 }]
             },
-
-            // Configuration options go here
             options: {}
         });
     }

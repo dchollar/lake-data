@@ -16,7 +16,7 @@ web application for maintaining lake water quality data on pipe lake.
  - add more data???
     - stream flow data
     - DNR SWIMS data
- - add graphs
+  - Add a privacy statement page linked from the footer
 
 # Technologies Used:
 - Groovy
@@ -28,5 +28,6 @@ web application for maintaining lake water quality data on pipe lake.
 - JQuery
 - Bootstrap
 - js-grid for maintenance pages: http://js-grid.com/
+- ChartJS: https://www.chartjs.org/
 
 Wisconsin DNR data site is https://dnrx.wisconsin.gov/swims/login.jsp
