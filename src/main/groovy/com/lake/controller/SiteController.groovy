@@ -34,7 +34,7 @@ class SiteController {
     @GetMapping(value = '/api/sites', produces = APPLICATION_JSON_VALUE)
     Collection<SiteDto> getAll() {
         log.info("ACCESS - get all sites")
-        auditService.audit(HttpMethod.GET, '/api/sites', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/api/sites', this.class.simpleName)
         return service.getAllSites()
     }
 

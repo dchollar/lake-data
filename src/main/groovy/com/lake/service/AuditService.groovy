@@ -17,15 +17,14 @@ class AuditService {
     ReporterService reporterService
 
     @Transactional
-    void audit(HttpMethod method, String endpoint, String controller, boolean addReporter = false) {
+    void audit(HttpMethod method, String endpoint, String controller) {
         Audit audit = new Audit()
         audit.created = Instant.now()
         audit.endpoint = endpoint
         audit.controller = controller
         audit.httpMethod = method.name()
-        if (addReporter) {
-            audit.reporter = reporterService.reporter
-        }
+        audit.reporter = reporterService.reporter
+
         repository.saveAndFlush(audit)
     }
 

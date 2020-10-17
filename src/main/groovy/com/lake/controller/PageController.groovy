@@ -37,7 +37,7 @@ class PageController {
     @GetMapping('/dataEntry')
     String dataEntry(Model model) {
         log.info("ACCESS - view data entry page")
-        auditService.audit(HttpMethod.GET, '/dataEntry', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/dataEntry', this.class.simpleName)
         model.addAttribute('sites', siteService.getAllSites())
         model.addAttribute('units', unitService.getAllUnits())
         return 'dataEntry'
@@ -47,7 +47,7 @@ class PageController {
     @GetMapping('/userMaintenance')
     String userMaintenance() {
         log.info("ACCESS - view user maintenance page")
-        auditService.audit(HttpMethod.GET, '/userMaintenance', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/userMaintenance', this.class.simpleName)
         return 'userMaintenance'
     }
 
@@ -55,7 +55,7 @@ class PageController {
     @GetMapping('/locationMaintenance')
     String locationMaintenance() {
         log.info("ACCESS - view location maintenance page")
-        auditService.audit(HttpMethod.GET, '/locationMaintenance', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/locationMaintenance', this.class.simpleName)
         return 'locationMaintenance'
     }
 
@@ -63,7 +63,7 @@ class PageController {
     @GetMapping('/unitMaintenance')
     String unitMaintenance() {
         log.info("ACCESS - view unit maintenance page")
-        auditService.audit(HttpMethod.GET, '/unitMaintenance', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/unitMaintenance', this.class.simpleName)
         return 'unitMaintenance'
     }
 

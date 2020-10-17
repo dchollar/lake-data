@@ -32,7 +32,7 @@ class MeasurementController {
     @PostMapping(value = '/api/measurements')
     void save(@RequestBody SavedMeasurementDto dto) {
         log.info("ACCESS - save measurement")
-        auditService.audit(HttpMethod.POST, '/api/measurements', this.class.simpleName, true)
+        auditService.audit(HttpMethod.POST, '/api/measurements', this.class.simpleName)
         List valid = isValid(dto.siteId, dto.unitId, dto.locationId, null, null)
         String errorMessage = valid[1] as String
         if (!dto.collectionDate) {

@@ -24,7 +24,7 @@ class ReporterController {
     @GetMapping(value = '/api/reporters', produces = APPLICATION_JSON_VALUE)
     Collection<ReporterDto> getAll() {
         log.info("ACCESS - get all reporters")
-        auditService.audit(HttpMethod.GET, '/api/reporters', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/api/reporters', this.class.simpleName)
         return service.getAllReporters()
     }
 
@@ -32,7 +32,7 @@ class ReporterController {
     @PostMapping(value = '/api/reporters', produces = APPLICATION_JSON_VALUE)
     ReporterDto create(@RequestBody ReporterDto dto) {
         log.info("ACCESS - create new reporter")
-        auditService.audit(HttpMethod.POST, '/api/reporters', this.class.simpleName, true)
+        auditService.audit(HttpMethod.POST, '/api/reporters', this.class.simpleName)
         return service.save(dto)
     }
 
@@ -41,7 +41,7 @@ class ReporterController {
     ReporterDto update(@PathVariable(name = 'reporterId', required = true) Integer reporterId,
                        @RequestBody ReporterDto dto) {
         log.info("ACCESS - update reporter")
-        auditService.audit(HttpMethod.PUT, "/api/reporters/${reporterId}", this.class.simpleName, true)
+        auditService.audit(HttpMethod.PUT, "/api/reporters/${reporterId}", this.class.simpleName)
         return service.update(reporterId, dto)
     }
 
@@ -49,7 +49,7 @@ class ReporterController {
     @DeleteMapping(value = '/api/reporters/{reporterId}', produces = APPLICATION_JSON_VALUE)
     void delete(@PathVariable(name = 'reporterId', required = true) Integer reporterId) {
         log.info("ACCESS - delete reporter")
-        auditService.audit(HttpMethod.DELETE, "/api/reporters/${reporterId}", this.class.simpleName, true)
+        auditService.audit(HttpMethod.DELETE, "/api/reporters/${reporterId}", this.class.simpleName)
         service.delete(reporterId)
     }
 

@@ -31,7 +31,7 @@ class UnitController {
     @GetMapping(value = '/api/units', produces = APPLICATION_JSON_VALUE)
     Collection<UnitDto> getAll() {
         log.info("ACCESS - get all units")
-        auditService.audit(HttpMethod.GET, '/api/units', this.class.simpleName, true)
+        auditService.audit(HttpMethod.GET, '/api/units', this.class.simpleName)
         return service.getAllUnits()
     }
 
@@ -39,7 +39,7 @@ class UnitController {
     @PostMapping(value = '/api/units', produces = APPLICATION_JSON_VALUE)
     UnitDto create(@RequestBody UnitDto dto) {
         log.info("ACCESS - create new unit")
-        auditService.audit(HttpMethod.POST, '/api/units', this.class.simpleName, true)
+        auditService.audit(HttpMethod.POST, '/api/units', this.class.simpleName)
         return service.save(dto)
     }
 
@@ -48,7 +48,7 @@ class UnitController {
     UnitDto update(@PathVariable(name = 'unitId', required = true) Integer unitId,
                    @RequestBody UnitDto dto) {
         log.info("ACCESS - update unit")
-        auditService.audit(HttpMethod.PUT, "/api/units/${unitId}", this.class.simpleName, true)
+        auditService.audit(HttpMethod.PUT, "/api/units/${unitId}", this.class.simpleName)
         return service.update(unitId, dto)
     }
 
@@ -56,7 +56,7 @@ class UnitController {
     @DeleteMapping(value = '/api/units/{unitId}', produces = APPLICATION_JSON_VALUE)
     void delete(@PathVariable(name = 'unitId', required = true) Integer unitId) {
         log.info("ACCESS - delete unit")
-        auditService.audit(HttpMethod.DELETE, "/api/units/${unitId}", this.class.simpleName, true)
+        auditService.audit(HttpMethod.DELETE, "/api/units/${unitId}", this.class.simpleName)
         service.delete(unitId)
     }
 

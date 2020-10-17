@@ -25,7 +25,7 @@ class ReporterService {
 
     @Cacheable("ReporterByUsername")
     Reporter getReporter() {
-        return repository.findByUsername(SecurityContextHolder.getContext().authentication.name)
+        return repository.findByUsername(SecurityContextHolder?.getContext()?.authentication?.name)
     }
 
     @Secured('ROLE_ADMIN')
