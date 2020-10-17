@@ -3,13 +3,15 @@ package com.lake.service
 import com.lake.dto.MeasurementDto
 import com.lake.dto.SavedMeasurementDto
 import com.lake.entity.*
-import com.lake.repository.*
+import com.lake.repository.EventRepository
+import com.lake.repository.MeasurementRepository
+import com.lake.repository.SiteRepository
+import com.lake.repository.UnitRepository
 import com.lake.util.ConverterUtil
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -31,7 +33,7 @@ class MeasurementService {
     @Autowired
     EventRepository eventRepository
     @Autowired
-    ReporterRepository reporterRepository
+    ReporterService reporterService
 
 
     Collection<MeasurementDto> doSearch(final Integer siteId,
@@ -48,7 +50,7 @@ class MeasurementService {
             log.info('Getting event measurement data')
             return ConverterUtil.convertEvents(eventRepository.findAllBySiteAndUnitAndValueBetween(site, unit, fromDate, toDate))
         } else {
-            UnitLocation unitLocation = unit.unitLocations.find {it.location.id == locationId}
+            UnitLocation unitLocation = unit.unitLocations.find { it.location.id == locationId }
             return ConverterUtil.convertMeasurements(measurementRepository.findAllByUnitLocationAndCollectionDateBetween(unitLocation, fromDate, toDate))
         }
     }
@@ -57,7 +59,7 @@ class MeasurementService {
     @Transactional
     void save(SavedMeasurementDto dto) {
         Unit unit = unitRepository.getOne(dto.unitId)
-        Reporter reporter = reporterRepository.findByUsername(SecurityContextHolder.getContext().authentication.name)
+        Reporter reporter = reporterService.reporter
         if (dto.locationId) {
             // must be a measurement
             Measurement measurement = new Measurement()
@@ -65,7 +67,7 @@ class MeasurementService {
             measurement.value = dto.value
             measurement.collectionDate = dto.collectionDate
             measurement.depth = dto.depth ?: -1
-            measurement.unitLocation = unit.unitLocations.find {it.location.id == dto.locationId}
+            measurement.unitLocation = unit.unitLocations.find { it.location.id == dto.locationId }
             measurement.reporter = reporter
             measurementRepository.save(measurement)
         } else {

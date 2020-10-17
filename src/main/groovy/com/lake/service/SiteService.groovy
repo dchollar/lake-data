@@ -1,8 +1,7 @@
 package com.lake.service
 
-import com.lake.dto.LocationDto
+
 import com.lake.dto.SiteDto
-import com.lake.entity.Site
 import com.lake.repository.SiteRepository
 import com.lake.util.ConverterUtil
 import org.springframework.beans.factory.annotation.Autowired

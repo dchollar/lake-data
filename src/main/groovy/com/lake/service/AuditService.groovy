@@ -1,0 +1,32 @@
+package com.lake.service
+
+import com.lake.entity.Audit
+import com.lake.repository.AuditRepository
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpMethod
+import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
+
+import java.time.Instant
+
+@Service
+class AuditService {
+    @Autowired
+    AuditRepository repository
+    @Autowired
+    ReporterService reporterService
+
+    @Transactional
+    void audit(HttpMethod method, String endpoint, String controller, boolean addReporter = false) {
+        Audit audit = new Audit()
+        audit.created = Instant.now()
+        audit.endpoint = endpoint
+        audit.controller = controller
+        audit.httpMethod = method.name()
+        if (addReporter) {
+            audit.reporter = reporterService.reporter
+        }
+        repository.saveAndFlush(audit)
+    }
+
+}

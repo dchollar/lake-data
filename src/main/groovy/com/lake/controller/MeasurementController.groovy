@@ -4,11 +4,13 @@ import com.lake.dto.MeasurementDto
 import com.lake.dto.SavedMeasurementDto
 import com.lake.dto.UnitDto
 import com.lake.entity.UnitType
+import com.lake.service.AuditService
 import com.lake.service.MeasurementService
 import com.lake.service.UnitService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.http.HttpMethod
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 
@@ -23,10 +25,14 @@ class MeasurementController {
     UnitService unitService
     @Autowired
     MeasurementService measurementService
+    @Autowired
+    AuditService auditService
 
     @Secured('ROLE_REPORTER')
     @PostMapping(value = '/api/measurements')
     void save(@RequestBody SavedMeasurementDto dto) {
+        log.info("ACCESS - save measurement")
+        auditService.audit(HttpMethod.POST, '/api/measurements', this.class.simpleName, true)
         List valid = isValid(dto.siteId, dto.unitId, dto.locationId, null, null)
         String errorMessage = valid[1] as String
         if (!dto.collectionDate) {
@@ -45,7 +51,8 @@ class MeasurementController {
                                               @RequestParam(name = 'locationId', required = false) Integer locationId,
                                               @RequestParam(name = 'fromDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
-
+        log.info("ACCESS - view measurements")
+        auditService.audit(HttpMethod.GET, '/public/api/measurements', this.class.simpleName)
         List valid = isValid(siteId, unitId, locationId, fromDate, toDate)
         if (valid[0]) {
             return measurementService.doSearch(siteId, unitId, locationId, fromDate, toDate)
@@ -75,7 +82,7 @@ class MeasurementController {
             message += 'location is missing '
             valid = false
         }
-        return [valid,message]
+        return [valid, message]
     }
 
 }
