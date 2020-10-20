@@ -8,19 +8,27 @@ import org.apache.commons.lang3.StringUtils
 @Slf4j
 class ConverterUtil {
 
-    static Collection<MeasurementDto> convertEvents(Collection<Event> events) {
-        log.info("The number of events is: ${events.size()}")
+    static Collection<MeasurementDto> convertEvents(Collection<Event> entities) {
+        log.info("The number of events is: ${entities.size()}")
         Set<MeasurementDto> dtos = new TreeSet<>()
-        events.each {
+        entities.each {
             dtos.add(convert(it))
         }
         log.info("The number of dtos is: ${dtos.size()}")
         return dtos
     }
 
-    static Collection<MeasurementDto> convertMeasurements(Collection<Measurement> events) {
+    static Set<LocationDto> convertLocations(Collection<Location> entities) {
+        Set<LocationDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convert(it))
+        }
+        return dtos
+    }
+
+    static Collection<MeasurementDto> convertMeasurements(Collection<Measurement> entities) {
         Set<MeasurementDto> dtos = new TreeSet<>()
-        events.each {
+        entities.each {
             dtos.add(convert(it))
         }
         return dtos
@@ -34,155 +42,150 @@ class ConverterUtil {
         return dtos
     }
 
-    static Set<SiteDto> convertSites(Collection<Site> sites) {
+    static Set<SiteDto> convertSites(Collection<Site> entities) {
         Set<SiteDto> dtos = new TreeSet<>()
-        sites.each {
+        entities.each {
             dtos.add(convert(it))
         }
         return dtos
     }
 
-    static Set<UnitDto> convertUnits(Collection<Unit> units) {
+    static Set<UnitDto> convertUnits(Collection<Unit> entities) {
         Set<UnitDto> dtos = new TreeSet<>()
-        units.each {
+        entities.each {
             dtos.add(convert(it))
         }
         return dtos
     }
 
-    static Set<LocationDto> convertLocations(Collection<Location> locations) {
-        Set<LocationDto> dtos = new TreeSet<>()
-        locations.each {
-            dtos.add(convert(it))
-        }
-        return dtos
-    }
+    //----------------------------------------------------------------------------------
 
-    static SiteDto convert(Site site) {
-        SiteDto dto = new SiteDto()
-        dto.id = site.id
-        dto.description = site.description
-        dto.waterBodyNumber = site.waterBodyNumber
-        dto.dnrRegion = site.dnrRegion
-        dto.geoRegion = site.geoRegion
+    static MeasurementDto convert(Event entity) {
+        MeasurementDto dto = new MeasurementDto()
+        dto.id = entity.id
+        dto.collectionDate = entity.value
+        dto.dayOfYear = entity.value.dayOfYear
+        dto.comment = StringUtils.stripToEmpty(entity.comment)
+        dto.unit = convert(entity.unit)
+        dto.reporter = convert(entity.reporter)
         return dto
     }
 
-    static LocationDto convert(Location location) {
+    static LocationDto convert(Location entity) {
         LocationDto dto = new LocationDto()
-        dto.id = location.id
-        dto.description = location.description
-        dto.siteId = location.site.id
-        dto.siteDescription = location.site.description
-        dto.comment = location.comment
-        location.unitLocations.each {
+        dto.id = entity.id
+        dto.description = entity.description
+        dto.siteId = entity.site.id
+        dto.siteDescription = entity.site.description
+        dto.comment = entity.comment
+        entity.unitLocations.each {
             dto.units.add(convert(it.unit))
         }
         return dto
     }
 
-    static Location convert(LocationDto dto) {
-        Location location = new Location()
-        location.id = dto.id
-        location.description = dto.description
-        location.comment = dto.comment
-        return location
-    }
-
-    static UnitDto convert(Unit unit) {
-        UnitDto dto = new UnitDto()
-        dto.id = unit.id
-        dto.unitDescription = unit.unitDescription
-        dto.longDescription = unit.longDescription
-        dto.shortDescription = unit.shortDescription
-        dto.enableDepth = unit.enableDepth
-        dto.type = unit.type
+    static MeasurementDto convert(Measurement entity) {
+        MeasurementDto dto = new MeasurementDto()
+        dto.id = entity.id
+        dto.collectionDate = entity.collectionDate
+        dto.dayOfYear = entity.collectionDate.dayOfYear
+        dto.value = entity.value
+        dto.depth = entity.depth
+        dto.comment = StringUtils.stripToEmpty(entity.comment)
+        dto.unit = convert(entity.unitLocation.unit)
+        dto.location = convert(entity.unitLocation.location)
+        dto.reporter = convert(entity.reporter)
         return dto
     }
 
-    static Unit convert(UnitDto dto) {
-        Unit unit = new Unit()
-        unit.id = dto.id
-        unit.unitDescription = dto.unitDescription
-        unit.longDescription = dto.longDescription
-        unit.shortDescription = dto.shortDescription
-        unit.enableDepth = dto.enableDepth
-        unit.type = dto.type
-        return unit
-    }
-
-    static ReporterDto convert(Reporter reporter) {
+    static ReporterDto convert(Reporter entity) {
         ReporterDto dto = new ReporterDto()
-        dto.id = reporter.id
-        dto.firstName = reporter.firstName
-        dto.lastName = reporter.lastName
+        dto.id = entity.id
+        dto.firstName = entity.firstName
+        dto.lastName = entity.lastName
         return dto
     }
 
-    static ReporterDto convertForMaintenance(Reporter reporter) {
+    static ReporterDto convertForMaintenance(Reporter entity) {
         ReporterDto dto = new ReporterDto()
-        dto.id = reporter.id
-        dto.firstName = reporter.firstName
-        dto.lastName = reporter.lastName
-        dto.emailAddress = reporter.emailAddress
-        dto.phoneNumber = reporter.phoneNumber
-        dto.username = reporter.username
+        dto.id = entity.id
+        dto.firstName = entity.firstName
+        dto.lastName = entity.lastName
+        dto.emailAddress = entity.emailAddress
+        dto.phoneNumber = entity.phoneNumber
+        dto.username = entity.username
         dto.password = ''
-        dto.enabled = reporter.enabled
-        dto.roleAdmin = reporter.roles.any { it.role == RoleType.ROLE_ADMIN }
-        dto.rolePowerUser = reporter.roles.any { it.role == RoleType.ROLE_POWER_USER }
-        dto.roleReporter = reporter.roles.any { it.role == RoleType.ROLE_REPORTER }
+        dto.enabled = entity.enabled
+        dto.roleAdmin = entity.roles.any { it.role == RoleType.ROLE_ADMIN }
+        dto.rolePowerUser = entity.roles.any { it.role == RoleType.ROLE_POWER_USER }
+        dto.roleReporter = entity.roles.any { it.role == RoleType.ROLE_REPORTER }
         return dto
     }
 
-    static Reporter convert(ReporterDto dto) {
-        Reporter reporter = new Reporter()
-        reporter.id = dto.id
-        reporter.firstName = dto.firstName
-        reporter.lastName = dto.lastName
-        reporter.emailAddress = dto.emailAddress
-        reporter.phoneNumber = dto.phoneNumber
-        reporter.username = dto.username
-        reporter.password = dto.password
-        reporter.enabled = dto.enabled
-
-        reporter.roles = []
-        if (dto.roleReporter) {
-            reporter.roles.add(new ReporterRole(reporter: reporter, role: RoleType.ROLE_REPORTER))
-        }
-        if (dto.rolePowerUser) {
-            reporter.roles.add(new ReporterRole(reporter: reporter, role: RoleType.ROLE_POWER_USER))
-        }
-        if (dto.roleAdmin) {
-            reporter.roles.add(new ReporterRole(reporter: reporter, role: RoleType.ROLE_ADMIN))
-        }
-
-        return reporter
-    }
-
-    static MeasurementDto convert(Measurement measurement) {
-        MeasurementDto dto = new MeasurementDto()
-        dto.id = measurement.id
-        dto.collectionDate = measurement.collectionDate
-        dto.dayOfYear = measurement.collectionDate.dayOfYear
-        dto.value = measurement.value
-        dto.depth = measurement.depth
-        dto.comment = StringUtils.stripToEmpty(measurement.comment)
-        dto.unit = convert(measurement.unitLocation.unit)
-        dto.location = convert(measurement.unitLocation.location)
-        dto.reporter = convert(measurement.reporter)
+    static SiteDto convert(Site entity) {
+        SiteDto dto = new SiteDto()
+        dto.id = entity.id
+        dto.description = entity.description
+        dto.waterBodyNumber = entity.waterBodyNumber
+        dto.dnrRegion = entity.dnrRegion
+        dto.geoRegion = entity.geoRegion
         return dto
     }
 
-    static MeasurementDto convert(Event event) {
-        MeasurementDto dto = new MeasurementDto()
-        dto.id = event.id
-        dto.collectionDate = event.value
-        dto.dayOfYear = event.value.dayOfYear
-        dto.comment = StringUtils.stripToEmpty(event.comment)
-        dto.unit = convert(event.unit)
-        dto.reporter = convert(event.reporter)
+    static UnitDto convert(Unit entity) {
+        UnitDto dto = new UnitDto()
+        dto.id = entity.id
+        dto.unitDescription = entity.unitDescription
+        dto.longDescription = entity.longDescription
+        dto.shortDescription = entity.shortDescription
+        dto.enableDepth = entity.enableDepth
+        dto.type = entity.type
         return dto
+    }
+
+    //----------------------------------------------------------------------------------
+
+    static Location convert(LocationDto dto, Location entity) {
+        entity.id = dto.id
+        entity.description = StringUtils.stripToNull(dto.description)
+        entity.comment = StringUtils.stripToNull(dto.comment)
+        return entity
+    }
+
+    static Reporter convert(ReporterDto dto, Reporter entity) {
+        entity.id = dto.id
+        entity.firstName = StringUtils.stripToNull(dto.firstName)
+        entity.lastName = StringUtils.stripToNull(dto.lastName)
+        entity.emailAddress = StringUtils.stripToNull(dto.emailAddress)
+        entity.phoneNumber = StringUtils.stripToNull(dto.phoneNumber)
+        entity.username = StringUtils.stripToNull(dto.username)
+        entity.enabled = dto.enabled
+
+        // only mess with roles for a new reporter
+        if (entity.id == null) {
+            entity.roles = []
+            if (dto.roleReporter) {
+                entity.roles.add(new ReporterRole(reporter: entity, role: RoleType.ROLE_REPORTER))
+            }
+            if (dto.rolePowerUser) {
+                entity.roles.add(new ReporterRole(reporter: entity, role: RoleType.ROLE_POWER_USER))
+            }
+            if (dto.roleAdmin) {
+                entity.roles.add(new ReporterRole(reporter: entity, role: RoleType.ROLE_ADMIN))
+            }
+        }
+
+        return entity
+    }
+
+    static Unit convert(UnitDto dto, Unit entity) {
+        entity.id = dto.id
+        entity.unitDescription = StringUtils.stripToNull(dto.unitDescription)
+        entity.longDescription = StringUtils.stripToNull(dto.longDescription)
+        entity.shortDescription = StringUtils.stripToNull(dto.shortDescription)
+        entity.enableDepth = dto.enableDepth
+        entity.type = dto.type
+        return entity
     }
 
 }

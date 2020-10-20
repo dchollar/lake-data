@@ -63,7 +63,7 @@ class MeasurementService {
         if (dto.locationId) {
             // must be a measurement
             Measurement measurement = new Measurement()
-            measurement.comment = StringUtils.stripToEmpty(dto.comment)
+            measurement.comment = StringUtils.stripToNull(dto.comment)
             measurement.value = dto.value
             measurement.collectionDate = dto.collectionDate
             measurement.depth = dto.depth ?: -1
@@ -74,7 +74,7 @@ class MeasurementService {
             // must be an event
             Event event = new Event()
             event.value = dto.collectionDate
-            event.comment = StringUtils.stripToEmpty(dto.comment)
+            event.comment = StringUtils.stripToNull(dto.comment)
             event.site = siteRepository.getOne(dto.siteId)
             event.year = dto.collectionDate.year
             event.unit = unit

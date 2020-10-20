@@ -33,20 +33,14 @@ class UnitService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ["unitsBySite", "units", "allUnits"], allEntries = true)
     UnitDto save(UnitDto dto) {
-        ConverterUtil.convert(repository.saveAndFlush(ConverterUtil.convert(dto)))
+        ConverterUtil.convert(repository.saveAndFlush(ConverterUtil.convert(dto, new Unit())))
     }
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ["unitsBySite", "units", "allUnits"], allEntries = true)
     UnitDto update(Integer id, UnitDto dto) {
         Unit unit = repository.getOne(id)
-
-        unit.unitDescription = dto.unitDescription
-        unit.longDescription = dto.longDescription
-        unit.shortDescription = dto.shortDescription
-        unit.enableDepth = dto.enableDepth
-        unit.type = dto.type
-
+        ConverterUtil.convert(dto, unit)
         ConverterUtil.convert(repository.saveAndFlush(unit))
     }
 

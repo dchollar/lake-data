@@ -34,7 +34,7 @@ class LocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ["locations", "locationsBySite"], allEntries = true)
     LocationDto save(LocationDto dto) {
-        Location location = ConverterUtil.convert(dto)
+        Location location = ConverterUtil.convert(dto, new Location())
         location.site = siteRepository.getOne(dto.site.id)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
@@ -43,8 +43,7 @@ class LocationService {
     @CacheEvict(cacheNames = ["locations", "locationsBySite"], allEntries = true)
     LocationDto update(Integer id, LocationDto dto) {
         Location location = repository.getOne(id)
-        location.description = dto.description
-        location.comment = dto.comment
+        ConverterUtil.convert(dto, location)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
 

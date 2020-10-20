@@ -36,8 +36,9 @@ class ReporterService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ["ReporterByUsername"], allEntries = true)
     ReporterDto save(ReporterDto dto) {
-        dto.password = passwordEncoder.encode(dto.password)
-        ConverterUtil.convertForMaintenance(repository.saveAndFlush(ConverterUtil.convert(dto)))
+        Reporter entity = ConverterUtil.convert(dto, new Reporter())
+        entity.password  = passwordEncoder.encode(dto.password)
+        ConverterUtil.convertForMaintenance(repository.saveAndFlush(entity))
     }
 
     @Secured('ROLE_ADMIN')
@@ -49,13 +50,7 @@ class ReporterService {
         if (password) {
             reporter.password = passwordEncoder.encode(password)
         }
-
-        reporter.firstName = dto.firstName
-        reporter.lastName = dto.lastName
-        reporter.emailAddress = dto.emailAddress
-        reporter.phoneNumber = dto.phoneNumber
-        reporter.username = dto.username
-        reporter.enabled = dto.enabled
+        ConverterUtil.convert(dto, reporter)
 
         syncRoles(reporter, RoleType.ROLE_REPORTER, dto.roleReporter)
         syncRoles(reporter, RoleType.ROLE_POWER_USER, dto.rolePowerUser)
@@ -83,4 +78,5 @@ class ReporterService {
             }
         }
     }
+
 }
