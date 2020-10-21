@@ -23,7 +23,7 @@ class ReporterService {
     @Autowired
     PasswordEncoder passwordEncoder
 
-    @Cacheable("ReporterByUsername")
+    @Cacheable('ReporterByUsername')
     Reporter getReporter() {
         return repository.findByUsername(SecurityContextHolder?.getContext()?.authentication?.name)
     }
@@ -34,7 +34,7 @@ class ReporterService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ["ReporterByUsername"], allEntries = true)
+    @CacheEvict(cacheNames = ['ReporterByUsername'], allEntries = true)
     ReporterDto save(ReporterDto dto) {
         Reporter entity = ConverterUtil.convert(dto, new Reporter())
         entity.password  = passwordEncoder.encode(dto.password)
@@ -42,7 +42,7 @@ class ReporterService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ["ReporterByUsername"], allEntries = true)
+    @CacheEvict(cacheNames = ['ReporterByUsername'], allEntries = true)
     ReporterDto update(Integer id, ReporterDto dto) {
         Reporter reporter = repository.getOne(id)
         // if there is a password, then it was changed. otherwise it would be blank
@@ -60,7 +60,7 @@ class ReporterService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ["ReporterByUsername"], allEntries = true)
+    @CacheEvict(cacheNames = ['ReporterByUsername'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
     }

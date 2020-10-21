@@ -15,29 +15,29 @@ class UnitService {
     @Autowired
     UnitRepository repository
 
-    @Cacheable("allUnits")
+    @Cacheable('allUnits')
     Set<UnitDto> getAllUnits() {
         ConverterUtil.convertUnits(repository.findAll())
     }
 
-    @Cacheable("units")
+    @Cacheable('units')
     UnitDto getById(Integer id) {
         ConverterUtil.convert(repository.getOne(id))
     }
 
-    @Cacheable("unitsBySite")
+    @Cacheable('unitsBySite')
     Set<UnitDto> getUnitsBySite(Integer siteId) {
         ConverterUtil.convertUnits(repository.findUnitsBySite(siteId, siteId))
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ["unitsBySite", "units", "allUnits"], allEntries = true)
+    @CacheEvict(cacheNames = ['unitsBySite', 'units', 'allUnits'], allEntries = true)
     UnitDto save(UnitDto dto) {
         ConverterUtil.convert(repository.saveAndFlush(ConverterUtil.convert(dto, new Unit())))
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ["unitsBySite", "units", "allUnits"], allEntries = true)
+    @CacheEvict(cacheNames = ['unitsBySite', 'units', 'allUnits'], allEntries = true)
     UnitDto update(Integer id, UnitDto dto) {
         Unit unit = repository.getOne(id)
         ConverterUtil.convert(dto, unit)
@@ -45,9 +45,18 @@ class UnitService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ["unitsBySite", "units", "allUnits"], allEntries = true)
+    @CacheEvict(cacheNames = ['unitsBySite', 'units', 'allUnits'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
+    }
+
+    @Secured(['ROLE_REPORTER', 'ROLE_ADMIN'])
+    @CacheEvict(cacheNames = ['unitsBySite'], allEntries = true)
+    void clearCache() {
+    }
+
+    Unit getOne(Integer id) {
+        repository.getOne(id)
     }
 
 }

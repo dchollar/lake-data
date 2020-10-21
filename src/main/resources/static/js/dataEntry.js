@@ -110,11 +110,7 @@ $(document).ready(function () {
         locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">';
         locationOptions += '<option value=""></option>';
         for (let location of locations) {
-            for (let unit of location.units) {
-                if (selectedUnit.id === unit.id) {
-                    locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
-                }
-            }
+            locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
         }
         locationOptions += '</select>';
         $('#locationSelectionDiv').html(locationOptions);

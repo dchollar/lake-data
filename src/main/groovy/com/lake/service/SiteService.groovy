@@ -13,7 +13,7 @@ class SiteService {
     @Autowired
     SiteRepository repository
 
-    @Cacheable("sites")
+    @Cacheable('sites')
     Set<SiteDto> getAllSites() {
         ConverterUtil.convertSites(repository.findAll())
     }

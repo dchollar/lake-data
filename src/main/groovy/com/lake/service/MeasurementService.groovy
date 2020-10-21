@@ -3,10 +3,7 @@ package com.lake.service
 import com.lake.dto.MeasurementDto
 import com.lake.dto.SavedMeasurementDto
 import com.lake.entity.*
-import com.lake.repository.EventRepository
-import com.lake.repository.MeasurementRepository
-import com.lake.repository.SiteRepository
-import com.lake.repository.UnitRepository
+import com.lake.repository.*
 import com.lake.util.ConverterUtil
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
@@ -27,13 +24,17 @@ class MeasurementService {
     @Autowired
     SiteRepository siteRepository
     @Autowired
-    UnitRepository unitRepository
-    @Autowired
     MeasurementRepository measurementRepository
     @Autowired
     EventRepository eventRepository
     @Autowired
     ReporterService reporterService
+    @Autowired
+    UnitLocationRepository unitLocationRepository
+    @Autowired
+    UnitService unitService
+    @Autowired
+    LocationService locationService
 
 
     Collection<MeasurementDto> doSearch(final Integer siteId,
@@ -42,7 +43,7 @@ class MeasurementService {
                                         final LocalDate fromDateRequest,
                                         final LocalDate toDateRequest) {
         Site site = siteRepository.getOne(siteId)
-        Unit unit = unitRepository.getOne(unitId)
+        Unit unit = unitService.getOne(unitId)
         LocalDate fromDate = fromDateRequest ?: MIN_DATE
         LocalDate toDate = toDateRequest ?: MAX_DATE
         log.info("unitType=${unit.type} unitId=${unit.id} siteId=${site.id} fromDate=${fromDate} toDate=${toDate}")
@@ -58,16 +59,17 @@ class MeasurementService {
     @Secured('ROLE_REPORTER')
     @Transactional
     void save(SavedMeasurementDto dto) {
-        Unit unit = unitRepository.getOne(dto.unitId)
+        Unit unit = unitService.getOne(dto.unitId)
         Reporter reporter = reporterService.reporter
         if (dto.locationId) {
             // must be a measurement
+            Location location = locationService.getOne(dto.locationId)
             Measurement measurement = new Measurement()
             measurement.comment = StringUtils.stripToNull(dto.comment)
             measurement.value = dto.value
             measurement.collectionDate = dto.collectionDate
             measurement.depth = dto.depth ?: -1
-            measurement.unitLocation = unit.unitLocations.find { it.location.id == dto.locationId }
+            measurement.unitLocation = getUnitLocation(unit, location)
             measurement.reporter = reporter
             measurementRepository.save(measurement)
         } else {
@@ -80,6 +82,19 @@ class MeasurementService {
             event.unit = unit
             event.reporter = reporter
             eventRepository.save(event)
+        }
+    }
+
+    private UnitLocation getUnitLocation(Unit unit, Location location) {
+        UnitLocation ul = unitLocationRepository.findByUnitAndLocation(unit, location)
+        if (ul) {
+            return ul
+        } else {
+            UnitLocation newUL = new UnitLocation(unit: unit, location: location)
+            UnitLocation fromDb = unitLocationRepository.saveAndFlush(newUL)
+            locationService.clearCache()
+            unitService.clearCache()
+            return fromDb
         }
     }
 }

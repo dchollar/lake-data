@@ -4,18 +4,12 @@ web application for maintaining lake water quality data on pipe lake.
 # TODO
  - create a database backup process on ubuntu machine
     - cron process that will dump the db to the project and then commit and push it to git
- - create maintenance page for unit location combination
-    - low priority. not sure of the need yet.
  - create maintenance page for measurements and events
     - Will only be for updating or deleting. Not inserting.
-    - low priority. not sure of the need yet.
  - change locations maintenance page to allow for creating new ones
     - low priority. not sure of the need yet.
  - allow power users a read only view of the maintenance pages
     - low priority. not sure of the need yet.
- - add more data???
-    - stream flow data
-    - DNR SWIMS data
   - Add a privacy statement page linked from the footer
 
 # Technologies Used:
