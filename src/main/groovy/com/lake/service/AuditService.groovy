@@ -1,7 +1,9 @@
 package com.lake.service
 
+import com.lake.dto.AuditDto
 import com.lake.entity.Audit
 import com.lake.repository.AuditRepository
+import com.lake.util.ConverterUtil
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
@@ -26,6 +28,10 @@ class AuditService {
         audit.reporter = reporterService.reporter
 
         repository.saveAndFlush(audit)
+    }
+
+    Collection<AuditDto> getAll(String timezone, filter) {
+        ConverterUtil.convertAudits(repository.findAll(), timezone, filter)
     }
 
 }

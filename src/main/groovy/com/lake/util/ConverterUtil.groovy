@@ -5,16 +5,32 @@ import com.lake.entity.*
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+
 @Slf4j
 class ConverterUtil {
 
+    static Collection<AuditDto> convertAudits(Collection<Audit> entities, String timezone, AuditDto filter) {
+        Set<AuditDto> dtos = new TreeSet<>()
+        entities.each {
+            AuditDto dto = convert(it, timezone)
+            if ( (!filter.reporterName || (filter.reporterName && dto.reporterName.contains(filter.reporterName)))
+                    && (!filter.controller || (filter.controller && dto.controller.contains(filter.controller)))
+                    && (!filter.endpoint || (filter.endpoint && dto.endpoint.contains(filter.endpoint)))
+                    && (!filter.httpMethod || (filter.httpMethod && dto.httpMethod.contains(filter.httpMethod)))) {
+                dtos.add(dto)
+            }
+        }
+        return dtos
+    }
+
     static Collection<MeasurementDto> convertEvents(Collection<Event> entities) {
-        log.info("The number of events is: ${entities.size()}")
         Set<MeasurementDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
         }
-        log.info("The number of dtos is: ${dtos.size()}")
         return dtos
     }
 
@@ -59,6 +75,24 @@ class ConverterUtil {
     }
 
     //----------------------------------------------------------------------------------
+
+    static AuditDto convert(Audit entity, String timezone) {
+        AuditDto dto = new AuditDto()
+        dto.id = entity.id
+        dto.httpMethod = entity.httpMethod
+        dto.endpoint = entity.endpoint
+        dto.controller = entity.controller
+        if (entity.reporter) {
+            dto.reporterName = entity.reporter.firstName + ' ' + entity.reporter.lastName
+        } else {
+            dto.reporterName = ''
+        }
+        //  America/Chicago
+
+        ZonedDateTime utcTime = entity.created.atZone(ZoneOffset.UTC)
+        dto.created = utcTime.withZoneSameInstant(ZoneId.of(timezone))
+        return dto
+    }
 
     static MeasurementDto convert(Event entity) {
         MeasurementDto dto = new MeasurementDto()

@@ -67,4 +67,12 @@ class PageController {
         return 'unitMaintenance'
     }
 
+    @Secured('ROLE_ADMIN')
+    @GetMapping('/audit')
+    String audit() {
+        log.info("ACCESS - view audit page")
+        auditService.audit(HttpMethod.GET, '/audit', this.class.simpleName)
+        return 'audit'
+    }
+
 }

@@ -11,6 +11,9 @@ web application for maintaining lake water quality data on pipe lake.
  - allow power users a read only view of the maintenance pages
     - low priority. not sure of the need yet.
   - Add a privacy statement page linked from the footer
+  - Add a version that is displayed in the page footer
+  - Maybe remove phone number from contact. Email might be enough.
+  - Create instructions or help documentation for data entry page and all maintenance pages. have this info appear in an overlay.
 
 # Technologies Used:
 - Groovy
