@@ -122,8 +122,15 @@ $(document).ready(function () {
         for (let location of locations) {
             for (let unit of location.units) {
                 if (selectedUnit.id === unit.id) {
-                    locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
-                    break;
+                    locationOptions += '<option value="';
+                    locationOptions += location.id;
+                    if (location.comment) {
+                        locationOptions += '" title="';
+                        locationOptions += location.comment;
+                    }
+                    locationOptions += '">'
+                    locationOptions += location.description;
+                    locationOptions += '</option>';
                 }
             }
         }

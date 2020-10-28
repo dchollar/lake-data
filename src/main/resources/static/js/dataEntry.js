@@ -110,7 +110,15 @@ $(document).ready(function () {
         locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">';
         locationOptions += '<option value=""></option>';
         for (let location of locations) {
-            locationOptions += '<option value="' + location.id + '">' + location.description + '</option>';
+            locationOptions += '<option value="';
+            locationOptions += location.id;
+            if (location.comment) {
+                locationOptions += '" title="';
+                locationOptions += location.comment;
+            }
+            locationOptions += '">'
+            locationOptions += location.description;
+            locationOptions += '</option>';
         }
         locationOptions += '</select>';
         $('#locationSelectionDiv').html(locationOptions);
