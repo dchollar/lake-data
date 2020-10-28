@@ -146,7 +146,6 @@ class ConverterUtil {
         dto.firstName = entity.firstName
         dto.lastName = entity.lastName
         dto.emailAddress = entity.emailAddress
-        dto.phoneNumber = entity.phoneNumber
         dto.username = entity.username
         dto.password = ''
         dto.enabled = entity.enabled
@@ -191,7 +190,6 @@ class ConverterUtil {
         entity.firstName = StringUtils.stripToNull(dto.firstName)
         entity.lastName = StringUtils.stripToNull(dto.lastName)
         entity.emailAddress = StringUtils.stripToNull(dto.emailAddress)
-        entity.phoneNumber = StringUtils.stripToNull(dto.phoneNumber)
         entity.username = StringUtils.stripToNull(dto.username)
         entity.enabled = dto.enabled
 

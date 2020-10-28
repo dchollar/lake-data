@@ -10,7 +10,6 @@ class ReporterDto {
     String firstName
     String lastName
     String emailAddress
-    String phoneNumber
     String username
     String password
     Boolean enabled

@@ -24,10 +24,6 @@ class Reporter {
     String emailAddress
 
     @Basic
-    @Column(name = "phone_number", nullable = true, length = 10)
-    String phoneNumber
-
-    @Basic
     @Column(name = "username", nullable = false, length = 50)
     String username
 

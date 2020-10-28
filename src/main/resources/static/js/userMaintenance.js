@@ -52,7 +52,6 @@ $(function () {
             {title: "First Name", name: "firstName", type: "text", width: 100, validate: "required"},
             {title: "Last Name", name: "lastName", type: "text", width: 100, validate: "required"},
             {title: "Email Address", name: "emailAddress", type: "text", width: 300, validate: "required"},
-            {title: "Phone Number", name: "phoneNumber", type: "text", width: 150, validate: "required"},
             {title: "User Name", name: "username", type: "text", width: 100, validate: "required"},
             {title: "Password", name: "password", type: "text", width: 100},
             {title: "Enabled", name: "enabled", type: "checkbox", width: 100},
