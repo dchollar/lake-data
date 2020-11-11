@@ -27,8 +27,6 @@ class Site {
     @Column(name = "geo_region", nullable = true, length = 10)
     String geoRegion
 
-    // TODO DO NOT USE ????
-    @Deprecated
     @OneToMany(mappedBy = "site")
     Collection<Event> events
 

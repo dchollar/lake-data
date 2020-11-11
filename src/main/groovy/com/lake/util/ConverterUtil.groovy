@@ -58,6 +58,22 @@ class ConverterUtil {
         return dtos
     }
 
+    static Collection<SavedMeasurementDto> convertSavedEvents(Collection<Event> entities) {
+        Set<SavedMeasurementDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convertSavedMeasurement(it))
+        }
+        return dtos
+    }
+
+    static Collection<SavedMeasurementDto> convertSavedMeasurements(Collection<Measurement> entities) {
+        Set<SavedMeasurementDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convertSavedMeasurement(it))
+        }
+        return dtos
+    }
+
     static Set<SiteDto> convertSites(Collection<Site> entities) {
         Set<SiteDto> dtos = new TreeSet<>()
         entities.each {
@@ -87,8 +103,6 @@ class ConverterUtil {
         } else {
             dto.reporterName = ''
         }
-        //  America/Chicago
-
         ZonedDateTime utcTime = entity.created.atZone(ZoneOffset.UTC)
         dto.created = utcTime.withZoneSameInstant(ZoneId.of(timezone))
         return dto
@@ -173,6 +187,39 @@ class ConverterUtil {
         dto.shortDescription = entity.shortDescription
         dto.enableDepth = entity.enableDepth
         dto.type = entity.type
+        return dto
+    }
+
+    static SavedMeasurementDto convertSavedMeasurement(Event entity) {
+        SavedMeasurementDto dto = new SavedMeasurementDto()
+        Unit unit = entity.unit
+
+        dto.id = entity.id
+        dto.collectionDate = entity.value
+        dto.comment = StringUtils.stripToEmpty(entity.comment)
+        dto.value = null
+        dto.depth = null
+        dto.unitId = unit.id
+        dto.unitType = unit.type
+        dto.locationId = null
+        dto.siteId = entity.site.id
+        return dto
+    }
+
+    static SavedMeasurementDto convertSavedMeasurement(Measurement entity) {
+        SavedMeasurementDto dto = new SavedMeasurementDto()
+        Unit unit = entity.unitLocation.unit
+        Location location = entity.unitLocation.location
+
+        dto.id = entity.id
+        dto.collectionDate = entity.collectionDate
+        dto.comment = StringUtils.stripToEmpty(entity.comment)
+        dto.value = entity.value
+        dto.depth = entity.depth
+        dto.unitId = unit.id
+        dto.unitType = unit.type
+        dto.locationId = location.id
+        dto.siteId = location.site.id
         return dto
     }
 

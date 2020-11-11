@@ -32,7 +32,7 @@ class LocationService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['locations', 'locationsBySite'], allEntries = true)
+    @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto save(LocationDto dto) {
         Location location = ConverterUtil.convert(dto, new Location())
         location.site = siteRepository.getOne(dto.site.id)
@@ -40,7 +40,7 @@ class LocationService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['locations', 'locationsBySite'], allEntries = true)
+    @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto update(Integer id, LocationDto dto) {
         Location location = repository.getOne(id)
         ConverterUtil.convert(dto, location)
@@ -48,18 +48,23 @@ class LocationService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['locations', 'locationsBySite'], allEntries = true)
+    @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
     }
 
     @Secured(['ROLE_REPORTER', 'ROLE_ADMIN'])
-    @CacheEvict(cacheNames = ['locationsBySite'], allEntries = true)
+    @CacheEvict(cacheNames = ['locationsBySite', 'locationsById'], allEntries = true)
     void clearCache() {
     }
 
+    @Cacheable('locationsById')
     Location getOne(Integer id) {
-        repository.getOne(id)
+        if (id) {
+            return repository.getOne(id)
+        } else {
+            return null
+        }
     }
 
 }

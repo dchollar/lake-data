@@ -2,6 +2,8 @@ package com.lake.service
 
 
 import com.lake.dto.SiteDto
+import com.lake.entity.Site
+import com.lake.entity.Unit
 import com.lake.repository.SiteRepository
 import com.lake.util.ConverterUtil
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +18,15 @@ class SiteService {
     @Cacheable('sites')
     Set<SiteDto> getAllSites() {
         ConverterUtil.convertSites(repository.findAll())
+    }
+
+    @Cacheable('siteById')
+    Site getOne(Integer id) {
+        if (id) {
+            return repository.getOne(id)
+        } else {
+            return null
+        }
     }
 
 }

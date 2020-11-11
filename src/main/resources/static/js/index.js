@@ -202,7 +202,6 @@ $(document).ready(function () {
 
     function buildTableHeader() {
         let tableHeaderHtml = '<thead class="thead-dark"><tr>';
-        tableHeaderHtml += '<th>Id</th>';
         tableHeaderHtml += '<th>Collection Date</th>';
         if (selectedUnit.enableDepth) {
             tableHeaderHtml += '<th>Depth</th>';
@@ -220,7 +219,6 @@ $(document).ready(function () {
         let tableBodyHtml = '<tbody>';
         for (let measurement of measurements) {
             tableBodyHtml += '<tr>';
-            tableBodyHtml += '<td>' + measurement.id + '</td>';
             tableBodyHtml += '<td>' + measurement.collectionDate + '</td>';
             if (selectedUnit.enableDepth) {
                 tableBodyHtml += '<td>' + measurement.depth + '</td>';

@@ -8,4 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository
 interface UnitLocationRepository extends JpaRepository<UnitLocation, Integer> {
 
     UnitLocation findByUnitAndLocation(Unit unit, Location location)
+
+    List<UnitLocation> findByUnit(Unit unit)
+
+    List<UnitLocation> findByLocation(Location location)
+
+    List<UnitLocation> findByLocationIn(Collection<Location> location)
 }
