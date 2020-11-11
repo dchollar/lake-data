@@ -35,7 +35,7 @@ class LocationService {
     @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto save(LocationDto dto) {
         Location location = ConverterUtil.convert(dto, new Location())
-        location.site = siteRepository.getOne(dto.site.id)
+        location.site = siteRepository.getOne(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
 

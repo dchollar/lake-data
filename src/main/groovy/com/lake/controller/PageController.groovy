@@ -50,7 +50,8 @@ class PageController {
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/locationMaintenance')
-    String locationMaintenance() {
+    String locationMaintenance(Model model) {
+        model.addAttribute('siteOptions', getSites())
         auditService.audit(HttpMethod.GET, '/locationMaintenance', this.class.simpleName)
         return 'locationMaintenance'
     }

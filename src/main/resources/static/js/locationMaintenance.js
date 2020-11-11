@@ -1,10 +1,6 @@
 $(function () {
 
-    let unitTypes = [
-        {name: "", id: "0"},
-        {name: "WATER", id: "WATER"},
-        {name: "EVENT", id: "EVENT"}
-    ];
+    let sites = JSON.parse($('#siteOptions').val());
 
     $("#jsGrid").jsGrid({
 
@@ -13,14 +9,13 @@ $(function () {
 
         filtering: false,
         editing: true,
-        inserting: false, //TODO be able to insert new ones
+        inserting: true,
         sorting: true,
         paging: false,
         autoload: true,
 
         controller: {
             loadData: function (filter) {
-                // getSites()
                 return $.ajax({
                     type: "GET",
                     url: "api/locations",
@@ -58,8 +53,7 @@ $(function () {
             {title: "Id", name: "id", type: "number", visible: false},
             {title: "Description", name: "description", type: "text", width: 200, validate: "required"},
             {title: "Comment", name: "comment", type: "text", width: 200},
-            {title: "Site Id", name: "siteId", type: "number", visible: false},
-            {title: "Site", name: "siteDescription", type: "text", width: 200, editing: false},
+            {title: "Site", name: "siteId", editing: false, width: 150, type: "select", items: sites, valueField: "id", textField: "name", valueType: "number"},
             {type: "control"}
         ]
     });
