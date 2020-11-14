@@ -98,7 +98,7 @@ $(function () {
             {title: "Type", name: "unitType", type: "text", visible: false},
             {title: "Site", name: "siteId", editing: false, width: 150, type: "select", items: sites, valueField: "id", textField: "name", valueType: "number"},
             {title: "Location", name: "locationId", editing: false, width: 150, type: "select", items: locations, valueField: "id", textField: "name", valueType: "number"},
-            {title: "Unit", name: "unitId", editing: false, width: 100, type: "select", items: units, valueField: "id", textField: "name", valueType: "number"},
+            {title: "Characteristic", name: "unitId", editing: false, width: 100, type: "select", items: units, valueField: "id", textField: "name", valueType: "number"},
             {title: "Collection Date", name: "collectionDate", validate: "required", type: "text", width: 75}, // type: "date"
             {title: "Depth", name: "depth", filtering: false, type: "number", width: 50},
             {title: "Value", name: "value", filtering: false, type: "number", width: 50},
