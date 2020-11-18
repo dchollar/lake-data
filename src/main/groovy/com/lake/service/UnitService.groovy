@@ -51,7 +51,7 @@ class UnitService {
     }
 
     @Secured(['ROLE_REPORTER', 'ROLE_ADMIN'])
-    @CacheEvict(cacheNames = ['unitsBySite', 'unitsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['unitsBySite'], allEntries = true)
     void clearCache() {
     }
 

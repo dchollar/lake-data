@@ -25,7 +25,7 @@ class AuditService {
         audit.endpoint = endpoint
         audit.controller = controller
         audit.httpMethod = method.name()
-        audit.reporter = reporterService.reporter
+        audit.reporter = reporterService.getReporter(ReporterService.getUsername())
 
         repository.saveAndFlush(audit)
     }

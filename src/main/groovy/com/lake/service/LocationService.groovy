@@ -54,7 +54,7 @@ class LocationService {
     }
 
     @Secured(['ROLE_REPORTER', 'ROLE_ADMIN'])
-    @CacheEvict(cacheNames = ['locationsBySite', 'locationsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['locationsBySite'], allEntries = true)
     void clearCache() {
     }
 

@@ -11,6 +11,9 @@ web application for maintaining lake water quality data on pipe lake.
   - display error messages in jsGrid
   - Create instructions or help documentation for data entry page and all maintenance pages. have this info appear in an overlay.
   - Enable a date picker in the data maintenance page - maybe
+  - Add a job to truncate the audit table. Make the amount to keep configurable.
+  - Add a PDF archive to the system. https://optidat.com/pl/pipe-lakes-district-records-archive/
+  - Change the name unit to characteristic and fix other naming issues
 
 # Technologies Used:
 - Groovy

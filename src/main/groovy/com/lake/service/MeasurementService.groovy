@@ -48,7 +48,6 @@ class MeasurementService {
         Unit unit = unitService.getOne(unitId)
         LocalDate fromDate = fromDateRequest ?: MIN_DATE
         LocalDate toDate = toDateRequest ?: MAX_DATE
-        log.info("unitType=${unit.type} unitId=${unit.id} siteId=${site.id} fromDate=${fromDate} toDate=${toDate}")
         if (unit.type == UnitType.EVENT) {
             return ConverterUtil.convertEvents(eventRepository.findAllBySiteAndUnitAndValueBetween(site, unit, fromDate, toDate))
         } else {
@@ -178,7 +177,7 @@ class MeasurementService {
         measurement.collectionDate = dto.collectionDate
         measurement.depth = dto.depth ?: -1
         measurement.unitLocation = getUnitLocation(unit, location)
-        measurement.reporter = reporterService.reporter
+        measurement.reporter = reporterService.getReporter(ReporterService.getUsername())
         measurementRepository.save(measurement)
     }
 
@@ -188,8 +187,11 @@ class MeasurementService {
         event.site = siteService.getOne(dto.siteId)
         event.year = dto.collectionDate.year
         event.unit = unit
-        event.reporter = reporterService.reporter
+        event.reporter = reporterService.getReporter(ReporterService.getUsername())
         eventRepository.save(event)
+        if (!unitService.getUnitsBySite(dto.siteId).contains(ConverterUtil.convert(unit))) {
+            unitService.clearCache()
+        }
     }
 
     private UnitLocation getUnitLocation(Unit unit, Location location) {
@@ -199,8 +201,12 @@ class MeasurementService {
         } else {
             UnitLocation newUL = new UnitLocation(unit: unit, location: location)
             UnitLocation fromDb = unitLocationRepository.saveAndFlush(newUL)
-            locationService.clearCache()
-            unitService.clearCache()
+            if (!locationService.getLocationsBySite(location.site.id).contains(ConverterUtil.convert(location))) {
+                locationService.clearCache()
+            }
+            if (!unitService.getUnitsBySite(location.site.id).contains(ConverterUtil.convert(unit))) {
+                unitService.clearCache()
+            }
             return fromDb
         }
     }

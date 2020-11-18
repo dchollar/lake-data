@@ -8,6 +8,8 @@ import com.lake.repository.ReporterRepository
 import com.lake.util.ConverterUtil
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -21,8 +23,12 @@ class ReporterService {
     @Autowired
     PasswordEncoder passwordEncoder
 
-    Reporter getReporter() {
-        String userName = SecurityContextHolder?.getContext()?.authentication?.name
+    static String getUsername() {
+        return SecurityContextHolder?.getContext()?.authentication?.name
+    }
+
+    @Cacheable('reportersByName')
+    Reporter getReporter(String userName) {
         if (userName) {
             return repository.findByUsername(SecurityContextHolder?.getContext()?.authentication?.name)
         } else {
@@ -31,11 +37,13 @@ class ReporterService {
     }
 
     @Secured('ROLE_ADMIN')
+    @Cacheable('reporters')
     Collection<ReporterDto> getAllReporters() {
         ConverterUtil.convertReportersForMaintenance(repository.findAll())
     }
 
     @Secured('ROLE_ADMIN')
+    @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     ReporterDto save(ReporterDto dto) {
         Reporter entity = ConverterUtil.convert(dto, new Reporter())
         entity.password = passwordEncoder.encode(dto.password)
@@ -43,6 +51,7 @@ class ReporterService {
     }
 
     @Secured('ROLE_ADMIN')
+    @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     ReporterDto update(Integer id, ReporterDto dto) {
         Reporter reporter = repository.getOne(id)
         // if there is a password, then it was changed. otherwise it would be blank
@@ -60,6 +69,7 @@ class ReporterService {
     }
 
     @Secured('ROLE_ADMIN')
+    @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
     }
