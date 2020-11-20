@@ -44,9 +44,9 @@
 </nav>
 
 <div class="container-fluid text-center">
-    <input type="hidden" th:value="${siteOptions}" name="siteOptions" id="siteOptions" />
-    <input type="hidden" th:value="${unitOptions}" name="unitOptions" id="unitOptions" />
-    <input type="hidden" th:value="${locationOptions}" name="locationOptions" id="locationOptions" />
+    <input id="siteOptions" name="siteOptions" th:value="${siteOptions}" type="hidden"/>
+    <input id="unitOptions" name="unitOptions" th:value="${unitOptions}" type="hidden"/>
+    <input id="locationOptions" name="locationOptions" th:value="${locationOptions}" type="hidden"/>
 
     <div class="row content">
         <div class="col-sm-1 bg-secondary text-light" id="selectionDiv">

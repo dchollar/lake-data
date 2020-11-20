@@ -16,7 +16,7 @@ class ConverterUtil {
         Set<AuditDto> dtos = new TreeSet<>()
         entities.each {
             AuditDto dto = convert(it, timezone)
-            if ( (!filter.reporterName || (filter.reporterName && dto.reporterName.contains(filter.reporterName)))
+            if ((!filter.reporterName || (filter.reporterName && dto.reporterName.contains(filter.reporterName)))
                     && (!filter.controller || (filter.controller && dto.controller.contains(filter.controller)))
                     && (!filter.endpoint || (filter.endpoint && dto.endpoint.contains(filter.endpoint)))
                     && (!filter.httpMethod || (filter.httpMethod && dto.httpMethod.contains(filter.httpMethod)))) {

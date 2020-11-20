@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 @Service
 class AuditService {
@@ -32,6 +33,13 @@ class AuditService {
 
     Collection<AuditDto> getAll(String timezone, filter) {
         ConverterUtil.convertAudits(repository.findAll(), timezone, filter)
+    }
+
+    @Transactional
+    int truncate() {
+        List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(15, ChronoUnit.DAYS))
+        repository.deleteAll(audits)
+        return audits.size()
     }
 
 }

@@ -4,11 +4,7 @@ import com.lake.dto.MeasurementDto
 import com.lake.dto.SavedMeasurementDto
 import com.lake.dto.UnitDto
 import com.lake.entity.UnitType
-import com.lake.service.AuditService
-import com.lake.service.LocationService
-import com.lake.service.MeasurementService
-import com.lake.service.SiteService
-import com.lake.service.UnitService
+import com.lake.service.*
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
@@ -61,7 +57,7 @@ class MeasurementController {
         auditService.audit(HttpMethod.GET, '/api/measurements', this.class.simpleName)
         SavedMeasurementDto filter = new SavedMeasurementDto()
         filter.siteId = siteId == -1 ? null : siteId
-        filter.unitId = unitId  == -1 ? null : unitId
+        filter.unitId = unitId == -1 ? null : unitId
         filter.locationId = locationId == -1 ? null : locationId
         filter.collectionDate = collectionDate
         return measurementService.getAll(filter)

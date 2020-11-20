@@ -6,42 +6,42 @@ $(function () {
 
     // TODO get the date picker figured out
     // need to style the date picker. need to accept a filter value of from instead of collectionDate.
-    var DateField = function(config) {
+    var DateField = function (config) {
         jsGrid.Field.call(this, config);
     };
 
     DateField.prototype = new jsGrid.Field({
-        sorter: function(date1, date2) {
+        sorter: function (date1, date2) {
             return new Date(date1) - new Date(date2);
         },
 
-        itemTemplate: function(value) {
+        itemTemplate: function (value) {
             return new Date(value).toDateString();
         },
 
-        filterTemplate: function() {
+        filterTemplate: function () {
             var now = new Date();
-            this._fromPicker = $("<input>").datepicker({ defaultDate: now.setFullYear(now.getFullYear() - 1) });
+            this._fromPicker = $("<input>").datepicker({defaultDate: now.setFullYear(now.getFullYear() - 1)});
             return $("<div>").append(this._fromPicker);
         },
 
-        insertTemplate: function(value) {
-            return this._insertPicker = $("<input>").datepicker({ defaultDate: new Date() });
+        insertTemplate: function (value) {
+            return this._insertPicker = $("<input>").datepicker({defaultDate: new Date()});
         },
 
-        editTemplate: function(value) {
+        editTemplate: function (value) {
             return this._editPicker = $("<input>").datepicker().datepicker("setDate", new Date(value));
         },
 
-        insertValue: function() {
+        insertValue: function () {
             return this._insertPicker.datepicker("getDate").toDateString();
         },
 
-        editValue: function() {
+        editValue: function () {
             return this._editPicker.datepicker("getDate").toDateString();
         },
 
-        filterValue: function() {
+        filterValue: function () {
             return {
                 from: this._fromPicker.datepicker("getDate").toDateString(),
             };
