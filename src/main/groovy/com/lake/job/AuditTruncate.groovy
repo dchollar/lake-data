@@ -10,14 +10,16 @@ import org.springframework.stereotype.Component
 @Component
 class AuditTruncate {
 
+    private static long DAYS_TO_KEEP = 15
+
     @Autowired
     AuditService auditService
 
 
-    @Scheduled(cron = "0 0 * ? * *")
+    @Scheduled(cron = "0 0 0 * * *")
     void truncate() {
         try {
-            int count = auditService.truncate()
+            int count = auditService.truncate(DAYS_TO_KEEP)
             log.info("Truncated audit log by ${count} records")
         } catch (Exception e) {
             log.error('Issues in truncate job', e)

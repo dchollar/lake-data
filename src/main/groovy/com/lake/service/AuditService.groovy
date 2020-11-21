@@ -36,8 +36,8 @@ class AuditService {
     }
 
     @Transactional
-    int truncate() {
-        List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(15, ChronoUnit.DAYS))
+    int truncate(long days) {
+        List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(days, ChronoUnit.DAYS))
         repository.deleteAll(audits)
         return audits.size()
     }
