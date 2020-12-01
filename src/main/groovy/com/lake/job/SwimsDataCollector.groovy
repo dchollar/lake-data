@@ -121,7 +121,7 @@ class SwimsDataCollector {
     private static String extractDepth(final NodeChild row) {
         String depth = row.depth
         String depthUnits = row.childNodes()[1].attributes().units
-        if (depthUnits && depthUnits == 'METERS') {
+        if (depth && depthUnits && depthUnits == 'METERS') {
             BigDecimal meters = new BigDecimal(depth)
             depth = FOOT.multiply(meters).round(2).toString()
         }
@@ -131,7 +131,7 @@ class SwimsDataCollector {
     private static String extractTemperature(final NodeChild row) {
         String temp = row.temperature
         String temperatureUnits = row.childNodes()[2].attributes().units
-        if (temperatureUnits == 'C') {
+        if (temp && temperatureUnits && temperatureUnits.contains('C')) {
             if (temp.contains('F')) {
                 // some bad data appears to be encoded as celsius but is not
                 temp = temp.replace('F', '').trim()
