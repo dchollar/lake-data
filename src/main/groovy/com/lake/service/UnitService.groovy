@@ -50,8 +50,7 @@ class UnitService {
         repository.deleteById(id)
     }
 
-    @Secured(['ROLE_REPORTER', 'ROLE_ADMIN'])
-    @CacheEvict(cacheNames = ['unitsBySite'], allEntries = true)
+    @CacheEvict(cacheNames = ['unitsBySite', 'unitsById'], allEntries = true)
     void clearCache() {
     }
 

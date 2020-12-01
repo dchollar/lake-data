@@ -38,7 +38,6 @@ class MeasurementService {
     @Autowired
     LocationService locationService
 
-
     Collection<MeasurementDto> doSearch(final Integer siteId,
                                         final Integer unitId,
                                         final Integer locationId,
@@ -57,14 +56,13 @@ class MeasurementService {
         }
     }
 
-    @Secured('ROLE_REPORTER')
     @Transactional
-    void save(SavedMeasurementDto dto) {
+    void save(SavedMeasurementDto dto, Reporter reporter = null) {
         Unit unit = unitService.getOne(dto.unitId)
         if (dto.locationId) {
-            saveMeasurement(new Measurement(), dto, unit)
+            saveMeasurement(new Measurement(), dto, unit, reporter)
         } else {
-            saveEvent(new Event(), dto, unit)
+            saveEvent(new Event(), dto, unit, reporter)
         }
     }
 
@@ -170,24 +168,24 @@ class MeasurementService {
         unitLocations
     }
 
-    private void saveMeasurement(Measurement measurement, SavedMeasurementDto dto, Unit unit) {
+    private void saveMeasurement(Measurement measurement, SavedMeasurementDto dto, Unit unit, Reporter reporter = null) {
         Location location = locationService.getOne(dto.locationId)
         measurement.comment = StringUtils.stripToNull(dto.comment)
         measurement.value = dto.value
         measurement.collectionDate = dto.collectionDate
         measurement.depth = dto.depth ?: -1
         measurement.unitLocation = getUnitLocation(unit, location)
-        measurement.reporter = reporterService.getReporter(ReporterService.getUsername())
+        measurement.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
         measurementRepository.save(measurement)
     }
 
-    private void saveEvent(Event event, SavedMeasurementDto dto, Unit unit) {
+    private void saveEvent(Event event, SavedMeasurementDto dto, Unit unit, Reporter reporter = null) {
         event.value = dto.collectionDate
         event.comment = StringUtils.stripToNull(dto.comment)
         event.site = siteService.getOne(dto.siteId)
         event.year = dto.collectionDate.year
         event.unit = unit
-        event.reporter = reporterService.getReporter(ReporterService.getUsername())
+        event.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
         eventRepository.save(event)
         if (!unitService.getUnitsBySite(dto.siteId).contains(ConverterUtil.convert(unit))) {
             unitService.clearCache()
@@ -201,12 +199,8 @@ class MeasurementService {
         } else {
             UnitLocation newUL = new UnitLocation(unit: unit, location: location)
             UnitLocation fromDb = unitLocationRepository.saveAndFlush(newUL)
-            if (!locationService.getLocationsBySite(location.site.id).contains(ConverterUtil.convert(location))) {
-                locationService.clearCache()
-            }
-            if (!unitService.getUnitsBySite(location.site.id).contains(ConverterUtil.convert(unit))) {
-                unitService.clearCache()
-            }
+            locationService.clearCache()
+            unitService.clearCache()
             return fromDb
         }
     }

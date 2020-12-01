@@ -9,10 +9,11 @@ web application for maintaining lake water quality data on pipe lake.
   - Add a privacy statement page linked from the footer
   - Add a version that is displayed in the page footer
   - display error messages in jsGrid
-  - Create instructions or help documentation for data entry page and all maintenance pages. have this info appear in an overlay.
+  - Create instructions or help documentation for data entry page and all maintenance pages. have this info appears in an overlay.
   - Enable a date picker in the data maintenance page - maybe
   - Add a PDF archive to the system. https://optidat.com/pl/pipe-lakes-district-records-archive/
   - Change the name unit to characteristic and fix other naming issues
+  - set up https://superset.apache.org/
 
 # Technologies Used:
 - Groovy

@@ -15,9 +15,9 @@ class AuditTruncate {
     @Autowired
     AuditService auditService
 
-
     @Scheduled(cron = "0 0 0 * * *")
     void truncate() {
+        auditService.audit('JOB', "audit truncate", this.class.simpleName)
         try {
             int count = auditService.truncate(DAYS_TO_KEEP)
             log.info("Truncated audit log by ${count} records")

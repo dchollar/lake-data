@@ -5,7 +5,6 @@ import com.lake.entity.Audit
 import com.lake.repository.AuditRepository
 import com.lake.util.ConverterUtil
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -20,12 +19,12 @@ class AuditService {
     ReporterService reporterService
 
     @Transactional
-    void audit(HttpMethod method, String endpoint, String controller) {
+    void audit(String method, String endpoint, String controller) {
         Audit audit = new Audit()
         audit.created = Instant.now()
         audit.endpoint = endpoint
         audit.controller = controller
-        audit.httpMethod = method.name()
+        audit.httpMethod = method
         audit.reporter = reporterService.getReporter(ReporterService.getUsername())
 
         repository.saveAndFlush(audit)

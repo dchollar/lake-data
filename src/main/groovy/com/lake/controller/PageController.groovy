@@ -27,7 +27,7 @@ class PageController {
 
     @GetMapping(['/', '/index', '/home'])
     String index(Model model) {
-        auditService.audit(HttpMethod.GET, '/index', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/index', this.class.simpleName)
         model.addAttribute('sites', siteService.getAllSites())
         return 'index'
     }
@@ -35,7 +35,7 @@ class PageController {
     @Secured('ROLE_REPORTER')
     @GetMapping('/dataEntry')
     String dataEntry(Model model) {
-        auditService.audit(HttpMethod.GET, '/dataEntry', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/dataEntry', this.class.simpleName)
         model.addAttribute('sites', siteService.getAllSites())
         model.addAttribute('units', unitService.getAllUnits())
         return 'dataEntry'
@@ -44,7 +44,7 @@ class PageController {
     @Secured('ROLE_ADMIN')
     @GetMapping('/userMaintenance')
     String userMaintenance() {
-        auditService.audit(HttpMethod.GET, '/userMaintenance', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/userMaintenance', this.class.simpleName)
         return 'userMaintenance'
     }
 
@@ -52,21 +52,21 @@ class PageController {
     @GetMapping('/locationMaintenance')
     String locationMaintenance(Model model) {
         model.addAttribute('siteOptions', getSites())
-        auditService.audit(HttpMethod.GET, '/locationMaintenance', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/locationMaintenance', this.class.simpleName)
         return 'locationMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/unitMaintenance')
     String unitMaintenance() {
-        auditService.audit(HttpMethod.GET, '/unitMaintenance', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/unitMaintenance', this.class.simpleName)
         return 'unitMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/dataMaintenance')
     String dataMaintenance(Model model) {
-        auditService.audit(HttpMethod.GET, '/dataMaintenance', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/dataMaintenance', this.class.simpleName)
         model.addAttribute('siteOptions', getSites())
         model.addAttribute('unitOptions', getUnits())
         model.addAttribute('locationOptions', getLocations())
@@ -76,7 +76,7 @@ class PageController {
     @Secured('ROLE_ADMIN')
     @GetMapping('/audit')
     String audit() {
-        auditService.audit(HttpMethod.GET, '/audit', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/audit', this.class.simpleName)
         return 'audit'
     }
 

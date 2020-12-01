@@ -23,21 +23,20 @@ repositories {
 
 dependencies {
     implementation('org.apache.commons:commons-lang3:3.11')
+    implementation('commons-io:commons-io:2.8.0')
+    implementation('org.codehaus.groovy:groovy-all:3.0.6')
 
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-security')
     implementation('org.springframework.boot:spring-boot-starter-cache')
-
-    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE')
 
-    implementation('org.codehaus.groovy:groovy-all:3.0.6')
-    implementation('io.springfox:springfox-boot-starter:3.0.0')
-
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     runtimeOnly('mysql:mysql-connector-java')
+
+    implementation('io.springfox:springfox-boot-starter:3.0.0')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.spockframework:spock-spring:2.0-M3-groovy-3.0')

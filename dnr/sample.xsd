@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="clmn-annual-report" type="clmn-annual-reportType"/>
+  <xs:complexType name="var0Type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="var1Type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="var2Type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="report_variablesType">
+    <xs:sequence>
+      <xs:element type="var0Type" name="var0"/>
+      <xs:element type="var1Type" name="var1"/>
+      <xs:element type="var2Type" name="var2"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="start_dateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="mm" use="optional"/>
+        <xs:attribute type="xs:string" name="dd" use="optional"/>
+        <xs:attribute type="xs:string" name="yyyy" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="secchi_rowType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="group_seq_no"/>
+      <xs:element type="start_dateType" name="start_date"/>
+      <xs:element type="xs:string" name="secchi"/>
+      <xs:element name="secchi_hit_bottom">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="NO"/>
+            <xs:enumeration value=" "/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="secchi_meters"/>
+      <xs:element type="xs:string" name="chlorophyll"/>
+      <xs:element type="xs:string" name="total_phosphorus"/>
+      <xs:element type="xs:string" name="TSI_SD"/>
+      <xs:element type="xs:string" name="TSI_TP"/>
+      <xs:element type="xs:string" name="TSI_CHL"/>
+      <xs:element name="lake_level">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="NO CHANGE"/>
+            <xs:enumeration value="LOW"/>
+            <xs:enumeration value="HIGH"/>
+            <xs:enumeration value="NORMAL"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="xs:string" name="staff_gauge"/>
+      <xs:element name="appearance">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="CLEAR"/>
+            <xs:enumeration value="MURKY"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="color">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="BLUE"/>
+            <xs:enumeration value="GREEN"/>
+            <xs:enumeration value="YELLOW"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="perception">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value=""/>
+            <xs:enumeration value="1-Beautiful, could not be nicer"/>
+            <xs:enumeration value="2-Very minor aesthetic problems"/>
+            <xs:enumeration value="5-Enjoyment substantially impaired (algae)"/>
+            <xs:enumeration value="3-Enjoyment somewhat impaired (algae)"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="secchi_rowsType">
+    <xs:sequence>
+      <xs:element type="secchi_rowType" name="secchi_row" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="start_date2Type">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="mm" use="optional"/>
+        <xs:attribute type="xs:string" name="dd" use="optional"/>
+        <xs:attribute type="xs:string" name="yyyy" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="depthType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="units" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="temperatureType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="units" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="dissolved_oxygenType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="units" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="profile_rowType">
+    <xs:sequence>
+      <xs:element type="start_date2Type" name="start_date2"/>
+      <xs:element type="depthType" name="depth"/>
+      <xs:element type="temperatureType" name="temperature"/>
+      <xs:element type="dissolved_oxygenType" name="dissolved_oxygen"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="profile_rowsType">
+    <xs:sequence>
+      <xs:element type="profile_rowType" name="profile_row" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="vol_comment_rowType">
+    <xs:sequence>
+      <xs:element type="start_dateType" name="start_date"/>
+      <xs:element type="xs:string" name="fieldwork_comment"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="vol_comment_rowsType">
+    <xs:sequence>
+      <xs:element type="vol_comment_rowType" name="vol_comment_row" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="lab_comment_rowType">
+    <xs:sequence>
+      <xs:element type="start_dateType" name="start_date"/>
+      <xs:element type="xs:string" name="lab_comment"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="lab_comment_rowsType">
+    <xs:sequence>
+      <xs:element type="lab_comment_rowType" name="lab_comment_row" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="collector_project_rowType">
+    <xs:sequence>
+      <xs:element type="start_dateType" name="start_date"/>
+      <xs:element type="xs:string" name="group_name"/>
+      <xs:element name="project_name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Citizen Lake Monitoring - Water Quality - Pipe Lake; Deep Hole"/>
+            <xs:enumeration value="POLK COUNTY: Pipe:  Lake + Watershed Study- Lake Management Plan"/>
+            <xs:enumeration value="PIPE + N PIPE LAKE P+R DISTRICT: Pipe Lake Comprehensive Management Plan"/>
+            <xs:enumeration value="Lake Baseline Monitoring- DNR (1970s-2006)"/>
+            <xs:enumeration value="Citizen Lake Monitoring Network QA/QC - 2013"/>
+            <xs:enumeration value="Citizen Lake Monitoring Network QA/QC - 2014"/>
+            <xs:enumeration value="PIPE + N PIPE LAKE P+R DISTRICT: Water Quality Monitoring + Comprehensive Plan Update"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="collector_project_rowsType">
+    <xs:sequence>
+      <xs:element type="collector_project_rowType" name="collector_project_row" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="srowType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="official_name"/>
+      <xs:element type="xs:string" name="county_name"/>
+      <xs:element type="xs:string" name="wbic"/>
+      <xs:element type="xs:string" name="region_code"/>
+      <xs:element type="xs:string" name="county_code"/>
+      <xs:element type="xs:string" name="station_name"/>
+      <xs:element type="xs:string" name="station_id"/>
+      <xs:element type="xs:string" name="geo_region"/>
+      <xs:element type="xs:string" name="lake_type"/>
+      <xs:element type="secchi_rowsType" name="secchi_rows"/>
+      <xs:element type="profile_rowsType" name="profile_rows"/>
+      <xs:element type="vol_comment_rowsType" name="vol_comment_rows"/>
+      <xs:element type="lab_comment_rowsType" name="lab_comment_rows"/>
+      <xs:element type="collector_project_rowsType" name="collector_project_rows"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="clmn-annual-reportType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="title"/>
+      <xs:element type="xs:string" name="station_no"/>
+      <xs:element type="xs:string" name="year1"/>
+      <xs:element type="xs:string" name="year2"/>
+      <xs:element type="report_variablesType" name="report_variables"/>
+      <xs:element type="xs:string" name="report_date"/>
+      <xs:element type="srowType" name="srow"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

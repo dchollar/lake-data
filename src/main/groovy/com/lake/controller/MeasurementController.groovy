@@ -39,7 +39,7 @@ class MeasurementController {
                                               @RequestParam(name = 'locationId', required = false) Integer locationId,
                                               @RequestParam(name = 'fromDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
-        auditService.audit(HttpMethod.GET, '/public/api/measurements', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/public/api/measurements', this.class.simpleName)
         List valid = isValid(siteId, unitId, locationId, fromDate, toDate)
         if (valid[0]) {
             return measurementService.doSearch(siteId, unitId, locationId, fromDate, toDate)
@@ -54,7 +54,7 @@ class MeasurementController {
                                            @RequestParam(name = 'unitId', required = false) Integer unitId,
                                            @RequestParam(name = 'locationId', required = false) Integer locationId,
                                            @RequestParam(name = 'collectionDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate collectionDate) {
-        auditService.audit(HttpMethod.GET, '/api/measurements', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/api/measurements', this.class.simpleName)
         SavedMeasurementDto filter = new SavedMeasurementDto()
         filter.siteId = siteId == -1 ? null : siteId
         filter.unitId = unitId == -1 ? null : unitId
@@ -66,7 +66,7 @@ class MeasurementController {
     @Secured('ROLE_REPORTER')
     @PostMapping(value = '/api/measurements')
     void save(@RequestBody SavedMeasurementDto dto) {
-        auditService.audit(HttpMethod.POST, '/api/measurements', this.class.simpleName)
+        auditService.audit(HttpMethod.POST.name(), '/api/measurements', this.class.simpleName)
         isValidForChange(dto)
         measurementService.save(dto)
     }
@@ -75,7 +75,7 @@ class MeasurementController {
     @PutMapping(value = '/api/measurements/{measurementId}', produces = APPLICATION_JSON_VALUE)
     SavedMeasurementDto update(@PathVariable(name = 'measurementId', required = true) Integer measurementId,
                                @RequestBody SavedMeasurementDto dto) {
-        auditService.audit(HttpMethod.PUT, "/api/measurements/${measurementId}", this.class.simpleName)
+        auditService.audit(HttpMethod.PUT.name(), "/api/measurements/${measurementId}", this.class.simpleName)
         isValidForChange(dto)
         measurementService.update(measurementId, dto)
     }
@@ -84,7 +84,7 @@ class MeasurementController {
     @DeleteMapping(value = '/api/measurements/{measurementId}', produces = APPLICATION_JSON_VALUE)
     void delete(@PathVariable(name = 'measurementId', required = true) Integer measurementId,
                 @RequestParam(name = 'unitType', required = true) UnitType unitType) {
-        auditService.audit(HttpMethod.DELETE, "/api/measurements/${measurementId}?unitType=${unitType}", this.class.simpleName)
+        auditService.audit(HttpMethod.DELETE.name(), "/api/measurements/${measurementId}?unitType=${unitType}", this.class.simpleName)
         measurementService.delete(measurementId, unitType)
     }
 

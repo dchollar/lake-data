@@ -30,7 +30,7 @@ class ReporterService {
     @Cacheable('reportersByName')
     Reporter getReporter(String userName) {
         if (userName) {
-            return repository.findByUsername(SecurityContextHolder?.getContext()?.authentication?.name)
+            return repository.findByUsername(userName)
         } else {
             return null
         }

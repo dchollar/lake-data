@@ -53,7 +53,6 @@ class LocationService {
         repository.deleteById(id)
     }
 
-    @Secured(['ROLE_REPORTER', 'ROLE_ADMIN'])
     @CacheEvict(cacheNames = ['locationsBySite'], allEntries = true)
     void clearCache() {
     }
