@@ -6,15 +6,18 @@ import com.lake.entity.UnitType
 import com.lake.service.AuditService
 import com.lake.service.MeasurementService
 import com.lake.service.ReporterService
+import com.lake.service.ValidationService
 import groovy.util.logging.Slf4j
 import groovy.util.slurpersupport.GPathResult
 import groovy.util.slurpersupport.NodeChild
 import org.apache.commons.io.IOUtils
+import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
+import javax.xml.bind.ValidationException
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.Year
@@ -57,6 +60,8 @@ class SwimsDataCollector {
     ReporterService reporterService
     @Autowired
     AuditService auditService
+    @Autowired
+    ValidationService validationService
 
     @Scheduled(cron = "0 0 0 1 * *")
     void fetchData() {
@@ -87,7 +92,7 @@ class SwimsDataCollector {
         Reporter reporter = reporterService.getReporter(REPORTER_USERNAME)
 
         GPathResult clmnAnnualReport = new XmlSlurper().parseText(xml)
-        String lakeName = clmnAnnualReport.srow.official_name
+        String lakeName = StringUtils.stripToNull(clmnAnnualReport.srow.official_name.toString())
         Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
         Integer locationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
 
@@ -100,37 +105,39 @@ class SwimsDataCollector {
     }
 
     private void processSecchiRow(Reporter reporter, Integer siteId, Integer locationId, NodeChild row) {
-        String startDate = row.start_date
-        saveDto(reporter, siteId, locationId, SECCHI_ID, startDate, row.secchi.toString())
-        saveDto(reporter, siteId, locationId, CHLOROPHYLL_ID, startDate, row.chlorophyll.toString())
-        saveDto(reporter, siteId, locationId, TOTAL_PHOSPHORUS_ID, startDate, row.total_phosphorus.toString())
-        saveDto(reporter, siteId, locationId, TSI_SD_ID, startDate, row.TSI_SD.toString())
-        saveDto(reporter, siteId, locationId, TSI_TP_ID, startDate, row.TSI_TP.toString())
-        saveDto(reporter, siteId, locationId, TSI_CHL_ID, startDate, row.TSI_CHL.toString())
+        String startDate = StringUtils.stripToNull(row.start_date.toString())
+        saveDto(reporter, siteId, locationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.secchi.toString()))
+        saveDto(reporter, siteId, locationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.chlorophyll.toString()))
+        saveDto(reporter, siteId, locationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.total_phosphorus.toString()))
+        saveDto(reporter, siteId, locationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.TSI_SD.toString()))
+        saveDto(reporter, siteId, locationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.TSI_TP.toString()))
+        saveDto(reporter, siteId, locationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.TSI_CHL.toString()))
     }
 
     private void processProfileRow(Reporter reporter, Integer siteId, Integer locationId, NodeChild row) {
-        String startDate = row.start_date2
+        String startDate = StringUtils.stripToNull(row.start_date2.toString())
         String depth = extractDepth(row)
-        if (depth) {
-            saveDto(reporter, siteId, locationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
-            saveDto(reporter, siteId, locationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, row.dissolved_oxygen.toString(), depth)
-        }
+        saveDto(reporter, siteId, locationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
+        saveDto(reporter, siteId, locationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, extractDissolvedOxygen(row), depth)
+    }
+
+    private static String extractDissolvedOxygen(final NodeChild row) {
+        return StringUtils.stripToNull(row.dissolved_oxygen.toString())
     }
 
     private static String extractDepth(final NodeChild row) {
-        String depth = row.depth
-        String depthUnits = row.childNodes()[1].attributes().units
+        String depth = StringUtils.stripToNull(row.depth.toString())
+        String depthUnits = StringUtils.stripToNull(row.childNodes()[1].attributes().units.toString())
         if (depth && depthUnits && depthUnits == 'METERS') {
             BigDecimal meters = new BigDecimal(depth)
-            depth = FOOT.multiply(meters).round(2).toString()
+            depth = FOOT.multiply(meters).round(0).toString()
         }
         depth
     }
 
     private static String extractTemperature(final NodeChild row) {
-        String temp = row.temperature
-        String temperatureUnits = row.childNodes()[2].attributes().units
+        String temp = StringUtils.stripToNull(row.temperature.toString())
+        String temperatureUnits = StringUtils.stripToNull(row.childNodes()[2].attributes().units.toString())
         if (temp && temperatureUnits && temperatureUnits.contains('C')) {
             if (temp.contains('F')) {
                 // some bad data appears to be encoded as celsius but is not
@@ -138,7 +145,7 @@ class SwimsDataCollector {
             } else {
                 // convert to fahrenheit
                 BigDecimal c = new BigDecimal(temp)
-                temp = ((c * 9.0 / 5.0) + 32.0).toString()
+                temp = ((c * 9.0 / 5.0) + 32.0).round(1).toString()
             }
         }
         temp
@@ -150,14 +157,15 @@ class SwimsDataCollector {
         dto.value = value && value.isBigDecimal() ? new BigDecimal(value) : null
         dto.depth = depth && depth.isBigDecimal() ? new BigDecimal(depth) : null
 
-        if (dto.value && dto.collectionDate) {
-            try {
-                measurementService.save(dto, reporter)
-            } catch (DataIntegrityViolationException e) {
-                log.debug("Duplicate data for ${dto}", e)
-            } catch (Exception e) {
-                log.error("Issue saving data ${dto}", e)
-            }
+        try {
+            validationService.isValidForChange(dto)
+            measurementService.save(dto, reporter)
+        } catch (DataIntegrityViolationException di) {
+            log.debug("Duplicate data for ${dto}", di)
+        } catch (ValidationException v) {
+            log.debug("Invalid data for ${dto}", v)
+        } catch (Exception e) {
+            log.error("Issue saving data ${dto}", e)
         }
     }
 

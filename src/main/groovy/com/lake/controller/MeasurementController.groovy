@@ -26,11 +26,11 @@ class MeasurementController {
     @Autowired
     LocationService locationService
     @Autowired
-    UnitService unitService
-    @Autowired
     MeasurementService measurementService
     @Autowired
     AuditService auditService
+    @Autowired
+    ValidationService validationService
 
 
     @GetMapping(value = '/public/api/measurements')
@@ -40,7 +40,7 @@ class MeasurementController {
                                               @RequestParam(name = 'fromDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
         auditService.audit(HttpMethod.GET.name(), '/public/api/measurements', this.class.simpleName)
-        List valid = isValid(siteId, unitId, locationId, fromDate, toDate)
+        List valid = validationService.isValid(siteId, unitId, locationId, fromDate, toDate)
         if (valid[0]) {
             return measurementService.doSearch(siteId, unitId, locationId, fromDate, toDate)
         } else {
@@ -67,7 +67,7 @@ class MeasurementController {
     @PostMapping(value = '/api/measurements')
     void save(@RequestBody SavedMeasurementDto dto) {
         auditService.audit(HttpMethod.POST.name(), '/api/measurements', this.class.simpleName)
-        isValidForChange(dto)
+        validationService.isValidForChange(dto)
         measurementService.save(dto)
     }
 
@@ -76,7 +76,7 @@ class MeasurementController {
     SavedMeasurementDto update(@PathVariable(name = 'measurementId', required = true) Integer measurementId,
                                @RequestBody SavedMeasurementDto dto) {
         auditService.audit(HttpMethod.PUT.name(), "/api/measurements/${measurementId}", this.class.simpleName)
-        isValidForChange(dto)
+        validationService.isValidForChange(dto)
         measurementService.update(measurementId, dto)
     }
 
@@ -86,41 +86,6 @@ class MeasurementController {
                 @RequestParam(name = 'unitType', required = true) UnitType unitType) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/measurements/${measurementId}?unitType=${unitType}", this.class.simpleName)
         measurementService.delete(measurementId, unitType)
-    }
-
-    private void isValidForChange(SavedMeasurementDto dto) {
-        List valid = isValid(dto.siteId, dto.unitId, dto.locationId, null, null)
-        String errorMessage = valid[1] as String
-        if (!dto.collectionDate) {
-            errorMessage += 'Collection Date is missing '
-        }
-        if (errorMessage) {
-            throw new ValidationException(errorMessage)
-        }
-    }
-
-    private List isValid(Integer siteId, Integer unitId, Integer locationId, LocalDate fromDate, LocalDate toDate) {
-        String message = ''
-        if (!unitId) {
-            message += 'Unit is missing '
-            return [false, message]
-        }
-        boolean valid = true
-        UnitDto unitDto = unitService.getById(unitId)
-        if (!siteId) {
-            message += 'site is missing '
-            valid = false
-        } else if (fromDate && toDate && fromDate.isAfter(toDate)) {
-            message += 'from date is after to date '
-            valid = false
-        } else if (unitDto.type == UnitType.EVENT && locationId) {
-            message += 'Not supposed to have a location '
-            valid = false
-        } else if (unitDto.type != UnitType.EVENT && !locationId) {
-            message += 'location is missing '
-            valid = false
-        }
-        return [valid, message]
     }
 
 }

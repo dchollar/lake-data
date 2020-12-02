@@ -14,6 +14,7 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
+import java.text.Normalizer
 import java.time.LocalDate
 
 @Slf4j
@@ -170,10 +171,10 @@ class MeasurementService {
 
     private void saveMeasurement(Measurement measurement, SavedMeasurementDto dto, Unit unit, Reporter reporter = null) {
         Location location = locationService.getOne(dto.locationId)
-        measurement.comment = StringUtils.stripToNull(dto.comment)
+        measurement.comment = cleanComment(dto.comment)
         measurement.value = dto.value
         measurement.collectionDate = dto.collectionDate
-        measurement.depth = dto.depth ?: -1
+        measurement.depth = dto.depth == null ? -1 : dto.depth
         measurement.unitLocation = getUnitLocation(unit, location)
         measurement.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
         measurementRepository.save(measurement)
@@ -181,7 +182,7 @@ class MeasurementService {
 
     private void saveEvent(Event event, SavedMeasurementDto dto, Unit unit, Reporter reporter = null) {
         event.value = dto.collectionDate
-        event.comment = StringUtils.stripToNull(dto.comment)
+        event.comment = cleanComment(dto.comment)
         event.site = siteService.getOne(dto.siteId)
         event.year = dto.collectionDate.year
         event.unit = unit
@@ -190,6 +191,14 @@ class MeasurementService {
         if (!unitService.getUnitsBySite(dto.siteId).contains(ConverterUtil.convert(unit))) {
             unitService.clearCache()
         }
+    }
+
+    private static String cleanComment(String comment) {
+        String s = StringUtils.stripToNull(comment)
+        if (s) {
+            return Normalizer.normalize(s, Normalizer.Form.NFKD).replaceAll('[^ -~]', '')
+        }
+        return s
     }
 
     private UnitLocation getUnitLocation(Unit unit, Location location) {
