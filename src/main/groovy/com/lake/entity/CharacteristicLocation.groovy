@@ -3,8 +3,8 @@ package com.lake.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "unit_location")
-class UnitLocation {
+@Table(name = "characteristic_location")
+class CharacteristicLocation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,8 +12,8 @@ class UnitLocation {
     Integer id
 
     @ManyToOne
-    @JoinColumn(name = "unit_id", referencedColumnName = "id", nullable = false)
-    Unit unit
+    @JoinColumn(name = "characteristic_id", referencedColumnName = "id", nullable = false)
+    Characteristic characteristic
 
     @ManyToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)

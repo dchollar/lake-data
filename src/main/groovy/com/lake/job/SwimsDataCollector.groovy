@@ -2,7 +2,7 @@ package com.lake.job
 
 import com.lake.dto.SavedMeasurementDto
 import com.lake.entity.Reporter
-import com.lake.entity.UnitType
+import com.lake.entity.CharacteristicType
 import com.lake.service.AuditService
 import com.lake.service.MeasurementService
 import com.lake.service.ReporterService
@@ -36,10 +36,10 @@ class SwimsDataCollector {
     // site and location ids
     private static final int PIPE_LAKE_SITE_ID = 1
     private static final int NORTH_PIPE_LAKE_SITE_ID = 2
-    private static final int NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID = 6
-    private static final int PIPE_LAKE_DEEP_HOLE_LOCATION_ID = 5
+    private static final int NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 2
+    private static final int PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 4
 
-    // UNIT IDs
+    // characteristic IDs
     private static final int SECCHI_ID = 9
     private static final int CHLOROPHYLL_ID = 10
     private static final int TOTAL_PHOSPHORUS_ID = 1
@@ -94,7 +94,7 @@ class SwimsDataCollector {
         GPathResult clmnAnnualReport = new XmlSlurper().parseText(xml)
         String lakeName = StringUtils.stripToNull(clmnAnnualReport.srow.official_name.toString())
         Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
-        Integer locationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
+        Integer locationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
 
         clmnAnnualReport.srow.secchi_rows.secchi_row.each { NodeChild row ->
             processSecchiRow(reporter, siteId, locationId, row)
@@ -151,8 +151,14 @@ class SwimsDataCollector {
         temp
     }
 
-    private void saveDto(Reporter reporter, Integer siteId, Integer locationId, Integer unitId, String collectionDate, String value, String depth = null) {
-        SavedMeasurementDto dto = new SavedMeasurementDto(siteId: siteId, locationId: locationId, unitId: unitId, unitType: UnitType.WATER)
+    private void saveDto(Reporter reporter,
+                         Integer siteId,
+                         Integer locationId,
+                         Integer characteristicId,
+                         String collectionDate,
+                         String value,
+                         String depth = null) {
+        SavedMeasurementDto dto = new SavedMeasurementDto(siteId: siteId, locationId: locationId, characteristicId: characteristicId, characteristicIdType: CharacteristicType.WATER)
         dto.collectionDate = LocalDate.parse(collectionDate, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
         dto.value = value && value.isBigDecimal() ? new BigDecimal(value) : null
         dto.depth = depth && depth.isBigDecimal() ? new BigDecimal(depth) : null

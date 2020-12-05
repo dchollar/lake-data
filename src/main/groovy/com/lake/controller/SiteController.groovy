@@ -2,11 +2,11 @@ package com.lake.controller
 
 import com.lake.dto.LocationDto
 import com.lake.dto.SiteDto
-import com.lake.dto.UnitDto
+import com.lake.dto.CharacteristicDto
 import com.lake.service.AuditService
 import com.lake.service.LocationService
 import com.lake.service.SiteService
-import com.lake.service.UnitService
+import com.lake.service.CharacteristicService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -24,7 +24,7 @@ class SiteController {
     @Autowired
     SiteService service
     @Autowired
-    UnitService unitService
+    CharacteristicService characteristicService
     @Autowired
     LocationService locationService
     @Autowired
@@ -45,11 +45,11 @@ class SiteController {
         return locationService.getLocationsBySite(siteId)
     }
 
-    @GetMapping(value = '/public/api/sites/{siteId}/units', produces = APPLICATION_JSON_VALUE)
-    Collection<UnitDto> getSiteUnits(@PathVariable(name = 'siteId', required = true) Integer siteId) {
-        log.info("ACCESS - get units by site")
-        auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/units", this.class.simpleName)
-        return unitService.getUnitsBySite(siteId)
+    @GetMapping(value = '/public/api/sites/{siteId}/characteristics', produces = APPLICATION_JSON_VALUE)
+    Collection<CharacteristicDto> getSiteCharacteristics(@PathVariable(name = 'siteId', required = true) Integer siteId) {
+        log.info("ACCESS - get characteristics by site")
+        auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/characteristics", this.class.simpleName)
+        return characteristicService.getCharacteristicsBySite(siteId)
     }
 
 }

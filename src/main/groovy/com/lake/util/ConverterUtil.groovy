@@ -82,8 +82,8 @@ class ConverterUtil {
         return dtos
     }
 
-    static Set<UnitDto> convertUnits(Collection<Unit> entities) {
-        Set<UnitDto> dtos = new TreeSet<>()
+    static Set<CharacteristicDto> convertCharacteristics(Collection<Characteristic> entities) {
+        Set<CharacteristicDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
         }
@@ -114,7 +114,7 @@ class ConverterUtil {
         dto.collectionDate = entity.value
         dto.dayOfYear = entity.value.dayOfYear
         dto.comment = StringUtils.stripToEmpty(entity.comment)
-        dto.unit = convert(entity.unit)
+        dto.characteristic = convert(entity.characteristic)
         dto.reporter = convert(entity.reporter)
         return dto
     }
@@ -126,8 +126,8 @@ class ConverterUtil {
         dto.siteId = entity.site.id
         dto.siteDescription = entity.site.description
         dto.comment = entity.comment
-        entity.unitLocations.each {
-            dto.units.add(convert(it.unit))
+        entity.characteristicLocations.each {
+            dto.characteristics.add(convert(it.characteristic))
         }
         return dto
     }
@@ -140,8 +140,8 @@ class ConverterUtil {
         dto.value = entity.value
         dto.depth = entity.depth
         dto.comment = StringUtils.stripToEmpty(entity.comment)
-        dto.unit = convert(entity.unitLocation.unit)
-        dto.location = convert(entity.unitLocation.location)
+        dto.characteristic = convert(entity.characteristicLocation.characteristic)
+        dto.location = convert(entity.characteristicLocation.location)
         dto.reporter = convert(entity.reporter)
         return dto
     }
@@ -179,11 +179,11 @@ class ConverterUtil {
         return dto
     }
 
-    static UnitDto convert(Unit entity) {
-        UnitDto dto = new UnitDto()
+    static CharacteristicDto convert(Characteristic entity) {
+        CharacteristicDto dto = new CharacteristicDto()
         dto.id = entity.id
         dto.unitDescription = entity.unitDescription
-        dto.longDescription = entity.longDescription
+        dto.description = entity.description
         dto.shortDescription = entity.shortDescription
         dto.enableDepth = entity.enableDepth
         dto.type = entity.type
@@ -192,15 +192,15 @@ class ConverterUtil {
 
     static SavedMeasurementDto convertSavedMeasurement(Event entity) {
         SavedMeasurementDto dto = new SavedMeasurementDto()
-        Unit unit = entity.unit
+        Characteristic characteristic = entity.characteristic
 
         dto.id = entity.id
         dto.collectionDate = entity.value
         dto.comment = StringUtils.stripToEmpty(entity.comment)
         dto.value = null
         dto.depth = null
-        dto.unitId = unit.id
-        dto.unitType = unit.type
+        dto.characteristicId = characteristic.id
+        dto.characteristicIdType = characteristic.type
         dto.locationId = null
         dto.siteId = entity.site.id
         return dto
@@ -208,16 +208,16 @@ class ConverterUtil {
 
     static SavedMeasurementDto convertSavedMeasurement(Measurement entity) {
         SavedMeasurementDto dto = new SavedMeasurementDto()
-        Unit unit = entity.unitLocation.unit
-        Location location = entity.unitLocation.location
+        Characteristic characteristic = entity.characteristicLocation.characteristic
+        Location location = entity.characteristicLocation.location
 
         dto.id = entity.id
         dto.collectionDate = entity.collectionDate
         dto.comment = StringUtils.stripToEmpty(entity.comment)
         dto.value = entity.value
         dto.depth = entity.depth
-        dto.unitId = unit.id
-        dto.unitType = unit.type
+        dto.characteristicId = characteristic.id
+        dto.characteristicIdType = characteristic.type
         dto.locationId = location.id
         dto.siteId = location.site.id
         return dto
@@ -257,10 +257,10 @@ class ConverterUtil {
         return entity
     }
 
-    static Unit convert(UnitDto dto, Unit entity) {
+    static Characteristic convert(CharacteristicDto dto, Characteristic entity) {
         entity.id = dto.id
         entity.unitDescription = StringUtils.stripToNull(dto.unitDescription)
-        entity.longDescription = StringUtils.stripToNull(dto.longDescription)
+        entity.description = StringUtils.stripToNull(dto.description)
         entity.shortDescription = StringUtils.stripToNull(dto.shortDescription)
         entity.enableDepth = dto.enableDepth
         entity.type = dto.type

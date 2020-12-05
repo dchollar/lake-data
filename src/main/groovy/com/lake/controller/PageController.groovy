@@ -19,7 +19,7 @@ class PageController {
     @Autowired
     SiteService siteService
     @Autowired
-    UnitService unitService
+    CharacteristicService characteristicService
     @Autowired
     ReporterService reporterService
     @Autowired
@@ -37,7 +37,7 @@ class PageController {
     String dataEntry(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataEntry', this.class.simpleName)
         model.addAttribute('sites', siteService.getAllSites())
-        model.addAttribute('units', unitService.getAllUnits())
+        model.addAttribute('characteristics', characteristicService.getAllCharacteristic())
         return 'dataEntry'
     }
 
@@ -57,10 +57,10 @@ class PageController {
     }
 
     @Secured('ROLE_ADMIN')
-    @GetMapping('/unitMaintenance')
-    String unitMaintenance() {
-        auditService.audit(HttpMethod.GET.name(), '/unitMaintenance', this.class.simpleName)
-        return 'unitMaintenance'
+    @GetMapping('/characteristicMaintenance')
+    String characteristicMaintenance() {
+        auditService.audit(HttpMethod.GET.name(), '/characteristicMaintenance', this.class.simpleName)
+        return 'characteristicMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
@@ -68,7 +68,7 @@ class PageController {
     String dataMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataMaintenance', this.class.simpleName)
         model.addAttribute('siteOptions', getSites())
-        model.addAttribute('unitOptions', getUnits())
+        model.addAttribute('characteristicOptions', getCharacteristics())
         model.addAttribute('locationOptions', getLocations())
         return 'dataMaintenance'
     }
@@ -90,10 +90,10 @@ class PageController {
         return JsonOutput.toJson(results)
     }
 
-    private String getUnits() {
+    private String getCharacteristics() {
         List results = [[id: "-1", name: ""]]
-        unitService.getAllUnits().each {
-            results.add([id: it.id, name: it.longDescription])
+        characteristicService.getAllCharacteristic().each {
+            results.add([id: it.id, name: it.description])
         }
         return JsonOutput.toJson(results)
     }

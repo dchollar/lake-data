@@ -24,6 +24,6 @@ class Location {
     Site site
 
     @OneToMany(mappedBy = "location")
-    Set<UnitLocation> unitLocations
+    Set<CharacteristicLocation> characteristicLocations
 
 }

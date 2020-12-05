@@ -1,28 +1,28 @@
 $(document).ready(function () {
 
     let siteId;
-    let unitId;
-    let selectedUnit
+    let characteristicId;
+    let selectedCharacteristic
     let chart
 
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
         siteId = $(this).val();
-        unitId = undefined;
-        getUnits();
+        characteristicId = undefined;
+        getCharacteristics();
         $('#locationSelectionDiv').html('');
     });
 
-    $('#unitsChoice').on('change', function () {
+    $('#characteristicsChoice').on('change', function () {
         $("#message").text("").hide();
-        unitId = $(this).val();
+        characteristicId = $(this).val();
         $.ajax(
             {
                 type: "GET",
-                url: "public/api/units/" + unitId,
+                url: "public/api/characteristics/" + characteristicId,
                 dataType: "json",
-                success: function (unit) {
-                    selectedUnit = unit;
+                success: function (characteristic) {
+                    selectedCharacteristic = characteristic;
                     if (siteId) {
                         getLocations();
                     } else {
@@ -37,7 +37,7 @@ $(document).ready(function () {
 
     $('#submitButton').on('click', function () {
         $("#message").text("").hide();
-        if (siteId && unitId) {
+        if (siteId && characteristicId) {
             let url = buildSubmitUrl();
             $.ajax(
                 {
@@ -57,8 +57,8 @@ $(document).ready(function () {
     });
 
     function buildSubmitUrl() {
-        let url = "public/api/measurements?siteId=" + siteId + "&unitId=" + unitId;
-        if (selectedUnit && selectedUnit.type !== 'EVENT') {
+        let url = "public/api/measurements?siteId=" + siteId + "&characteristicId=" + characteristicId;
+        if (selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
             let locationId = $('#locationsChoice').val();
             url += '&locationId=' + locationId;
         }
@@ -73,14 +73,14 @@ $(document).ready(function () {
         return url
     }
 
-    function getUnits() {
+    function getCharacteristics() {
         $.ajax(
             {
                 type: "GET",
-                url: "public/api/sites/" + siteId + "/units",
+                url: "public/api/sites/" + siteId + "/characteristics",
                 dataType: "json",
-                success: function (units) {
-                    buildUnitsChoice(units);
+                success: function (characteristics) {
+                    buildCharacteristicsChoice(characteristics);
                 },
                 error: function (response) {
                     console.log(response);
@@ -88,16 +88,16 @@ $(document).ready(function () {
             });
     }
 
-    function buildUnitsChoice(units) {
-        let unitOptions = '<option value=""></option>';
-        for (let unit of units) {
-            unitOptions += '<option value="' + unit.id + '">' + unit.longDescription + '</option>';
+    function buildCharacteristicsChoice(characteristics) {
+        let options = '<option value=""></option>';
+        for (let characteristic of characteristics) {
+            options += '<option value="' + characteristic.id + '">' + characteristic.description + '</option>';
         }
-        $('#unitsChoice').html(unitOptions);
+        $('#characteristicsChoice').html(options);
     }
 
     function getLocations() {
-        if (selectedUnit && selectedUnit.type !== 'EVENT') {
+        if (selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
             $.ajax(
                 {
                     type: "GET",
@@ -120,8 +120,8 @@ $(document).ready(function () {
         locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">';
         locationOptions += '<option value=""></option>';
         for (let location of locations) {
-            for (let unit of location.units) {
-                if (selectedUnit.id === unit.id) {
+            for (let characteristic of location.characteristics) {
+                if (selectedCharacteristic.id === characteristic.id) {
                     locationOptions += '<option value="';
                     locationOptions += location.id;
                     if (location.comment) {
@@ -151,7 +151,7 @@ $(document).ready(function () {
 
     function buildResultSection(measurements) {
         let resultHtml = '';
-        resultHtml += '<h3>Results for ' + selectedUnit.shortDescription + ': ' + selectedUnit.longDescription + '</h3>';
+        resultHtml += '<h3>Results for ' + selectedCharacteristic.shortDescription + ': ' + selectedCharacteristic.description + '</h3>';
         resultHtml += '<table id="resultTable" class="table table-responsive table-bordered table-striped">';
         resultHtml += buildTableHeader();
         resultHtml += buildTableBody(measurements);
@@ -169,12 +169,12 @@ $(document).ready(function () {
             let data = [];
             let labels = [];
             for (let measurement of measurements) {
-                if (selectedUnit.enableDepth) {
+                if (selectedCharacteristic.enableDepth) {
                     labels.push(measurement.collectionDate + ' | ' + measurement.depth);
                 } else {
                     labels.push(measurement.collectionDate);
                 }
-                if (selectedUnit.type === 'EVENT') {
+                if (selectedCharacteristic.type === 'EVENT') {
                     data.push(measurement.dayOfYear);
                 } else {
                     data.push(measurement.value);
@@ -185,7 +185,7 @@ $(document).ready(function () {
     }
 
     function buildChartSection(data, labels) {
-        let label = selectedUnit.shortDescription + ' ' + selectedUnit.longDescription + ' ' + selectedUnit.unitDescription;
+        let label = selectedCharacteristic.shortDescription + ' ' + selectedCharacteristic.description + ' ' + selectedCharacteristic.unitDescription;
         let ctx = document.getElementById('myChart').getContext('2d');
         chart = new Chart(ctx, {
             type: 'line',
@@ -203,11 +203,11 @@ $(document).ready(function () {
     function buildTableHeader() {
         let tableHeaderHtml = '<thead class="thead-dark"><tr>';
         tableHeaderHtml += '<th>Collection Date</th>';
-        if (selectedUnit.enableDepth) {
+        if (selectedCharacteristic.enableDepth) {
             tableHeaderHtml += '<th>Depth</th>';
         }
-        if (selectedUnit.type !== 'EVENT') {
-            tableHeaderHtml += '<th>' + selectedUnit.unitDescription + '</th>';
+        if (selectedCharacteristic.type !== 'EVENT') {
+            tableHeaderHtml += '<th>' + selectedCharacteristic.unitDescription + '</th>';
         }
         tableHeaderHtml += '<th>Comment</th>';
         //tableHeaderHtml += '<th>Reporter</th>';
@@ -220,14 +220,13 @@ $(document).ready(function () {
         for (let measurement of measurements) {
             tableBodyHtml += '<tr>';
             tableBodyHtml += '<td>' + measurement.collectionDate + '</td>';
-            if (selectedUnit.enableDepth) {
+            if (selectedCharacteristic.enableDepth) {
                 tableBodyHtml += '<td>' + measurement.depth + '</td>';
             }
-            if (selectedUnit.type !== 'EVENT') {
+            if (selectedCharacteristic.type !== 'EVENT') {
                 tableBodyHtml += '<td>' + measurement.value + '</td>';
             }
             tableBodyHtml += '<td>' + measurement.comment + '</td>';
-            //tableBodyHtml += '<td>' + measurement.reporter.firstName + ' ' + measurement.reporter.lastName + '</td>';
             tableBodyHtml += '</tr>';
         }
         tableBodyHtml += '</tbody>';

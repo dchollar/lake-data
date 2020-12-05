@@ -11,5 +11,5 @@ class LocationDto {
     String comment
     Integer siteId
     String siteDescription
-    Set<UnitDto> units = new TreeSet<>()
+    Set<CharacteristicDto> characteristics = new TreeSet<>()
 }

@@ -15,7 +15,7 @@ class MeasurementDto {
     BigDecimal value
     BigDecimal depth
     String comment
-    UnitDto unit
+    CharacteristicDto characteristic
     LocationDto location
     ReporterDto reporter
 

@@ -1,29 +1,29 @@
 $(document).ready(function () {
 
     let siteId;
-    let unitId;
-    let selectedUnit
+    let characteristicId;
+    let selectedCharacteristic
 
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
         siteId = $(this).val();
-        if (unitId) {
+        if (characteristicId) {
             getLocations();
         } else {
             $('#locationSelectionDiv').html('');
         }
     });
 
-    $('#unitsChoice').on('change', function () {
+    $('#characteristicsChoice').on('change', function () {
         $("#message").text("").hide();
-        unitId = $(this).val();
+        characteristicId = $(this).val();
         $.ajax(
             {
                 type: "GET",
-                url: "public/api/units/" + unitId,
+                url: "public/api/characteristics/" + characteristicId,
                 dataType: "json",
-                success: function (unit) {
-                    selectedUnit = unit;
+                success: function (characteristic) {
+                    selectedCharacteristic = characteristic;
                     if (siteId) {
                         getLocations();
                         buildValueDiv();
@@ -40,7 +40,7 @@ $(document).ready(function () {
 
     $('#submitButton').on('click', function () {
         $("#message").text("").hide();
-        if (siteId && unitId) {
+        if (siteId && characteristicId) {
             let data = buildSubmitData();
             $.ajax(
                 {
@@ -67,12 +67,12 @@ $(document).ready(function () {
     function buildSubmitData() {
         let value;
         let locationId
-        if (selectedUnit.type !== 'EVENT') {
+        if (selectedCharacteristic.type !== 'EVENT') {
             value = $('#valueField').val();
             locationId = $('#locationsChoice').val();
         }
         let depth;
-        if (selectedUnit.enableDepth) {
+        if (selectedCharacteristic.enableDepth) {
             depth = $('#depthField').val();
         }
         return {
@@ -82,12 +82,12 @@ $(document).ready(function () {
             "comment": $('#commentField').val(),
             "locationId": locationId,
             "siteId": siteId,
-            "unitId": unitId
+            "characteristicId": characteristicId
         };
     }
 
     function getLocations() {
-        if (selectedUnit && selectedUnit.type !== 'EVENT') {
+        if (selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
             $.ajax(
                 {
                     type: "GET",
@@ -126,11 +126,11 @@ $(document).ready(function () {
 
     function buildValueDiv() {
         let divHtml = '';
-        if (selectedUnit.type !== 'EVENT') {
+        if (selectedCharacteristic.type !== 'EVENT') {
             divHtml = '<div class="col-sm-12">'
             divHtml += '<label for="valueField"><b>Actual Measurement Value for ';
-            divHtml += selectedUnit.shortDescription;
-            divHtml += ' in ' + selectedUnit.unitDescription + ':';
+            divHtml += selectedCharacteristic.shortDescription;
+            divHtml += ' in ' + selectedCharacteristic.unitDescription + ':';
             divHtml += '</b></label>';
             divHtml += '<input id="valueField" type="number" required class="form-control">';
             divHtml += '</div>';
@@ -140,7 +140,7 @@ $(document).ready(function () {
 
     function buildDepthDiv() {
         let divHtml = '';
-        if (selectedUnit.enableDepth) {
+        if (selectedCharacteristic.enableDepth) {
             divHtml = '<div class="col-sm-12">'
             divHtml += '<label for="depthField"><b>Depth of Measurement in feet:</b></label>';
             divHtml += '<input id="depthField" type="number" required  class="form-control">';

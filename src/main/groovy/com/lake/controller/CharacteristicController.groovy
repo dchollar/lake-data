@@ -1,9 +1,9 @@
 package com.lake.controller
 
-import com.lake.dto.UnitDto
-import com.lake.entity.UnitType
+import com.lake.dto.CharacteristicDto
+import com.lake.entity.CharacteristicType
 import com.lake.service.AuditService
-import com.lake.service.UnitService
+import com.lake.service.CharacteristicService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -17,54 +17,54 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 class CharacteristicController {
 
     @Autowired
-    UnitService service
+    CharacteristicService service
     @Autowired
     AuditService auditService
 
-    @GetMapping(value = '/public/api/units/{unitId}', produces = APPLICATION_JSON_VALUE)
-    UnitDto getOne(@PathVariable(name = 'unitId', required = true) Integer unitId) {
-        auditService.audit(HttpMethod.GET.name(), "/public/api/units/${unitId}", this.class.simpleName)
-        return service.getById(unitId)
+    @GetMapping(value = '/public/api/characteristics/{characteristicId}', produces = APPLICATION_JSON_VALUE)
+    CharacteristicDto getOne(@PathVariable(name = 'characteristicId', required = true) Integer characteristicId) {
+        auditService.audit(HttpMethod.GET.name(), "/public/api/characteristics/${characteristicId}", this.class.simpleName)
+        return service.getById(characteristicId)
     }
 
     @Secured('ROLE_ADMIN')
-    @GetMapping(value = '/api/units', produces = APPLICATION_JSON_VALUE)
-    Collection<UnitDto> getAll() {
-        auditService.audit(HttpMethod.GET.name(), '/api/units', this.class.simpleName)
-        return service.getAllUnits()
+    @GetMapping(value = '/api/characteristics', produces = APPLICATION_JSON_VALUE)
+    Collection<CharacteristicDto> getAll() {
+        auditService.audit(HttpMethod.GET.name(), '/api/characteristics', this.class.simpleName)
+        return service.getAllCharacteristic()
     }
 
     @Secured('ROLE_ADMIN')
-    @GetMapping(value = '/api/unitTypes', produces = APPLICATION_JSON_VALUE)
-    List getAllUnitTypes() {
-        auditService.audit(HttpMethod.GET.name(), '/api/unitTypes', this.class.simpleName)
-        List unitTypes = [[id: "-1", name: ""]]
-        UnitType.values().each {
-            unitTypes.add([id: it.name(), name: it.name()])
+    @GetMapping(value = '/api/characteristicTypes', produces = APPLICATION_JSON_VALUE)
+    List getAllCharacteristicTypes() {
+        auditService.audit(HttpMethod.GET.name(), '/api/characteristicTypes', this.class.simpleName)
+        List types = [[id: "-1", name: ""]]
+        CharacteristicType.values().each {
+            types.add([id: it.name(), name: it.name()])
         }
-        return unitTypes
+        return types
     }
 
     @Secured('ROLE_ADMIN')
-    @PostMapping(value = '/api/units', produces = APPLICATION_JSON_VALUE)
-    UnitDto create(@RequestBody UnitDto dto) {
-        auditService.audit(HttpMethod.POST.name(), '/api/units', this.class.simpleName)
+    @PostMapping(value = '/api/characteristics', produces = APPLICATION_JSON_VALUE)
+    CharacteristicDto create(@RequestBody CharacteristicDto dto) {
+        auditService.audit(HttpMethod.POST.name(), '/api/characteristics', this.class.simpleName)
         return service.save(dto)
     }
 
     @Secured('ROLE_ADMIN')
-    @PutMapping(value = '/api/units/{unitId}', produces = APPLICATION_JSON_VALUE)
-    UnitDto update(@PathVariable(name = 'unitId', required = true) Integer unitId,
-                   @RequestBody UnitDto dto) {
-        auditService.audit(HttpMethod.PUT.name(), "/api/units/${unitId}", this.class.simpleName)
-        return service.update(unitId, dto)
+    @PutMapping(value = '/api/characteristics/{characteristicId}', produces = APPLICATION_JSON_VALUE)
+    CharacteristicDto update(@PathVariable(name = 'characteristicId', required = true) Integer characteristicId,
+                             @RequestBody CharacteristicDto dto) {
+        auditService.audit(HttpMethod.PUT.name(), "/api/characteristics/${characteristicId}", this.class.simpleName)
+        return service.update(characteristicId, dto)
     }
 
     @Secured('ROLE_ADMIN')
-    @DeleteMapping(value = '/api/units/{unitId}', produces = APPLICATION_JSON_VALUE)
-    void delete(@PathVariable(name = 'unitId', required = true) Integer unitId) {
-        auditService.audit(HttpMethod.DELETE.name(), "/api/units/${unitId}", this.class.simpleName)
-        service.delete(unitId)
+    @DeleteMapping(value = '/api/characteristics/{characteristicId}', produces = APPLICATION_JSON_VALUE)
+    void delete(@PathVariable(name = 'characteristicId', required = true) Integer characteristicId) {
+        auditService.audit(HttpMethod.DELETE.name(), "/api/characteristics/${characteristicId}", this.class.simpleName)
+        service.delete(characteristicId)
     }
 
 }

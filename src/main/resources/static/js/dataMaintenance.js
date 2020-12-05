@@ -1,6 +1,6 @@
 $(function () {
 
-    let units = JSON.parse($('#unitOptions').val());
+    let characteristics = JSON.parse($('#characteristicOptions').val());
     let locations = JSON.parse($('#locationOptions').val());
     let sites = JSON.parse($('#siteOptions').val());
 
@@ -88,17 +88,17 @@ $(function () {
             deleteItem: function (item) {
                 return $.ajax({
                     type: "DELETE",
-                    url: "api/measurements/" + item.id + "?unitType=" + item.unitType
+                    url: "api/measurements/" + item.id + "?characteristicType=" + item.characteristicType
                 });
             },
         },
 
         fields: [
             {title: "Id", name: "id", type: "number", visible: false},
-            {title: "Type", name: "unitType", type: "text", visible: false},
+            {title: "Type", name: "characteristicType", type: "text", visible: false},
             {title: "Site", name: "siteId", editing: false, width: 150, type: "select", items: sites, valueField: "id", textField: "name", valueType: "number"},
             {title: "Location", name: "locationId", editing: false, width: 150, type: "select", items: locations, valueField: "id", textField: "name", valueType: "number"},
-            {title: "Characteristic", name: "unitId", editing: false, width: 100, type: "select", items: units, valueField: "id", textField: "name", valueType: "number"},
+            {title: "Characteristic", name: "characteristicId", editing: false, width: 100, type: "select", items: characteristics, valueField: "id", textField: "name", valueType: "number"},
             {title: "Collection Date", name: "collectionDate", validate: "required", type: "text", width: 75}, // type: "date"
             {title: "Depth", name: "depth", filtering: false, type: "number", width: 50},
             {title: "Value", name: "value", filtering: false, type: "number", width: 50},

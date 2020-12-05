@@ -1,5 +1,5 @@
 package com.lake.entity
 
-enum UnitType {
+enum CharacteristicType {
     WATER, EVENT
 }

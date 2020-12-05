@@ -1,6 +1,6 @@
 package com.lake.dto
 
-import com.lake.entity.UnitType
+import com.lake.entity.CharacteristicType
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 import groovy.transform.ToString
@@ -8,7 +8,7 @@ import groovy.transform.ToString
 import java.time.LocalDate
 
 @EqualsAndHashCode(includes = ['id'])
-@Sortable(includes = ['siteId', 'unitId', 'locationId', 'collectionDate', 'depth', 'id'])
+@Sortable(includes = ['siteId', 'characteristicId', 'locationId', 'collectionDate', 'depth', 'id'])
 @ToString
 class SavedMeasurementDto {
     Integer id
@@ -17,7 +17,7 @@ class SavedMeasurementDto {
     BigDecimal depth
     String comment
     Integer locationId
-    Integer unitId
+    Integer characteristicId
     Integer siteId
-    UnitType unitType
+    CharacteristicType characteristicIdType
 }

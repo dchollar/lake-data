@@ -3,8 +3,8 @@ package com.lake.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "unit")
-class Unit {
+@Table(name = "characteristic")
+class Characteristic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +16,8 @@ class Unit {
     String unitDescription
 
     @Basic
-    @Column(name = "long_description", nullable = false, length = 100)
-    String longDescription
+    @Column(name = "description", nullable = false, length = 100)
+    String description
 
     @Basic
     @Column(name = "short_description", nullable = false, length = 50)
@@ -30,8 +30,8 @@ class Unit {
     @Enumerated(EnumType.STRING)
     @Basic
     @Column(name = "type", nullable = false, length = 50)
-    UnitType type
+    CharacteristicType type
 
-    @OneToMany(mappedBy = "unit")
-    Set<UnitLocation> unitLocations
+    @OneToMany(mappedBy = "characteristic")
+    Set<CharacteristicLocation> characteristicLocations
 }

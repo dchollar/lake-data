@@ -29,8 +29,8 @@ class Event {
     Site site
 
     @ManyToOne
-    @JoinColumn(name = "unit_id", referencedColumnName = "id", nullable = false)
-    Unit unit
+    @JoinColumn(name = "characteristic_id", referencedColumnName = "id", nullable = false)
+    Characteristic characteristic
 
     @ManyToOne
     @JoinColumn(name = "reporter_id", referencedColumnName = "id")

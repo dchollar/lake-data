@@ -26,7 +26,7 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-maintenance">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
                     <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
-                    <a class="dropdown-item text-light" th:href="@{/unitMaintenance}">Characteristics</a>
+                    <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
                     <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
                     <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
@@ -52,9 +52,9 @@
                         <option th:each="site : ${sites}" th:utext="${site.description}" th:value="${site.id}"/>
                     </select>
                 </div>
-                <div class="row form-group" id="unitSelectionDiv">
-                    <h5><label for="unitsChoice">Characteristic:</label></h5>
-                    <select class="form-control" id="unitsChoice" name="unitsChoice"></select>
+                <div class="row form-group" id="characteristicSelectionDiv">
+                    <h5><label for="characteristicsChoice">Characteristic:</label></h5>
+                    <select class="form-control" id="characteristicsChoice" name="characteristicsChoice"></select>
                 </div>
 
                 <div class="row form-group" id="locationSelectionDiv">

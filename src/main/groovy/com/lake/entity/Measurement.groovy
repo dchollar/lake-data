@@ -29,8 +29,8 @@ class Measurement {
     String comment
 
     @ManyToOne
-    @JoinColumn(name = "unit_location_id", referencedColumnName = "id", nullable = false)
-    UnitLocation unitLocation
+    @JoinColumn(name = "characteristic_location_id", referencedColumnName = "id", nullable = false)
+    CharacteristicLocation characteristicLocation
 
     @ManyToOne
     @JoinColumn(name = "reporter_id", referencedColumnName = "id")

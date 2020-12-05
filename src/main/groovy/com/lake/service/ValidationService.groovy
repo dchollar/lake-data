@@ -1,8 +1,8 @@
 package com.lake.service
 
 import com.lake.dto.SavedMeasurementDto
-import com.lake.dto.UnitDto
-import com.lake.entity.UnitType
+import com.lake.dto.CharacteristicDto
+import com.lake.entity.CharacteristicType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
@@ -13,19 +13,19 @@ import java.time.LocalDate
 class ValidationService {
 
     @Autowired
-    UnitService unitService
+    CharacteristicService service
 
     void isValidForChange(SavedMeasurementDto dto) {
-        List valid = isValid(dto.siteId, dto.unitId, dto.locationId, null, null)
+        List valid = isValid(dto.siteId, dto.characteristicId, dto.locationId, null, null)
         String errorMessage = valid[1] as String
-        UnitDto unitDto = unitService.getById(dto.unitId)
-        if (unitDto.enableDepth && (dto.depth == null || dto.depth < 0)) {
+        CharacteristicDto characteristicDto = service.getById(dto.characteristicId)
+        if (characteristicDto.enableDepth && (dto.depth == null || dto.depth < 0)) {
             errorMessage += 'Depth is missing or less than zero '
         }
-        if (!unitDto.enableDepth && (dto.depth != null && dto.depth != -1)) {
+        if (!characteristicDto.enableDepth && (dto.depth != null && dto.depth != -1)) {
             errorMessage += 'Depth should be -1 '
         }
-        if (unitDto.type != UnitType.EVENT && dto.value == null) {
+        if (characteristicDto.type != CharacteristicType.EVENT && dto.value == null) {
             errorMessage += 'value is missing '
         }
         if (!dto.collectionDate) {
@@ -36,24 +36,24 @@ class ValidationService {
         }
     }
 
-    List isValid(Integer siteId, Integer unitId, Integer locationId, LocalDate fromDate, LocalDate toDate) {
+    List isValid(Integer siteId, Integer characteristicId, Integer locationId, LocalDate fromDate, LocalDate toDate) {
         String message = ''
-        if (!unitId) {
-            message += 'Unit is missing '
+        if (!characteristicId) {
+            message += 'characteristic is missing '
             return [false, message]
         }
         boolean valid = true
-        UnitDto unitDto = unitService.getById(unitId)
+        CharacteristicDto characteristicDto = service.getById(characteristicId)
         if (!siteId) {
             message += 'site is missing '
             valid = false
         } else if (fromDate && toDate && fromDate.isAfter(toDate)) {
             message += 'from date is after to date '
             valid = false
-        } else if (unitDto.type == UnitType.EVENT && locationId) {
+        } else if (characteristicDto.type == CharacteristicType.EVENT && locationId) {
             message += 'Not supposed to have a location '
             valid = false
-        } else if (unitDto.type != UnitType.EVENT && !locationId) {
+        } else if (characteristicDto.type != CharacteristicType.EVENT && !locationId) {
             message += 'location is missing '
             valid = false
         }
