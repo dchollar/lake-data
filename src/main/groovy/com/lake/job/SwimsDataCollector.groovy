@@ -38,6 +38,8 @@ class SwimsDataCollector {
     private static final int NORTH_PIPE_LAKE_SITE_ID = 2
     private static final int NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 2
     private static final int PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 4
+    private static final int NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID = 6
+    private static final int PIPE_LAKE_DEEP_HOLE_LOCATION_ID = 5
 
     // characteristic IDs
     private static final int SECCHI_ID = 9
@@ -95,12 +97,13 @@ class SwimsDataCollector {
         String lakeName = StringUtils.stripToNull(clmnAnnualReport.srow.official_name.toString())
         Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
         Integer locationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
+        Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
 
         clmnAnnualReport.srow.secchi_rows.secchi_row.each { NodeChild row ->
             processSecchiRow(reporter, siteId, locationId, row)
         }
         clmnAnnualReport.srow.profile_rows.profile_row.each { NodeChild row ->
-            processProfileRow(reporter, siteId, locationId, row)
+            processProfileRow(reporter, siteId, deepHoleLocationId, row)
         }
     }
 
