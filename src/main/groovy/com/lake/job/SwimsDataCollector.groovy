@@ -1,8 +1,8 @@
 package com.lake.job
 
 import com.lake.dto.SavedMeasurementDto
-import com.lake.entity.Reporter
 import com.lake.entity.CharacteristicType
+import com.lake.entity.Reporter
 import com.lake.service.AuditService
 import com.lake.service.MeasurementService
 import com.lake.service.ReporterService
@@ -33,12 +33,14 @@ class SwimsDataCollector {
     private static final String START_YEAR = 'START_YEAR'
     private static final String PIPE_LAKE_NAME = 'Pipe Lake'
 
-    // site and location ids
+    // site ids
     private static final int PIPE_LAKE_SITE_ID = 1
     private static final int NORTH_PIPE_LAKE_SITE_ID = 2
-    private static final int NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 2
-    private static final int PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 4
+
+    // location ids
+    private static final int NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 4
     private static final int NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID = 6
+    private static final int PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID = 2
     private static final int PIPE_LAKE_DEEP_HOLE_LOCATION_ID = 5
 
     // characteristic IDs
@@ -90,38 +92,45 @@ class SwimsDataCollector {
         parseXml(xml)
     }
 
+    /**
+     * The xml file has the site name in it. Based on the site name and the characteristic being
+     * parsed, we need to determine the location. Might need to set up a mapping table with these
+     * elements instead of hard coding them here. Only parsing North Pipe Lake and Pipe Lake data.
+     *
+     * @param xml
+     */
     private void parseXml(String xml) {
         Reporter reporter = reporterService.getReporter(REPORTER_USERNAME)
 
         GPathResult clmnAnnualReport = new XmlSlurper().parseText(xml)
         String lakeName = StringUtils.stripToNull(clmnAnnualReport.srow.official_name.toString())
         Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
-        Integer locationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
+        Integer topDeepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
         Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
 
         clmnAnnualReport.srow.secchi_rows.secchi_row.each { NodeChild row ->
-            processSecchiRow(reporter, siteId, locationId, row)
+            processSecchiRow(reporter, siteId, topDeepHoleLocationId, deepHoleLocationId, row)
         }
         clmnAnnualReport.srow.profile_rows.profile_row.each { NodeChild row ->
             processProfileRow(reporter, siteId, deepHoleLocationId, row)
         }
     }
 
-    private void processSecchiRow(Reporter reporter, Integer siteId, Integer locationId, NodeChild row) {
+    private void processSecchiRow(Reporter reporter, Integer siteId, Integer topDeepHoleLocationId, Integer deepHoleLocationId, NodeChild row) {
         String startDate = StringUtils.stripToNull(row.start_date.toString())
-        saveDto(reporter, siteId, locationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.secchi.toString()))
-        saveDto(reporter, siteId, locationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.chlorophyll.toString()))
-        saveDto(reporter, siteId, locationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.total_phosphorus.toString()))
-        saveDto(reporter, siteId, locationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.TSI_SD.toString()))
-        saveDto(reporter, siteId, locationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.TSI_TP.toString()))
-        saveDto(reporter, siteId, locationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.TSI_CHL.toString()))
+        saveDto(reporter, siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.secchi.toString()))
+        saveDto(reporter, siteId, deepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.chlorophyll.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.total_phosphorus.toString()))
+        saveDto(reporter, siteId, deepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.TSI_SD.toString()))
+        saveDto(reporter, siteId, deepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.TSI_TP.toString()))
+        saveDto(reporter, siteId, deepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.TSI_CHL.toString()))
     }
 
-    private void processProfileRow(Reporter reporter, Integer siteId, Integer locationId, NodeChild row) {
+    private void processProfileRow(Reporter reporter, Integer siteId, Integer deepHoleLocationId, NodeChild row) {
         String startDate = StringUtils.stripToNull(row.start_date2.toString())
         String depth = extractDepth(row)
-        saveDto(reporter, siteId, locationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
-        saveDto(reporter, siteId, locationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, extractDissolvedOxygen(row), depth)
+        saveDto(reporter, siteId, deepHoleLocationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
+        saveDto(reporter, siteId, deepHoleLocationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, extractDissolvedOxygen(row), depth)
     }
 
     private static String extractDissolvedOxygen(final NodeChild row) {
