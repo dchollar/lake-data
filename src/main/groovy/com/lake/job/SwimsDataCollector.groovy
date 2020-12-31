@@ -119,11 +119,11 @@ class SwimsDataCollector {
     private void processSecchiRow(Reporter reporter, Integer siteId, Integer topDeepHoleLocationId, Integer deepHoleLocationId, NodeChild row) {
         String startDate = StringUtils.stripToNull(row.start_date.toString())
         saveDto(reporter, siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.secchi.toString()))
-        saveDto(reporter, siteId, deepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.chlorophyll.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.chlorophyll.toString()))
         saveDto(reporter, siteId, topDeepHoleLocationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.total_phosphorus.toString()))
-        saveDto(reporter, siteId, deepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.TSI_SD.toString()))
-        saveDto(reporter, siteId, deepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.TSI_TP.toString()))
-        saveDto(reporter, siteId, deepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.TSI_CHL.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.TSI_SD.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.TSI_TP.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.TSI_CHL.toString()))
     }
 
     private void processProfileRow(Reporter reporter, Integer siteId, Integer deepHoleLocationId, NodeChild row) {
