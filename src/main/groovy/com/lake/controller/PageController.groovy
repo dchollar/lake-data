@@ -1,5 +1,6 @@
 package com.lake.controller
 
+import com.lake.dto.SiteDto
 import com.lake.service.*
 import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
@@ -32,6 +33,13 @@ class PageController {
         return 'index'
     }
 
+    @GetMapping('/documents')
+    String documents(Model model) {
+        auditService.audit(HttpMethod.GET.name(), '/documents', this.class.simpleName)
+        model.addAttribute('sites', siteService.getSitesWithDocuments())
+        return 'documents'
+    }
+
     @Secured('ROLE_REPORTER')
     @GetMapping('/dataEntry')
     String dataEntry(Model model) {
@@ -49,9 +57,17 @@ class PageController {
     }
 
     @Secured('ROLE_ADMIN')
+    @GetMapping('/documentMaintenance')
+    String documentMaintenance(Model model) {
+        model.addAttribute('siteOptions', getSites(siteService.getAllSites()))
+        auditService.audit(HttpMethod.GET.name(), '/documentMaintenance', this.class.simpleName)
+        return 'documentMaintenance'
+    }
+
+    @Secured('ROLE_ADMIN')
     @GetMapping('/locationMaintenance')
     String locationMaintenance(Model model) {
-        model.addAttribute('siteOptions', getSites())
+        model.addAttribute('siteOptions', getSites(siteService.getAllSites()))
         auditService.audit(HttpMethod.GET.name(), '/locationMaintenance', this.class.simpleName)
         return 'locationMaintenance'
     }
@@ -67,7 +83,7 @@ class PageController {
     @GetMapping('/dataMaintenance')
     String dataMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataMaintenance', this.class.simpleName)
-        model.addAttribute('siteOptions', getSites())
+        model.addAttribute('siteOptions', getSites(siteService.getAllSites()))
         model.addAttribute('characteristicOptions', getCharacteristics())
         model.addAttribute('locationOptions', getLocations())
         return 'dataMaintenance'
@@ -82,9 +98,9 @@ class PageController {
 
     //--------------------------------------------------------------------------------------
 
-    private String getSites() {
+    static private String getSites(Collection<SiteDto> sites) {
         List results = [[id: "-1", name: ""]]
-        siteService.getAllSites().each {
+        sites.each {
             results.add([id: it.id, name: it.description])
         }
         return JsonOutput.toJson(results)

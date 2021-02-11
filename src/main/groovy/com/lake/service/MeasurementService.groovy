@@ -59,11 +59,11 @@ class MeasurementService {
 
     @Transactional
     void save(SavedMeasurementDto dto, Reporter reporter = null) {
-        Characteristic unicharacteristict = characteristicService.getOne(dto.characteristicId)
-        if (dto.locationId) {
-            saveMeasurement(new Measurement(), dto, unicharacteristict, reporter)
+        Characteristic characteristic = characteristicService.getOne(dto.characteristicId)
+        if (characteristic.type == CharacteristicType.EVENT) {
+            saveEvent(new Event(), dto, characteristic, reporter)
         } else {
-            saveEvent(new Event(), dto, unicharacteristict, reporter)
+            saveMeasurement(new Measurement(), dto, characteristic, reporter)
         }
     }
 

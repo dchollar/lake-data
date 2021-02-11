@@ -5,9 +5,9 @@ import com.lake.entity.*
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 
+import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
 
 @Slf4j
 class ConverterUtil {
@@ -22,6 +22,14 @@ class ConverterUtil {
                     && (!filter.httpMethod || (filter.httpMethod && dto.httpMethod.contains(filter.httpMethod)))) {
                 dtos.add(dto)
             }
+        }
+        return dtos
+    }
+
+    static Collection<DocumentDto> convertDocuments(Collection<Document> entities, String timezone) {
+        Set<DocumentDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convert(it, timezone))
         }
         return dtos
     }
@@ -103,8 +111,19 @@ class ConverterUtil {
         } else {
             dto.reporterName = ''
         }
-        ZonedDateTime utcTime = entity.created.atZone(ZoneOffset.UTC)
-        dto.created = utcTime.withZoneSameInstant(ZoneId.of(timezone))
+        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone))
+        return dto
+    }
+
+    static DocumentDto convert(Document entity, String timezone) {
+        DocumentDto dto = new DocumentDto()
+        dto.id = entity.id
+        dto.path = entity.path
+        dto.title = entity.title
+        dto.siteId = entity.site.id
+        dto.lastUpdated = entity.lastUpdated.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone))
+        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone))
+        dto.document = null
         return dto
     }
 
@@ -265,6 +284,23 @@ class ConverterUtil {
         entity.enableDepth = dto.enableDepth
         entity.type = dto.type
         return entity
+    }
+
+    static Document convert(DocumentDto dto, Document entity) {
+        entity.id = dto.id
+        entity.path = cleanPath(dto.path)
+        entity.title = dto.title
+        entity.document = null // TODO fix
+        entity.text = null  // TODO convert pdf to text
+        entity.lastUpdated = Instant.now()
+
+        return entity
+    }
+
+    private static String cleanPath(final String dtoPath) {
+        String path = dtoPath.take(1) == '/' ? dtoPath.drop(1) : dtoPath
+        String reversePath = path.reverse()
+        return reversePath.take(1) == '/' ? reversePath.drop(1).reverse() : path
     }
 
 }
