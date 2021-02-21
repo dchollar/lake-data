@@ -19,7 +19,7 @@ $(document).ready(function () {
         $("#message").text("").hide();
         let searchWord = $('#searchPhrase').val();
         if (siteId && searchWord) {
-            let url = "/public/api/documents/site/" + siteId + "/search?searchWord=" + searchWord + "&timezone=" + timezone;
+            let url = "public/api/documents/site/" + siteId + "/search?searchWord=" + searchWord + "&timezone=" + timezone;
             getDocuments(url);
         }
     });
