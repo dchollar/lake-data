@@ -9,9 +9,9 @@ web application for maintaining lake water quality data on pipe lake.
   - Add a privacy statement page linked from the footer
   - Add a version that is displayed in the page footer
   - Create instructions or help documentation for data entry page and all maintenance pages. have this info appears in an overlay.
-  - Enable a date picker in the data maintenance page - maybe
+  - Enable a date picker in the data maintenance page - NO they have all looked bad
   - set up https://superset.apache.org/
-  - Enable https on the server https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
+  - Enable https on the server - NO not going to do it. requires domain registration  https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
   - Create a mapping between characteristic and location and event. Want to enforce for data entry the valid locations or events for a characteristic. maybe?
 
 
