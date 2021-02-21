@@ -13,7 +13,7 @@ class Document {
     @Column(name = 'id', nullable = false)
     Integer id
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
     Site site
 
@@ -40,6 +40,6 @@ class Document {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "text", nullable = true)
+    @Column(name = "text", nullable = false)
     String text
 }

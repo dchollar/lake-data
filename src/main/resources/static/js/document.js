@@ -10,8 +10,18 @@ $(document).ready(function () {
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
         siteId = $(this).val();
+        let url = "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
         getSite();
-        getDocuments();
+        getDocuments(url);
+    });
+
+    $('#submitButton').on('click', function () {
+        $("#message").text("").hide();
+        let searchWord = $('#searchPhrase').val();
+        if (siteId && searchWord) {
+            let url = "/public/api/documents/site/" + siteId + "/search?searchWord=" + searchWord + "&timezone=" + timezone;
+            getDocuments(url);
+        }
     });
 
     function getSite() {
@@ -25,21 +35,23 @@ $(document).ready(function () {
                 },
                 error: function (response) {
                     console.log(response);
+                    $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                 }
             });
     }
 
-    function getDocuments() {
+    function getDocuments(url) {
         $.ajax(
             {
                 type: "GET",
-                url: "public/api/sites/" + siteId + "/documents?timezone=" + timezone,
+                url: url,
                 dataType: "json",
                 success: function (documents) {
                     buildResultDiv(documents);
                 },
                 error: function (response) {
                     console.log(response);
+                    $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                 }
             });
     }
@@ -80,7 +92,7 @@ $(document).ready(function () {
 
                 //------------------------------------
 
-                html += '<li> <a href="documents/' + document.id + '/document" target="_blank">' + document.title + '</a></li>';
+                html += '<li> <a href="public/api/documents/' + document.id + '/document" target="_blank">' + document.title + '</a></li>';
                 previousHeaders = headers;
             }
 

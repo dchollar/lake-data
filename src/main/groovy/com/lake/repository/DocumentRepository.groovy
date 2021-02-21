@@ -9,4 +9,6 @@ interface DocumentRepository extends JpaRepository<Document, Integer> {
 
     List<Document> findBySite(Site site)
 
+    List<Document> findBySiteAndTextContainingIgnoreCase(Site site, String word)
+
 }

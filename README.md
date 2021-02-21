@@ -30,28 +30,19 @@ web application for maintaining lake water quality data on pipe lake.
 Wisconsin DNR data site is https://dnrx.wisconsin.gov/swims/login.jsp
 
 # PDF Design Thoughts
-https://nullbeans.com/spring-boot-and-lucene-configuration-example/
-https://wkrzywiec.medium.com/full-text-search-with-hibernate-search-lucene-part-1-e245b889aa8e
-https://dzone.com/articles/jpa-searching-using-lucene
+- https://nullbeans.com/spring-boot-and-lucene-configuration-example/
+- https://wkrzywiec.medium.com/full-text-search-with-hibernate-search-lucene-part-1-e245b889aa8e
+- https://dzone.com/articles/jpa-searching-using-lucene
 
 
-https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
-https://pdfbox.apache.org/
-https://tika.apache.org/
-https://lucene.apache.org/solr/guide/6_6/uploading-data-with-solr-cell-using-apache-tika.html
-https://lucene.apache.org/index.html
-https://lucene.apache.org/solr/
+- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+- https://pdfbox.apache.org/
+- https://tika.apache.org/
+- https://lucene.apache.org/solr/guide/6_6/uploading-data-with-solr-cell-using-apache-tika.html
+- https://lucene.apache.org/index.html
+- https://lucene.apache.org/solr/
 
-https://mvnrepository.com/artifact/com.itextpdf/itextpdf
-https://itextpdf.com/en Licensing issues with iText now.
+- https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+- https://itextpdf.com/en Licensing issues with iText now.
 
 Larry's Example: https://optidat.com/pl/pipe-lakes-district-records-archive/
-
-document title
-path - for example: 'Minutes/Board Meeting Minutes' strip any leading slash
-uploaded date
-associated site
-creation date
-
-blob
-clob

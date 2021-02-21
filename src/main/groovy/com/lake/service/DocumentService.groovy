@@ -5,6 +5,7 @@ import com.lake.entity.Document
 import com.lake.entity.Site
 import com.lake.repository.DocumentRepository
 import com.lake.util.ConverterUtil
+import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
@@ -18,6 +19,16 @@ class DocumentService {
     DocumentRepository repository
     @Autowired
     SiteService siteService
+
+    Collection<DocumentDto> findDocumentsContaining(Integer siteId, String searchWord, String timeZone) {
+        String cleanWord = StringUtils.stripToNull(searchWord)
+        if (cleanWord) {
+            Site site = siteService.getOne(siteId)
+            ConverterUtil.convertDocuments(repository.findBySiteAndTextContainingIgnoreCase(site, searchWord), timeZone)
+        } else {
+            return getDocumentsBySite(siteId, timeZone)
+        }
+    }
 
     Collection<DocumentDto> getDocumentsBySite(Integer siteId, String timeZone) {
         Site site = siteService.getOne(siteId)

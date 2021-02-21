@@ -21,11 +21,19 @@ class DocumentController {
     @Autowired
     AuditService auditService
 
-    @GetMapping(value = '/documents/{documentId}/document', produces = APPLICATION_PDF_VALUE)
+    @GetMapping(value = '/public/api/documents/{documentId}/document', produces = APPLICATION_PDF_VALUE)
     @ResponseBody
     byte[] getDocument(@PathVariable(name = 'documentId', required = true) Integer documentId) {
-        auditService.audit(HttpMethod.GET.name(), "/api/documents/${documentId}/document", this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), "/public/api/documents/${documentId}/document", this.class.simpleName)
         return service.getDocument(documentId)
+    }
+
+    @GetMapping(value = '/public/api/documents/site/{siteId}/search', produces = APPLICATION_JSON_VALUE)
+    Collection<DocumentDto> search(@PathVariable(name = 'siteId', required = true) Integer siteId,
+                                   @RequestParam(name = 'searchWord', required = true) String searchWord,
+                                   @RequestParam(name = 'timezone', required = true) String timezone) {
+        auditService.audit(HttpMethod.GET.name(), "/public/api/documents/site/${siteId}/search?searchWord=${searchWord}", this.class.simpleName)
+        return service.findDocumentsContaining(siteId, searchWord, timezone)
     }
 
     @Secured('ROLE_ADMIN')

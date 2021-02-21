@@ -52,10 +52,18 @@
                         <option th:each="site : ${sites}" th:utext="${site.description}" th:value="${site.id}"/>
                     </select>
                 </div>
+                <div class="row form-group" id="searchPhraseDiv">
+                    <h5><label for="searchPhrase">Search Phrase</label></h5>
+                    <input class="form-control" id="searchPhrase" name="searchPhrase" th:type="text"/>
+                </div>
+                <div class="row form-group pt-3" id="submitSelectionDiv">
+                    <button class="btn btn-primary" id='submitButton' name='submitButton' type="button">Search</button>
+                </div>
             </div>
         </div>
 
         <div class="col-sm-6 text-left" id="resultDiv">
+            <span id="message" style="color: red;"></span><br>
             <div class="container">
                 <div id="documentDiv"></div>
             </div>

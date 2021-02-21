@@ -4,6 +4,8 @@ import com.lake.dto.*
 import com.lake.entity.*
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.text.PDFTextStripper
 
 import javax.sql.rowset.serial.SerialBlob
 import java.time.Instant
@@ -299,8 +301,19 @@ class ConverterUtil {
     }
 
     private static String convertPdf(byte[] pdf) {
-        // TODO convert pdf to text
-        return null
+        PDDocument document = PDDocument.load(pdf)
+        PDFTextStripper stripper = new PDFTextStripper()
+        String allText = stripper.getText(document)
+
+        String stripped = StringUtils.replace(allText, ' the ',' ')
+        stripped = StringUtils.replace(stripped, '\n',' ')
+        stripped = StringUtils.replace(stripped, '\r',' ')
+        stripped = StringUtils.replace(stripped, '\t',' ')
+        stripped = StringUtils.replace(stripped, ' of ',' ')
+        stripped = StringUtils.replace(stripped, ' a ',' ')
+        stripped = StringUtils.replace(stripped, ' it ',' ')
+
+        return stripped
     }
 
     private static String cleanPath(final String dtoPath) {
