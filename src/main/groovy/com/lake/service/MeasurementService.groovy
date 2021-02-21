@@ -3,9 +3,9 @@ package com.lake.service
 import com.lake.dto.MeasurementDto
 import com.lake.dto.SavedMeasurementDto
 import com.lake.entity.*
+import com.lake.repository.CharacteristicLocationRepository
 import com.lake.repository.EventRepository
 import com.lake.repository.MeasurementRepository
-import com.lake.repository.CharacteristicLocationRepository
 import com.lake.util.ConverterUtil
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils

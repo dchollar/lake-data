@@ -1,8 +1,7 @@
 package com.lake.repository
 
-
-import com.lake.entity.Measurement
 import com.lake.entity.CharacteristicLocation
+import com.lake.entity.Measurement
 import org.springframework.data.jpa.repository.JpaRepository
 
 import java.time.LocalDate

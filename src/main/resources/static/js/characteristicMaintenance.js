@@ -1,4 +1,5 @@
 $(function () {
+    $("#message").text("").hide();
 
     $.get("api/characteristicTypes").done(function (characteristicTypes) {
 
@@ -17,35 +18,51 @@ $(function () {
 
             controller: {
                 loadData: function (filter) {
+                    $("#message").text("").hide();
                     return $.ajax({
                         type: "GET",
                         url: "api/characteristics",
-                        data: filter
+                        data: filter,
+                        error: function (xhr, resp, text) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        }
                     });
                 },
 
                 insertItem: function (item) {
+                    $("#message").text("").hide();
                     return $.ajax({
                         type: "POST",
                         url: "api/characteristics",
                         contentType: 'application/json',
-                        data: JSON.stringify(item)
+                        data: JSON.stringify(item),
+                        error: function (xhr, resp, text) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        }
                     });
                 },
 
                 updateItem: function (item) {
+                    $("#message").text("").hide();
                     return $.ajax({
                         type: "PUT",
                         url: "api/characteristics/" + item.id,
                         contentType: 'application/json',
-                        data: JSON.stringify(item)
+                        data: JSON.stringify(item),
+                        error: function (xhr, resp, text) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        }
                     });
                 },
 
                 deleteItem: function (item) {
+                    $("#message").text("").hide();
                     return $.ajax({
                         type: "DELETE",
-                        url: "api/characteristics/" + item.id
+                        url: "api/characteristics/" + item.id,
+                        error: function (xhr, resp, text) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        }
                     });
                 },
             },

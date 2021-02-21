@@ -1,4 +1,5 @@
 $(function () {
+    $("#message").text("").hide();
 
     $("#jsGrid").jsGrid({
 
@@ -14,35 +15,51 @@ $(function () {
 
         controller: {
             loadData: function (filter) {
+                $("#message").text("").hide();
                 return $.ajax({
                     type: "GET",
                     url: "api/reporters",
-                    data: filter
+                    data: filter,
+                    error: function (xhr, resp, text) {
+                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                    }
                 });
             },
 
             insertItem: function (item) {
+                $("#message").text("").hide();
                 return $.ajax({
                     type: "POST",
                     url: "api/reporters",
                     contentType: 'application/json',
-                    data: JSON.stringify(item)
+                    data: JSON.stringify(item),
+                    error: function (xhr, resp, text) {
+                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                    }
                 });
             },
 
             updateItem: function (item) {
+                $("#message").text("").hide();
                 return $.ajax({
                     type: "PUT",
                     url: "api/reporters/" + item.id,
                     contentType: 'application/json',
-                    data: JSON.stringify(item)
+                    data: JSON.stringify(item),
+                    error: function (xhr, resp, text) {
+                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                    }
                 });
             },
 
             deleteItem: function (item) {
+                $("#message").text("").hide();
                 return $.ajax({
                     type: "DELETE",
-                    url: "api/reporters/" + item.id
+                    url: "api/reporters/" + item.id,
+                    error: function (xhr, resp, text) {
+                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                    }
                 });
             },
         },

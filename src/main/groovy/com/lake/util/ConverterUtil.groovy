@@ -5,6 +5,7 @@ import com.lake.entity.*
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 
+import javax.sql.rowset.serial.SerialBlob
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -111,7 +112,7 @@ class ConverterUtil {
         } else {
             dto.reporterName = ''
         }
-        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone))
+        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm:ss')
         return dto
     }
 
@@ -121,8 +122,8 @@ class ConverterUtil {
         dto.path = entity.path
         dto.title = entity.title
         dto.siteId = entity.site.id
-        dto.lastUpdated = entity.lastUpdated.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone))
-        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone))
+        dto.lastUpdated = entity.lastUpdated.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
+        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
         dto.document = null
         return dto
     }
@@ -288,13 +289,18 @@ class ConverterUtil {
 
     static Document convert(DocumentDto dto, Document entity) {
         entity.id = dto.id
-        entity.path = cleanPath(dto.path)
-        entity.title = dto.title
-        entity.document = null // TODO fix
-        entity.text = null  // TODO convert pdf to text
+        entity.path = cleanPath(StringUtils.stripToNull(dto.path))
+        entity.title = StringUtils.stripToNull(dto.title)
+        entity.document = dto.document == null ? entity.document : new SerialBlob(dto.document.bytes);
+        entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes);
         entity.lastUpdated = Instant.now()
 
         return entity
+    }
+
+    private static String convertPdf(byte[] pdf) {
+        // TODO convert pdf to text
+        return null
     }
 
     private static String cleanPath(final String dtoPath) {

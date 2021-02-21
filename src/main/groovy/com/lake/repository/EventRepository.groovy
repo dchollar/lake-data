@@ -1,8 +1,8 @@
 package com.lake.repository
 
+import com.lake.entity.Characteristic
 import com.lake.entity.Event
 import com.lake.entity.Site
-import com.lake.entity.Characteristic
 import org.springframework.data.jpa.repository.JpaRepository
 
 import java.time.LocalDate

@@ -1,7 +1,7 @@
 package com.lake.service
 
-import com.lake.dto.SavedMeasurementDto
 import com.lake.dto.CharacteristicDto
+import com.lake.dto.SavedMeasurementDto
 import com.lake.entity.CharacteristicType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service

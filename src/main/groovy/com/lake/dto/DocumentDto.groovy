@@ -2,17 +2,16 @@ package com.lake.dto
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
-
-import java.time.ZonedDateTime
+import org.springframework.web.multipart.MultipartFile
 
 @EqualsAndHashCode(includes = ['id'])
-@Sortable(includes = ['path','title', 'id'])
+@Sortable(includes = ['siteId', 'path', 'title', 'id'])
 class DocumentDto {
     Integer id
     String path
     String title
     Integer siteId
-    ZonedDateTime created
-    ZonedDateTime lastUpdated
-    byte[] document
+    String created
+    String lastUpdated
+    MultipartFile document
 }

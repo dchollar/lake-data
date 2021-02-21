@@ -5,7 +5,6 @@ import com.lake.entity.Document
 import com.lake.entity.Site
 import com.lake.repository.DocumentRepository
 import com.lake.util.ConverterUtil
-import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
@@ -26,13 +25,10 @@ class DocumentService {
     }
 
     byte[] getDocument(Integer id) {
-        // TODO pull from DB
-//        Blob blob = repository.getOne(id).document
-//        byte[] bytes = blob.getBytes(1, (int) blob.length())
-//        blob.free()
-//        return bytes
-
-        return IOUtils.resourceToByteArray('/sample.pdf')
+        Blob blob = repository.getOne(id).document
+        byte[] bytes = blob.getBytes(1, (int) blob.length())
+        blob.free()
+        return bytes
     }
 
     @Secured('ROLE_ADMIN')
