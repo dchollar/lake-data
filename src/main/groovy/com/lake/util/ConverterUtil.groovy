@@ -3,11 +3,17 @@ package com.lake.util
 import com.lake.dto.*
 import com.lake.entity.*
 import groovy.util.logging.Slf4j
+import net.sourceforge.tess4j.ITesseract
+import net.sourceforge.tess4j.Tesseract
+import net.sourceforge.tess4j.util.LoadLibs
 import org.apache.commons.lang3.StringUtils
 import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.rendering.ImageType
+import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.PDFTextStripper
 
 import javax.sql.rowset.serial.SerialBlob
+import java.awt.image.BufferedImage
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -293,11 +299,17 @@ class ConverterUtil {
         entity.id = dto.id
         entity.path = cleanPath(StringUtils.stripToNull(dto.path))
         entity.title = StringUtils.stripToNull(dto.title)
-        entity.document = dto.document == null ? entity.document : new SerialBlob(dto.document.bytes);
-        entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes);
+        entity.document = dto.document == null ? entity.document : new SerialBlob(dto.document.bytes)
+        entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes)
         entity.lastUpdated = Instant.now()
 
         return entity
+    }
+
+    private static String cleanPath(final String dtoPath) {
+        String path = dtoPath.take(1) == '/' ? dtoPath.drop(1) : dtoPath
+        String reversePath = path.reverse()
+        return reversePath.take(1) == '/' ? reversePath.drop(1).reverse() : path
     }
 
     private static String convertPdf(byte[] pdf) {
@@ -305,21 +317,41 @@ class ConverterUtil {
         PDFTextStripper stripper = new PDFTextStripper()
         String allText = stripper.getText(document)
 
-        String stripped = StringUtils.replace(allText, ' the ',' ')
-        stripped = StringUtils.replace(stripped, '\n',' ')
-        stripped = StringUtils.replace(stripped, '\r',' ')
-        stripped = StringUtils.replace(stripped, '\t',' ')
-        stripped = StringUtils.replace(stripped, ' of ',' ')
-        stripped = StringUtils.replace(stripped, ' a ',' ')
-        stripped = StringUtils.replace(stripped, ' it ',' ')
+        if (StringUtils.isBlank(allText)) {
+            allText = extractTextFromScannedDocument(document)
+        }
+
+        String stripped = StringUtils.replace(allText, ' the ', ' ')
+        stripped = StringUtils.replace(stripped, '\n', ' ')
+        stripped = StringUtils.replace(stripped, '\r', ' ')
+        stripped = StringUtils.replace(stripped, '\t', ' ')
+        stripped = StringUtils.replace(stripped, ' of ', ' ')
+        stripped = StringUtils.replace(stripped, ' a ', ' ')
+        stripped = StringUtils.replace(stripped, ' it ', ' ')
+        stripped = StringUtils.stripToEmpty(stripped)
+
+        document.close()
 
         return stripped
     }
 
-    private static String cleanPath(final String dtoPath) {
-        String path = dtoPath.take(1) == '/' ? dtoPath.drop(1) : dtoPath
-        String reversePath = path.reverse()
-        return reversePath.take(1) == '/' ? reversePath.drop(1).reverse() : path
+
+    private static final String TESSERACT_DATA_RESOURCE_NAME = 'tessdata'
+    private static final int IMAGE_DPI = 300
+
+    private static String extractTextFromScannedDocument(PDDocument document) {
+        PDFRenderer pdfRenderer = new PDFRenderer(document)
+
+        ITesseract instance = new Tesseract()
+        File tessDataFolder = LoadLibs.extractTessResources(TESSERACT_DATA_RESOURCE_NAME)
+        instance.setDatapath(tessDataFolder.getPath())
+
+        StringBuilder out = new StringBuilder()
+        for (int page = 0; page < document.getNumberOfPages(); page++) {
+            BufferedImage bufferedImage = pdfRenderer.renderImageWithDPI(page, IMAGE_DPI, ImageType.BINARY)
+            out.append(instance.doOCR(bufferedImage))
+        }
+        return out.toString()
     }
 
 }
