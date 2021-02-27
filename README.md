@@ -14,6 +14,8 @@ web application for maintaining lake water quality data on pipe lake.
   - Enable https on the server - NO not going to do it. requires domain registration  https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
   - Create a mapping between characteristic and location and event. Want to enforce for data entry the valid locations or events for a characteristic. maybe?
   - Change the document page to have collapsible sections. All leaf nodes should collapse.
+  - load other document types besides PDFs.
+  - Bulk upload and download of documents. Not sure I want to do this
 
 
 # Technologies Used:
