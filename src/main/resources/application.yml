@@ -3,8 +3,8 @@ spring:
     name: lake-data
   servlet:
     multipart:
-      max-file-size: 16MB
-      max-request-size: 16MB
+      max-file-size: 20MB
+      max-request-size: 20MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/pipe_lake?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
