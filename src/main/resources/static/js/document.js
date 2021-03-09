@@ -78,12 +78,12 @@ $(document).ready(function () {
                         let testCount = headerCount + 1;
                         if (previousHeaders && openDepth >= testCount) {
                             while (openDepth >= testCount) {
-                                html += '</ul>';
+                                html += '</ul></li>';
                                 openDepth--;
                             }
                         }
                         let headerStyle = 4 + headerCount;
-                        html += '<li><h' + headerStyle + '>' + header + '</h' + headerStyle + '></li>';
+                        html += '<li><h' + headerStyle + '>' + header + '</h' + headerStyle + '>';
                         html += '<ul>';
                         openDepth++;
                     }
