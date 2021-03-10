@@ -171,7 +171,7 @@ class MeasurementService {
 
     private void saveMeasurement(Measurement measurement, SavedMeasurementDto dto, Characteristic characteristic, Reporter reporter = null) {
         Location location = locationService.getOne(dto.locationId)
-        measurement.comment = cleanComment(dto.comment)
+        measurement.comment = stripNonAscii(dto.comment)
         measurement.value = dto.value
         measurement.collectionDate = dto.collectionDate
         measurement.depth = dto.depth == null ? -1 : dto.depth
@@ -182,7 +182,7 @@ class MeasurementService {
 
     private void saveEvent(Event event, SavedMeasurementDto dto, Characteristic characteristic, Reporter reporter = null) {
         event.value = dto.collectionDate
-        event.comment = cleanComment(dto.comment)
+        event.comment = ConverterUtil.stripNonAscii(dto.comment)
         event.site = siteService.getOne(dto.siteId)
         event.year = dto.collectionDate.year
         event.characteristic = characteristic
@@ -191,14 +191,6 @@ class MeasurementService {
         if (!characteristicService.getCharacteristicsBySite(dto.siteId).contains(ConverterUtil.convert(characteristic))) {
             characteristicService.clearCache()
         }
-    }
-
-    private static String cleanComment(String comment) {
-        String s = StringUtils.stripToNull(comment)
-        if (s) {
-            return Normalizer.normalize(s, Normalizer.Form.NFKD).replaceAll('[^ -~]', '')
-        }
-        return s
     }
 
     private CharacteristicLocation getCharacteristicLocation(Characteristic characteristic, Location location) {

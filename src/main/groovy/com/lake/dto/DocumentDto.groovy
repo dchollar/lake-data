@@ -11,6 +11,7 @@ class DocumentDto {
     String path
     String title
     Integer siteId
+    Integer fileSize
     String created
     String lastUpdated
     MultipartFile document

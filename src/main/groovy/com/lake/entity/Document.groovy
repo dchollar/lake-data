@@ -26,6 +26,10 @@ class Document {
     String path
 
     @Basic
+    @Column(name = "file_size", nullable = false)
+    Integer fileSize
+
+    @Basic
     @Column(name = "created", nullable = false)
     Instant created
 

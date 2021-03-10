@@ -33,8 +33,8 @@ $(document).ready(function () {
                 success: function (aSite) {
                     site = aSite;
                 },
-                error: function (response) {
-                    console.log(response);
+                error: function (xhr, resp) {
+                    console.log(resp);
                     $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                 }
             });
@@ -49,8 +49,8 @@ $(document).ready(function () {
                 success: function (documents) {
                     buildResultDiv(documents);
                 },
-                error: function (response) {
-                    console.log(response);
+                error: function (xhr, resp) {
+                    console.log(resp);
                     $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                 }
             });
@@ -63,10 +63,12 @@ $(document).ready(function () {
             html += '<h4>No Documents Found</h4>';
         } else {
             html += '<h2>' + site.description + ' Record Archive</h2>';
-            html += '<ul>';
+            html += '<div id="accordion"><div class="panel list-group"><ul>';
+
 
             let previousHeaders;
             let openDepth = 0;
+            let counter = 0;
 
             for (let document of documents) {
 
@@ -74,17 +76,29 @@ $(document).ready(function () {
                 let headers = document.path.split('/')
 
                 for (let header of headers) {
+                    counter++;
+                    // determine if a header needs to be written or closed
                     if (!previousHeaders || previousHeaders.length <= headerCount || previousHeaders[headerCount] !== header) {
-                        let testCount = headerCount + 1;
-                        if (previousHeaders && openDepth >= testCount) {
-                            while (openDepth >= testCount) {
-                                html += '</ul></li>';
+
+                        let nextHeaderCount = headerCount + 1;
+                        // close any headers
+                        if (previousHeaders && openDepth >= nextHeaderCount) {
+                            while (openDepth >= nextHeaderCount) {
+                                html += '</ul></div></li>';
                                 openDepth--;
                             }
                         }
+
+                        // write out the header
                         let headerStyle = 4 + headerCount;
-                        html += '<li><h' + headerStyle + '>' + header + '</h' + headerStyle + '>';
+                        let divName = header.replace(/\s+/g, '') + counter + '_div';
+                        html += '<li class="list-group-item">';
+                        html += '<a href="#' + divName + '" data-parent="#accordion" data-toggle="collapse">';
+                        html += '<h' + headerStyle + '>' + header + '</h' + headerStyle + '>';
+                        html += '</a>';
+                        html += '<div class="collapse list-group-flush" id="' + divName + '">';
                         html += '<ul>';
+
                         openDepth++;
                     }
                     headerCount++;
@@ -92,11 +106,21 @@ $(document).ready(function () {
 
                 //------------------------------------
 
-                html += '<li> <a href="public/api/documents/' + document.id + '/document" target="_blank">' + document.title + '</a></li>';
+                html += '<li class="list-group-item list-group-item-secondary">';
+                html += '<a  href="public/api/documents/';
+                html += document.id;
+                html += '/document" target="_blank">';
+                html += document.title;
+                html += ' (';
+                html += document.fileSize;
+                html += ' KB)';
+                html += '</a>';
+                html += '</li>';
+
                 previousHeaders = headers;
             }
 
-            html += '</ul>';
+            html += '</ul></div></div>';
         }
 
         $('#documentDiv').html(html);

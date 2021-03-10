@@ -96,8 +96,8 @@ $(function () {
             {
                 title: "Document",
                 name: "file",
-                itemTemplate: function () {
-                    return $("<i>").attr("aria-hidden", true).attr("class", "far fa-file-pdf");
+                itemTemplate: function (value, item) {
+                    return "(" + item.fileSize + " KB)";
                 },
                 insertTemplate: function () {
                     return this.insertControl = $("<input>").prop("type", "file");

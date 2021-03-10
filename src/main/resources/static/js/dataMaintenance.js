@@ -27,7 +27,7 @@ $(function () {
                     type: "GET",
                     url: "api/measurements",
                     data: filter,
-                    error: function (xhr, resp, text) {
+                    error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                     }
                 });
@@ -42,7 +42,7 @@ $(function () {
                     url: "api/measurements/" + item.id,
                     contentType: 'application/json',
                     data: JSON.stringify(item),
-                    error: function (xhr, resp, text) {
+                    error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                     }
                 });
@@ -53,7 +53,7 @@ $(function () {
                 return $.ajax({
                     type: "DELETE",
                     url: "api/measurements/" + item.id + "?characteristicType=" + item.characteristicType,
-                    error: function (xhr, resp, text) {
+                    error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                     }
                 });

@@ -14,6 +14,7 @@ import org.apache.pdfbox.text.PDFTextStripper
 
 import javax.sql.rowset.serial.SerialBlob
 import java.awt.image.BufferedImage
+import java.text.Normalizer
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -132,6 +133,7 @@ class ConverterUtil {
         dto.siteId = entity.site.id
         dto.lastUpdated = entity.lastUpdated.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
         dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
+        dto.fileSize = entity.fileSize
         dto.document = null
         return dto
     }
@@ -256,7 +258,7 @@ class ConverterUtil {
     static Location convert(LocationDto dto, Location entity) {
         entity.id = dto.id
         entity.description = StringUtils.stripToNull(dto.description)
-        entity.comment = StringUtils.stripToNull(dto.comment)
+        entity.comment = StringUtils.stripToNull(stripNonAscii(dto.comment))
         return entity
     }
 
@@ -299,8 +301,11 @@ class ConverterUtil {
         entity.id = dto.id
         entity.path = cleanPath(StringUtils.stripToNull(dto.path))
         entity.title = StringUtils.stripToNull(dto.title)
+
         entity.document = dto.document == null ? entity.document : new SerialBlob(dto.document.bytes)
         entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes)
+        entity.fileSize = dto.document == null ? (entity.document.length()/1024).toInteger() : (dto.document.bytes.length/1024).toInteger()
+
         entity.lastUpdated = Instant.now()
 
         return entity
@@ -312,7 +317,7 @@ class ConverterUtil {
         return reversePath.take(1) == '/' ? reversePath.drop(1).reverse() : path
     }
 
-    private static String convertPdf(byte[] pdf) {
+    private static String convertPdf(final byte[] pdf) {
         PDDocument document = PDDocument.load(pdf)
         PDFTextStripper stripper = new PDFTextStripper()
         String allText = stripper.getText(document)
@@ -321,13 +326,12 @@ class ConverterUtil {
             allText = extractTextFromScannedDocument(document)
         }
 
-        String stripped = StringUtils.replace(allText, ' the ', ' ')
-        stripped = StringUtils.replace(stripped, '\n', ' ')
-        stripped = StringUtils.replace(stripped, '\r', ' ')
-        stripped = StringUtils.replace(stripped, '\t', ' ')
+        String stripped = stripNonAscii(allText)
+        stripped = StringUtils.replace(stripped, ' the ', ' ')
         stripped = StringUtils.replace(stripped, ' of ', ' ')
         stripped = StringUtils.replace(stripped, ' a ', ' ')
         stripped = StringUtils.replace(stripped, ' it ', ' ')
+        stripped = StringUtils.replace(stripped, '\\s{2,}', ' ')
         stripped = StringUtils.stripToEmpty(stripped)
 
         document.close()
@@ -339,7 +343,7 @@ class ConverterUtil {
     private static final String TESSERACT_DATA_RESOURCE_NAME = 'tessdata'
     private static final int IMAGE_DPI = 300
 
-    private static String extractTextFromScannedDocument(PDDocument document) {
+    private static String extractTextFromScannedDocument(final PDDocument document) {
         PDFRenderer pdfRenderer = new PDFRenderer(document)
 
         ITesseract instance = new Tesseract()
@@ -352,6 +356,15 @@ class ConverterUtil {
             out.append(instance.doOCR(bufferedImage))
         }
         return out.toString()
+    }
+
+
+    static String stripNonAscii(final String comment) {
+        String s = StringUtils.stripToNull(comment)
+        if (s) {
+            return Normalizer.normalize(s, Normalizer.Form.NFKD).replaceAll('[^ -~]', '')
+        }
+        return s
     }
 
 }

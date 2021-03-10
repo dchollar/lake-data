@@ -48,7 +48,7 @@ $(document).ready(function () {
                     url: "api/measurements",
                     contentType: 'application/json',
                     data: JSON.stringify(data),
-                    success: function (results) {
+                    success: function () {
                         alert("Your data has been saved.");
                         // $('#collectionDateField').value = '';
                         // $('#locationsChoice').value = '';
