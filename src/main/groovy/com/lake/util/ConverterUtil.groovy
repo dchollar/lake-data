@@ -304,20 +304,20 @@ class ConverterUtil {
 
         entity.document = dto.document == null ? entity.document : new SerialBlob(dto.document.bytes)
         entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes)
-        entity.fileSize = dto.document == null ? (entity.document.length()/1024).toInteger() : (dto.document.bytes.length/1024).toInteger()
+        entity.fileSize = dto.document == null ? (entity.document.length() / 1024).toInteger() : (dto.document.bytes.length / 1024).toInteger()
 
         entity.lastUpdated = Instant.now()
 
         return entity
     }
 
-    private static String cleanPath(final String dtoPath) {
+    static String cleanPath(final String dtoPath) {
         String path = dtoPath.take(1) == '/' ? dtoPath.drop(1) : dtoPath
         String reversePath = path.reverse()
         return reversePath.take(1) == '/' ? reversePath.drop(1).reverse() : path
     }
 
-    private static String convertPdf(final byte[] pdf) {
+    static String convertPdf(final byte[] pdf) {
         PDDocument document = PDDocument.load(pdf)
         PDFTextStripper stripper = new PDFTextStripper()
         String allText = stripper.getText(document)
@@ -357,7 +357,6 @@ class ConverterUtil {
         }
         return out.toString()
     }
-
 
     static String stripNonAscii(final String comment) {
         String s = StringUtils.stripToNull(comment)

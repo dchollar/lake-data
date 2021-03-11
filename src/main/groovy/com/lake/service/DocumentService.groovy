@@ -5,11 +5,13 @@ import com.lake.entity.Document
 import com.lake.entity.Site
 import com.lake.repository.DocumentRepository
 import com.lake.util.ConverterUtil
+import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+import javax.sql.rowset.serial.SerialBlob
 import java.sql.Blob
 import java.time.Instant
 
@@ -66,5 +68,25 @@ class DocumentService {
     @Secured('ROLE_ADMIN')
     void delete(Integer id) {
         repository.deleteById(id)
+    }
+
+    void bulkSave() {
+        String subPath = 'C:\\temp\\PipeLakesRecords\\'
+        File startDir = new File(subPath);
+        String[] extensions = ['pdf'].toArray()
+        Collection<File> files = FileUtils.listFiles(startDir, extensions, true)
+        files.each { file ->
+            byte[] bytes = FileUtils.readFileToByteArray(file)
+            Document entity = new Document()
+            entity.document = new SerialBlob(bytes)
+            entity.fileSize = (bytes.length / 1024).toInteger()
+            entity.path = ConverterUtil.cleanPath(StringUtils.replace(StringUtils.replace(file.parent, subPath, ''), '\\','/'))
+            entity.title = StringUtils.replace(file.name,'.pdf','')
+            entity.text = ConverterUtil.convertPdf(bytes)
+            entity.created = Instant.now()
+            entity.lastUpdated = Instant.now()
+            entity.site = siteService.getOne(5)
+            repository.save(entity)
+        }
     }
 }
