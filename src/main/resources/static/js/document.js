@@ -74,6 +74,9 @@ $(document).ready(function () {
             html += '<h4>No Documents Found</h4>';
         } else {
             html += '<h2>' + site.description + ' Record Archive</h2>';
+            html += '<h6><i> Number of Documents retrieved: ';
+            html += documents.length;
+            html += '</i></h6>'
             html += '<div id="accordion"><div class="panel list-group"><ul>';
 
 
