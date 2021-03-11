@@ -10,19 +10,30 @@ $(document).ready(function () {
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
         siteId = $(this).val();
-        let url = "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
-        getSite();
-        getDocuments(url);
+        findDocuments();
     });
 
     $('#submitButton').on('click', function () {
         $("#message").text("").hide();
-        let searchWord = $('#searchPhrase').val();
-        if (siteId && searchWord) {
-            let url = "public/api/documents/site/" + siteId + "/search?searchWord=" + searchWord + "&timezone=" + timezone;
-            getDocuments(url);
-        }
+        findDocuments();
+
     });
+
+    function findDocuments() {
+        if (siteId) {
+            let searchWord = $('#searchPhrase').val();
+            let url = '';
+            if (searchWord) {
+                url = "public/api/documents/site/" + siteId + "/search?searchWord=" + searchWord + "&timezone=" + timezone;
+            } else {
+                url = "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
+            }
+            getSite();
+            getDocuments(url);
+        } else {
+            $('#documentDiv').html('');
+        }
+    }
 
     function getSite() {
         $.ajax(
