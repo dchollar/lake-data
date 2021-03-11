@@ -338,8 +338,7 @@ class ConverterUtil {
 
         return stripped
     }
-
-
+    
     private static final String TESSERACT_DATA_RESOURCE_NAME = 'tessdata'
     private static final int IMAGE_DPI = 300
 

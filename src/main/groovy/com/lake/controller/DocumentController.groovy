@@ -70,9 +70,9 @@ class DocumentController {
         service.delete(documentId)
     }
 
-    @GetMapping(value = '/api/documents/bulk', produces = APPLICATION_JSON_VALUE)
-    DocumentDto bulkLoad() {
-        service.bulkSave()
-        return new DocumentDto()
-    }
+//    @GetMapping(value = '/api/documents/bulk', produces = APPLICATION_JSON_VALUE)
+//    DocumentDto bulkLoad() {
+//        service.bulkSave()
+//        return new DocumentDto()
+//    }
 }
