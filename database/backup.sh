@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+# create a user for back up purposes only
+# create a branch for DB backups
+
 projectfolder=/
 # Backup storage directory
 backupfolder=$projectfolder/database
@@ -17,7 +20,7 @@ cd $projectfolder
 rm $sqlfile
 rm $zipfile
 
-sudo mysqldump pipe_lake -u $user -p$password --lock-tables --add-drop-database > $sqlfile
+sudo mysqldump pipe_lake -u $user -p $password --lock-tables --add-drop-database > $sqlfile
 
 # Compress backup
 zip $zipfile $sqlfile

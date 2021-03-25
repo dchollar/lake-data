@@ -70,6 +70,7 @@ class DocumentController {
         service.delete(documentId)
     }
 
+//    @Secured('ROLE_ADMIN')
 //    @GetMapping(value = '/api/documents/bulk', produces = APPLICATION_JSON_VALUE)
 //    DocumentDto bulkLoad() {
 //        service.bulkSave()

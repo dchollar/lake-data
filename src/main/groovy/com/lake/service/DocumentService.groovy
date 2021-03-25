@@ -23,7 +23,7 @@ class DocumentService {
     SiteService siteService
 
     Collection<DocumentDto> findDocumentsContaining(Integer siteId, String searchWord, String timeZone) {
-        String cleanWord = StringUtils.stripToNull(searchWord)
+        String cleanWord = Stringutils.stripToNull(searchWord)
         if (cleanWord) {
             Site site = siteService.getOne(siteId)
             ConverterUtil.convertDocuments(repository.findBySiteAndTextContainingIgnoreCase(site, searchWord), timeZone)
@@ -70,23 +70,24 @@ class DocumentService {
         repository.deleteById(id)
     }
 
-//    void bulkSave() {
-//        String subPath = '/home/dan/tmp/PipeLakesRecords'
-//        File startDir = new File(subPath);
-//        String[] extensions = ['pdf'].toArray()
-//        Collection<File> files = FileUtils.listFiles(startDir, extensions, true)
-//        files.each { file ->
-//            byte[] bytes = FileUtils.readFileToByteArray(file)
-//            Document entity = new Document()
-//            entity.document = new SerialBlob(bytes)
-//            entity.fileSize = (bytes.length / 1024).toInteger()
-//            entity.path = ConverterUtil.cleanPath(StringUtils.replace(StringUtils.replace(file.parent, subPath, ''), '\\','/'))
-//            entity.title = StringUtils.replace(file.name,'.pdf','')
-//            entity.text = ConverterUtil.convertPdf(bytes)
-//            entity.created = Instant.now()
-//            entity.lastUpdated = Instant.now()
-//            entity.site = siteService.getOne(5)
-//            repository.save(entity)
-//        }
-//    }
+    @Secured('ROLE_ADMIN')
+    void bulkSave() {
+        String subPath = '/home/dan/tmp/PipeLakesRecords'
+        File startDir = new File(subPath)
+        String[] extensions = ['pdf'].toArray()
+        Collection<File> files = FileUtils.listFiles(startDir, extensions, true)
+        files.each { file ->
+            byte[] bytes = FileUtils.readFileToByteArray(file)
+            Document entity = new Document()
+            entity.document = new SerialBlob(bytes)
+            entity.fileSize = (bytes.length / 1024).toInteger()
+            entity.path = ConverterUtil.cleanPath(StringUtils.replace(StringUtils.replace(file.parent, subPath, ''), '\\','/'))
+            entity.title = StringUtils.replace(file.name,'.pdf','')
+            entity.text = ConverterUtil.convertPdf(bytes)
+            entity.created = Instant.now()
+            entity.lastUpdated = Instant.now()
+            entity.site = siteService.getOne(5)
+            repository.save(entity)
+        }
+    }
 }

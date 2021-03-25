@@ -12,10 +12,11 @@ web application for maintaining lake water quality data on pipe lake.
   - Enable a date picker in the data maintenance page - NO they have all looked bad
   - set up https://superset.apache.org/
   - Enable https on the server - NO not going to do it. requires domain registration  https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
-  - Create a mapping between characteristic and location and event. Want to enforce for data entry the valid locations or events for a characteristic. maybe?
-  - Change the document page to have collapsible sections. All leaf nodes should collapse.
+  - Create a mapping between characteristic and location and event. Want to enforce for data entry the valid locations or events for a characteristic. maybe? 
+    Already done. Just need to remove the code that auto creates the characteristic-location data and create a maintenance page for this. 
+    This will limit the choices on the data entry page which I think is the desired use case for the future.
   - load other document types besides PDFs.
-  - Bulk upload and download of documents. Not sure I want to do this
+  - Bulk upload and download of documents. Not sure I want to do this. Will do as an on-demand request.
 
 
 # Technologies Used:

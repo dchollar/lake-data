@@ -302,9 +302,10 @@ class ConverterUtil {
         entity.path = cleanPath(StringUtils.stripToNull(dto.path))
         entity.title = StringUtils.stripToNull(dto.title)
 
+        // if a new document is not being uploaded then document will be null.
         entity.document = dto.document == null ? entity.document : new SerialBlob(dto.document.bytes)
         entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes)
-        entity.fileSize = dto.document == null ? (entity.document.length() / 1024).toInteger() : (dto.document.bytes.length / 1024).toInteger()
+        entity.fileSize = dto.document == null ? entity.fileSize : (dto.document.bytes.length / 1024).toInteger()
 
         entity.lastUpdated = Instant.now()
 
@@ -338,7 +339,7 @@ class ConverterUtil {
 
         return stripped
     }
-    
+
     private static final String TESSERACT_DATA_RESOURCE_NAME = 'tessdata'
     private static final int IMAGE_DPI = 300
 

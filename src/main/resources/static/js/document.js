@@ -105,7 +105,7 @@ $(document).ready(function () {
 
                         // write out the header
                         let headerStyle = 4 + headerCount;
-                        let divName = header.replace(/\s+/g, '') + counter + '_div';
+                        let divName = 'a_' + header.replace(/\s+/g, '') + counter + '_div';
                         html += '<li class="list-group-item">';
                         html += '<a href="#' + divName + '" data-parent="#accordion" data-toggle="collapse">';
                         html += '<h' + headerStyle + '>' + header + '</h' + headerStyle + '>';
