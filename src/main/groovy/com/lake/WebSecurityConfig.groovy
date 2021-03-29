@@ -26,7 +26,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) {
         http.authorizeRequests()
-                .antMatchers('/', '/index', '/public/api/**', '/js/**', '/documents').permitAll()
+                .antMatchers('/', '/index', '/home', '/public/api/**', '/js/**', '/documents').permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .and().httpBasic()

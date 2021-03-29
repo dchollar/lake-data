@@ -31,7 +31,7 @@ class CharacteristicController {
     @GetMapping(value = '/api/characteristics', produces = APPLICATION_JSON_VALUE)
     Collection<CharacteristicDto> getAll() {
         auditService.audit(HttpMethod.GET.name(), '/api/characteristics', this.class.simpleName)
-        return service.getAllCharacteristic()
+        return service.getAll()
     }
 
     @Secured('ROLE_ADMIN')

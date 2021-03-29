@@ -16,7 +16,7 @@ class CharacteristicService {
     CharacteristicRepository repository
 
     @Cacheable('allCharacteristics')
-    Set<CharacteristicDto> getAllCharacteristic() {
+    Set<CharacteristicDto> getAll() {
         ConverterUtil.convertCharacteristics(repository.findAll())
     }
 

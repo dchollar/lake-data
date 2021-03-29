@@ -1,6 +1,6 @@
 package com.lake.controller
 
-import com.lake.dto.SiteDto
+
 import com.lake.service.*
 import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
@@ -29,7 +29,7 @@ class PageController {
     @GetMapping(['/', '/index', '/home'])
     String index(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/index', this.class.simpleName)
-        model.addAttribute('sites', siteService.getAllSites())
+        model.addAttribute('sites', siteService.getAll())
         return 'index'
     }
 
@@ -44,8 +44,8 @@ class PageController {
     @GetMapping('/dataEntry')
     String dataEntry(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataEntry', this.class.simpleName)
-        model.addAttribute('sites', siteService.getAllSites())
-        model.addAttribute('characteristics', characteristicService.getAllCharacteristic())
+        model.addAttribute('sites', siteService.getAll())
+        model.addAttribute('characteristics', characteristicService.getAll())
         return 'dataEntry'
     }
 
@@ -59,7 +59,7 @@ class PageController {
     @Secured('ROLE_ADMIN')
     @GetMapping('/documentMaintenance')
     String documentMaintenance(Model model) {
-        model.addAttribute('siteOptions', getSites(siteService.getAllSites()))
+        model.addAttribute('siteOptions', getSites())
         auditService.audit(HttpMethod.GET.name(), '/documentMaintenance', this.class.simpleName)
         return 'documentMaintenance'
     }
@@ -67,7 +67,7 @@ class PageController {
     @Secured('ROLE_ADMIN')
     @GetMapping('/locationMaintenance')
     String locationMaintenance(Model model) {
-        model.addAttribute('siteOptions', getSites(siteService.getAllSites()))
+        model.addAttribute('siteOptions', getSites())
         auditService.audit(HttpMethod.GET.name(), '/locationMaintenance', this.class.simpleName)
         return 'locationMaintenance'
     }
@@ -83,7 +83,7 @@ class PageController {
     @GetMapping('/dataMaintenance')
     String dataMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataMaintenance', this.class.simpleName)
-        model.addAttribute('siteOptions', getSites(siteService.getAllSites()))
+        model.addAttribute('siteOptions', getSites())
         model.addAttribute('characteristicOptions', getCharacteristics())
         model.addAttribute('locationOptions', getLocations())
         return 'dataMaintenance'
@@ -98,24 +98,24 @@ class PageController {
 
     //--------------------------------------------------------------------------------------
 
-    static private String getSites(Collection<SiteDto> sites) {
-        List results = [[id: "-1", name: ""]]
-        sites.each {
+    private String getSites() {
+        List results = [[id: -1, name: '']]
+        siteService.getAll().each {
             results.add([id: it.id, name: it.description])
         }
         return JsonOutput.toJson(results)
     }
 
     private String getCharacteristics() {
-        List results = [[id: "-1", name: ""]]
-        characteristicService.getAllCharacteristic().each {
+        List results = [[id: -1, name: '']]
+        characteristicService.getAll().each {
             results.add([id: it.id, name: it.description])
         }
         return JsonOutput.toJson(results)
     }
 
     private String getLocations() {
-        List results = [[id: "-1", name: ""]]
+        List results = [[id: -1, name: '']]
         locationService.getAll().each {
             results.add([id: it.id, name: it.description])
         }

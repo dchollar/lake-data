@@ -8,13 +8,11 @@ import com.lake.repository.EventRepository
 import com.lake.repository.MeasurementRepository
 import com.lake.util.ConverterUtil
 import groovy.util.logging.Slf4j
-import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-import java.text.Normalizer
 import java.time.LocalDate
 
 @Slf4j

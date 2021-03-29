@@ -14,7 +14,7 @@ class SiteService {
     SiteRepository repository
 
     @Cacheable('sites')
-    Set<SiteDto> getAllSites() {
+    Set<SiteDto> getAll() {
         ConverterUtil.convertSites(repository.findAll())
     }
 
