@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation('org.apache.commons:commons-lang3:3.11')
+    implementation('org.apache.commons:commons-lang3:3.12.0')
     implementation('commons-io:commons-io:2.8.0')
     implementation('org.apache.pdfbox:pdfbox:2.0.23')
     implementation('net.sourceforge.tess4j:tess4j:4.5.4')
@@ -42,5 +42,5 @@ dependencies {
     implementation('io.springfox:springfox-boot-starter:3.0.0')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.spockframework:spock-spring:2.0-M4-groovy-3.0')
+    testImplementation('org.spockframework:spock-spring:2.0-M5-groovy-3.0')
 }
