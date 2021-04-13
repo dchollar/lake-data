@@ -1,35 +1,23 @@
 #!/usr/bin/env sh
 
-# create a user for back up purposes only
-# create a branch for DB backups
-
-projectfolder=/
+projectfolder=/home/dan/IdeaProjects/db-backup/lake-data
 # Backup storage directory
 backupfolder=$projectfolder/database
 
 # MySQL user
-user=lake_data_app
-
-# MySQL password
-password=Pa$$word8
+user=backup
 
 sqlfile=$backupfolder/dump.sql
 zipfile=$backupfolder/dump.zip
+#this file holds the password and is not checked in
+defaultfile=$backupfolder/defaults.cnf
 
 cd $projectfolder
-rm $sqlfile
-rm $zipfile
-
-sudo mysqldump pipe_lake -u $user -p $password --lock-tables --add-drop-database > $sqlfile
+mysqldump --defaults-file=$defaultfile --databases pipe_lake --user=$user --lock-tables --add-drop-database --result-file=$sqlfile
 
 # Compress backup
-zip $zipfile $sqlfile
-if [ $? == 0 ]; then
-  echo 'The backup was successfully compressed'
-else
-  echo 'Error compressing backup' | mailx -s 'Backup was not created!' $recipient_email
-  exit
-fi
+rm $zipfile
+zip -9 -q $zipfile $sqlfile
 rm $sqlfile
 
 git commit -m "database backup"
