@@ -60,6 +60,14 @@ class ConverterUtil {
         return dtos
     }
 
+    static Set<CharacteristicLocationDto> convertCharacteristicLocations(Collection<CharacteristicLocation> entities) {
+        Set<CharacteristicLocationDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convert(it))
+        }
+        return dtos
+    }
+
     static Collection<MeasurementDto> convertMeasurements(Collection<Measurement> entities) {
         Set<MeasurementDto> dtos = new TreeSet<>()
         entities.each {
@@ -162,6 +170,15 @@ class ConverterUtil {
         return dto
     }
 
+    static CharacteristicLocationDto convert(CharacteristicLocation entity) {
+        CharacteristicLocationDto dto = new CharacteristicLocationDto()
+        dto.id = entity.id
+        dto.siteId = entity.location.site.id
+        dto.locationId = entity.location.id
+        dto.characteristicId = entity.characteristic.id
+        return dto
+    }
+
     static MeasurementDto convert(Measurement entity) {
         MeasurementDto dto = new MeasurementDto()
         dto.id = entity.id
@@ -230,7 +247,7 @@ class ConverterUtil {
         dto.value = null
         dto.depth = null
         dto.characteristicId = characteristic.id
-        dto.characteristicIdType = characteristic.type
+        dto.characteristicType = characteristic.type
         dto.locationId = null
         dto.siteId = entity.site.id
         return dto
@@ -247,7 +264,7 @@ class ConverterUtil {
         dto.value = entity.value
         dto.depth = entity.depth
         dto.characteristicId = characteristic.id
-        dto.characteristicIdType = characteristic.type
+        dto.characteristicType = characteristic.type
         dto.locationId = location.id
         dto.siteId = location.site.id
         return dto

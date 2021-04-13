@@ -31,6 +31,19 @@ class LocationService {
         return ConverterUtil.convertLocations(site.locations)
     }
 
+    Set<LocationDto> getLocationsBySite(Integer siteId, Integer characteristicId) {
+        Set<LocationDto> dtos = new TreeSet<>()
+        Site site = siteRepository.getOne(siteId)
+        site.locations.each {location ->
+            location.characteristicLocations.each {
+                if (it.characteristic.id == characteristicId) {
+                    dtos.add(ConverterUtil.convert(location))
+                }
+            }
+        }
+        return dtos
+    }
+
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto save(LocationDto dto) {
@@ -51,10 +64,6 @@ class LocationService {
     @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
-    }
-
-    @CacheEvict(cacheNames = ['locationsBySite'], allEntries = true)
-    void clearCache() {
     }
 
     @Cacheable('locationsById')

@@ -10,22 +10,19 @@ $(function () {
         height: "auto",
         width: "100%",
 
-        filtering: true,
-        editing: true,
-        inserting: false,
+        filtering: false,
+        editing: false,
+        inserting: true,
         sorting: true,
-        paging: true,
+        paging: false,
         autoload: true,
-
-        pageSize: 15,
-        pageButtonCount: 5,
 
         controller: {
             loadData: function (filter) {
                 $("#message").text("").hide();
                 return $.ajax({
                     type: "GET",
-                    url: "api/measurements",
+                    url: "api/characteristicLocations",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
@@ -33,13 +30,11 @@ $(function () {
                 });
             },
 
-            insertItem: $.noop, // this is handled by a different page
-
-            updateItem: function (item) {
+            insertItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
-                    type: "PUT",
-                    url: "api/measurements/" + item.id,
+                    type: "POST",
+                    url: "api/characteristicLocations",
                     contentType: 'application/json',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -48,11 +43,13 @@ $(function () {
                 });
             },
 
+            updateItem: $.noop,
+
             deleteItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
                     type: "DELETE",
-                    url: "api/measurements/" + item.id + "?characteristicType=" + item.characteristicType,
+                    url: "api/characteristicLocations/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                     }
@@ -62,25 +59,13 @@ $(function () {
 
         fields: [
             {title: "Id", name: "id", type: "number", visible: false},
-            {title: "Type", name: "characteristicType", type: "text", visible: false},
             {title: "Site", name: "siteId", editing: false, width: 150, type: "select", items: sites, valueField: "id", textField: "name", valueType: "number"},
             {title: "Location", name: "locationId", editing: false, width: 150, type: "select", items: locations, valueField: "id", textField: "name", valueType: "number"},
-            {
-                title: "Characteristic",
-                name: "characteristicId",
-                editing: false,
-                width: 100,
-                type: "select",
-                items: characteristics,
-                valueField: "id",
-                textField: "name",
-                valueType: "number"
-            },
-            {title: "Collection Date", name: "collectionDate", validate: "required", type: "text", width: 75},
-            {title: "Depth", name: "depth", filtering: false, type: "number", width: 50},
-            {title: "Value", name: "value", filtering: false, type: "number", width: 50},
-            {title: "Comment", name: "comment", filtering: false, type: "textarea", width: 150},
+            {title: "Characteristic", name: "characteristicId", editing: false, width: 150, type: "select", items: characteristics, valueField: "id", textField: "name", valueType: "number"},
+
             {type: "control"}
         ]
     });
-});
+
+})
+;

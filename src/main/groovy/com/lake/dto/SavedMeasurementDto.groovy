@@ -19,5 +19,5 @@ class SavedMeasurementDto {
     Integer locationId
     Integer characteristicId
     Integer siteId
-    CharacteristicType characteristicIdType
+    CharacteristicType characteristicType
 }

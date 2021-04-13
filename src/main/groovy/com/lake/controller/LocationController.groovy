@@ -23,7 +23,6 @@ class LocationController {
     @Secured('ROLE_ADMIN')
     @GetMapping(value = '/api/locations', produces = APPLICATION_JSON_VALUE)
     Collection<LocationDto> getAll() {
-        log.info("ACCESS - get all locations")
         auditService.audit(HttpMethod.GET.name(), '/api/locations', this.class.simpleName)
         return service.getAll()
     }
@@ -31,7 +30,6 @@ class LocationController {
     @Secured('ROLE_ADMIN')
     @PostMapping(value = '/api/locations', produces = APPLICATION_JSON_VALUE)
     LocationDto create(@RequestBody LocationDto dto) {
-        log.info("ACCESS - create new location")
         auditService.audit(HttpMethod.POST.name(), '/api/locations', this.class.simpleName)
         return service.save(dto)
     }
@@ -40,7 +38,6 @@ class LocationController {
     @PutMapping(value = '/api/locations/{locationId}', produces = APPLICATION_JSON_VALUE)
     LocationDto update(@PathVariable(name = 'locationId', required = true) Integer locationId,
                        @RequestBody LocationDto dto) {
-        log.info("ACCESS - update location")
         auditService.audit(HttpMethod.PUT.name(), "/api/locations/${locationId}", this.class.simpleName)
         return service.update(locationId, dto)
     }
@@ -48,7 +45,6 @@ class LocationController {
     @Secured('ROLE_ADMIN')
     @DeleteMapping(value = '/api/locations/{locationId}', produces = APPLICATION_JSON_VALUE)
     void delete(@PathVariable(name = 'locationId', required = true) Integer locationId) {
-        log.info("ACCESS - delete location")
         auditService.audit(HttpMethod.DELETE.name(), "/api/locations/${locationId}", this.class.simpleName)
         service.delete(locationId)
     }

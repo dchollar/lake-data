@@ -87,11 +87,11 @@ $(document).ready(function () {
     }
 
     function getLocations() {
-        if (selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
+        if (siteId && selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
             $.ajax(
                 {
                     type: "GET",
-                    url: "public/api/sites/" + siteId + "/locations",
+                    url: "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
                     dataType: "json",
                     success: function (locations) {
                         buildLocationsChoice(locations);

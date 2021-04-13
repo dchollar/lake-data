@@ -47,9 +47,14 @@ class SiteController {
     }
 
     @GetMapping(value = '/public/api/sites/{siteId}/locations', produces = APPLICATION_JSON_VALUE)
-    Collection<LocationDto> getSiteLocations(@PathVariable(name = 'siteId', required = true) Integer siteId) {
-        auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/locations", this.class.simpleName)
-        return locationService.getLocationsBySite(siteId)
+    Collection<LocationDto> getSiteLocations(@PathVariable(name = 'siteId', required = true) Integer siteId,
+                                             @RequestParam(name = 'characteristicId', required = false) Integer characteristicId) {
+        auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/locations?characterisitcId=${characteristicId}", this.class.simpleName)
+        if (characteristicId) {
+            return locationService.getLocationsBySite(siteId, characteristicId)
+        } else {
+            return locationService.getLocationsBySite(siteId)
+        }
     }
 
     @GetMapping(value = '/public/api/sites/{siteId}/characteristics', produces = APPLICATION_JSON_VALUE)

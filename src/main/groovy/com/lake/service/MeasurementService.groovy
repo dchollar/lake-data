@@ -3,7 +3,6 @@ package com.lake.service
 import com.lake.dto.MeasurementDto
 import com.lake.dto.SavedMeasurementDto
 import com.lake.entity.*
-import com.lake.repository.CharacteristicLocationRepository
 import com.lake.repository.EventRepository
 import com.lake.repository.MeasurementRepository
 import com.lake.util.ConverterUtil
@@ -31,7 +30,7 @@ class MeasurementService {
     @Autowired
     ReporterService reporterService
     @Autowired
-    CharacteristicLocationRepository characteristicLocationRepository
+    CharacteristicLocationService characteristicLocationService
     @Autowired
     CharacteristicService characteristicService
     @Autowired
@@ -50,7 +49,7 @@ class MeasurementService {
             return ConverterUtil.convertEvents(eventRepository.findAllBySiteAndCharacteristicAndValueBetween(site, characteristic, fromDate, toDate))
         } else {
             Location location = locationService.getOne(locationId)
-            CharacteristicLocation characteristicLocation = characteristicLocationRepository.findByCharacteristicAndLocation(characteristic, location)
+            CharacteristicLocation characteristicLocation = characteristicLocationService.get(characteristic, location)
             return ConverterUtil.convertMeasurements(measurementRepository.findAllByCharacteristicLocationAndCollectionDateBetween(characteristicLocation, fromDate, toDate))
         }
     }
@@ -129,7 +128,9 @@ class MeasurementService {
         List<CharacteristicLocation> characteristicLocations = getCharacteristicLocations(characteristic, location, site)
 
         List<Measurement> measurements = []
-        if (!site && !characteristic && !location && !collectionDate) {
+        if (site && location && location.site.id != site.id) {
+            // do nothing. no results will be found
+        } else if (!site && !characteristic && !location && !collectionDate) {
             measurements.addAll(measurementRepository.findAll())
         } else if (characteristicLocations && collectionDate) {
             measurements.addAll(measurementRepository.findAllByCharacteristicLocationInAndCollectionDate(characteristicLocations, collectionDate))
@@ -145,11 +146,11 @@ class MeasurementService {
     private List<CharacteristicLocation> getCharacteristicLocations(Characteristic characteristic, Location location, Site site) {
         List<CharacteristicLocation> characteristicLocations = []
         if (site && location && location.site.id != site.id) {
-            characteristicLocations = []
+            // do nothing. no results will be found
         } else if (characteristic && location) {
-            characteristicLocations.add(characteristicLocationRepository.findByCharacteristicAndLocation(characteristic, location))
+            characteristicLocations.add(characteristicLocationService.get(characteristic, location))
         } else if (characteristic) {
-            List<CharacteristicLocation> temp = characteristicLocationRepository.findByCharacteristic(characteristic)
+            List<CharacteristicLocation> temp = characteristicLocationService.getByCharacteristic(characteristic)
             if (site) {
                 temp.each {
                     if (it.location.site.id == site.id) {
@@ -160,20 +161,23 @@ class MeasurementService {
                 characteristicLocations.addAll(temp)
             }
         } else if (location) {
-            characteristicLocations.addAll(characteristicLocationRepository.findByLocation(location))
+            characteristicLocations.addAll(characteristicLocationService.getByLocation(location))
         } else if (site) {
-            characteristicLocations.addAll(characteristicLocationRepository.findByLocationIn(site.locations))
+            characteristicLocations.addAll(characteristicLocationService.getBySite(site))
         }
         characteristicLocations
     }
 
     private void saveMeasurement(Measurement measurement, SavedMeasurementDto dto, Characteristic characteristic, Reporter reporter = null) {
         Location location = locationService.getOne(dto.locationId)
-        measurement.comment = stripNonAscii(dto.comment)
+        measurement.comment = ConverterUtil.stripNonAscii(dto.comment)
         measurement.value = dto.value
         measurement.collectionDate = dto.collectionDate
         measurement.depth = dto.depth == null ? -1 : dto.depth
-        measurement.characteristicLocation = getCharacteristicLocation(characteristic, location)
+        measurement.characteristicLocation = characteristicLocationService.get(characteristic, location)
+        if (measurement.characteristicLocation == null) {
+            throw new RuntimeException("Must define the location characteristic in the maintenance section before entering a measurement for it.")
+        }
         measurement.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
         measurementRepository.save(measurement)
     }
@@ -191,16 +195,4 @@ class MeasurementService {
         }
     }
 
-    private CharacteristicLocation getCharacteristicLocation(Characteristic characteristic, Location location) {
-        CharacteristicLocation ul = characteristicLocationRepository.findByCharacteristicAndLocation(characteristic, location)
-        if (ul) {
-            return ul
-        } else {
-            CharacteristicLocation newUL = new CharacteristicLocation(characteristic: characteristic, location: location)
-            CharacteristicLocation fromDb = characteristicLocationRepository.saveAndFlush(newUL)
-            locationService.clearCache()
-            characteristicService.clearCache()
-            return fromDb
-        }
-    }
 }

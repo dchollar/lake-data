@@ -1,6 +1,7 @@
 package com.lake.controller
 
 
+import com.lake.entity.CharacteristicType
 import com.lake.service.*
 import groovy.json.JsonOutput
 import groovy.util.logging.Slf4j
@@ -80,6 +81,16 @@ class PageController {
     }
 
     @Secured('ROLE_ADMIN')
+    @GetMapping('/characteristicLocationMaintenance')
+    String characteristicLocationMaintenance(Model model) {
+        auditService.audit(HttpMethod.GET.name(), '/characteristicLocationMaintenance', this.class.simpleName)
+        model.addAttribute('siteOptions', getSites())
+        model.addAttribute('characteristicOptions', getWaterCharacteristics())
+        model.addAttribute('locationOptions', getLocations())
+        return 'characteristicLocationMaintenance'
+    }
+
+    @Secured('ROLE_ADMIN')
     @GetMapping('/dataMaintenance')
     String dataMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataMaintenance', this.class.simpleName)
@@ -110,6 +121,16 @@ class PageController {
         List results = [[id: -1, name: '']]
         characteristicService.getAll().each {
             results.add([id: it.id, name: it.description])
+        }
+        return JsonOutput.toJson(results)
+    }
+
+    private String getWaterCharacteristics() {
+        List results = [[id: -1, name: '']]
+        characteristicService.getAll().each {
+            if (it.type == CharacteristicType.WATER) {
+                results.add([id: it.id, name: it.description])
+            }
         }
         return JsonOutput.toJson(results)
     }

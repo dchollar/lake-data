@@ -2,7 +2,7 @@
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Pipe Lake Data Maintenance</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" rel="stylesheet"/>
@@ -33,6 +33,7 @@
                     <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
                     <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
+                    <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
                     <a class="dropdown-item text-light active" th:href="@{/dataMaintenance}">Measurements</a>
                     <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
                 </div>
