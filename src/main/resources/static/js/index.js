@@ -9,6 +9,7 @@ $(document).ready(function () {
         $("#message").text("").hide();
         siteId = $(this).val();
         characteristicId = undefined;
+        selectedCharacteristic = undefined;
         getCharacteristics();
         $('#locationSelectionDiv').html('');
     });

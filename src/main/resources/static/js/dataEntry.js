@@ -7,11 +7,11 @@ $(document).ready(function () {
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
         siteId = $(this).val();
-        if (characteristicId) {
-            getLocations();
-        } else {
-            $('#locationSelectionDiv').html('');
-        }
+        characteristicId = undefined;
+        selectedCharacteristic = undefined;
+        getCharacteristics();
+        $('#locationSelectionDiv').html('');
+
     });
 
     $('#characteristicsChoice').on('change', function () {
@@ -84,6 +84,29 @@ $(document).ready(function () {
             "siteId": siteId,
             "characteristicId": characteristicId
         };
+    }
+
+    function getCharacteristics() {
+        $.ajax(
+            {
+                type: "GET",
+                url: "public/api/sites/" + siteId + "/characteristics",
+                dataType: "json",
+                success: function (characteristics) {
+                    buildCharacteristicsChoice(characteristics);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+    }
+
+    function buildCharacteristicsChoice(characteristics) {
+        let options = '<option value=""></option>';
+        for (let characteristic of characteristics) {
+            options += '<option value="' + characteristic.id + '">' + characteristic.description + '</option>';
+        }
+        $('#characteristicsChoice').html(options);
     }
 
     function getLocations() {
