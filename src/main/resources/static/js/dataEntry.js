@@ -90,7 +90,7 @@ $(document).ready(function () {
         $.ajax(
             {
                 type: "GET",
-                url: "public/api/sites/" + siteId + "/characteristics",
+                url: "api/characteristics?siteId=" + siteId,
                 dataType: "json",
                 success: function (characteristics) {
                     buildCharacteristicsChoice(characteristics);
