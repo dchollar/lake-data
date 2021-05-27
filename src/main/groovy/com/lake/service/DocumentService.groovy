@@ -23,7 +23,7 @@ class DocumentService {
     SiteService siteService
 
     Collection<DocumentDto> findDocumentsContaining(Integer siteId, String searchWord, String timeZone) {
-        String cleanWord = Stringutils.stripToNull(searchWord)
+        String cleanWord = StringUtils.stripToNull(searchWord)
         if (cleanWord) {
             Site site = siteService.getOne(siteId)
             ConverterUtil.convertDocuments(repository.findBySiteAndTextContainingIgnoreCase(site, searchWord), timeZone)

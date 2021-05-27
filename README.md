@@ -8,16 +8,17 @@ web application for maintaining lake water quality data on pipe lake.
     - low priority. not sure of the need yet.
   - Add a privacy statement page linked from the footer
   - Add a version that is displayed in the page footer
+  - Get someone to add the other documents to the system
+  - Link documents to pipe lake web site
+  - Change style sheet to make site look more like the pipe lake site.
   - Create instructions or help documentation for data entry page and all maintenance pages. have this info appears in an overlay.
   - Enable a date picker in the data maintenance page - NO they have all looked bad
   - set up https://superset.apache.org/
   - Enable https on the server - NO not going to do it. requires domain registration  https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
-  - Create a mapping between characteristic and location and event. Want to enforce for data entry the valid locations or events for a characteristic. maybe? 
-    Already done. Just need to remove the code that auto creates the characteristic-location data and create a maintenance page for this. 
-    This will limit the choices on the data entry page which I think is the desired use case for the future.
-  - load other document types besides PDFs.
+  - Create a mapping between event type characteristics and sites. This would create a characteristic_site table.
+    This is analogous to the characteristic_location table. Not sure I want to do this. This would limit the
+    events to a specific site for data entry.
   - Bulk upload and download of documents. Not sure I want to do this. Will do as an on-demand request.
-
 
 # Technologies Used:
 - Groovy
@@ -34,21 +35,20 @@ web application for maintaining lake water quality data on pipe lake.
 Wisconsin DNR data site is https://dnrx.wisconsin.gov/swims/login.jsp
 
 # PDF Design Thoughts
+## Lucine
+Lucine is an open source indexing and search library for java
 - https://nullbeans.com/spring-boot-and-lucene-configuration-example/
 - https://wkrzywiec.medium.com/full-text-search-with-hibernate-search-lucene-part-1-e245b889aa8e
 - https://dzone.com/articles/jpa-searching-using-lucene
-
-
-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
-- https://pdfbox.apache.org/
-- https://tika.apache.org/
-- https://lucene.apache.org/solr/guide/6_6/uploading-data-with-solr-cell-using-apache-tika.html
 - https://lucene.apache.org/index.html
-- https://lucene.apache.org/solr/
-
-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf
-- https://itextpdf.com/en Licensing issues with iText now.
-
--https://colwil.com/how-to-extract-text-from-a-scanned-pdf-using-ocr-in-java/
+## PDF
+Libraries for dealing with pdf or other types of documents. iText used to be the leading 
+library for this but is no longer free.
+- https://pdfbox.apache.org/
+- https://tika.apache.org/ All document types. Not limited to PDF.
+- https://colwil.com/how-to-extract-text-from-a-scanned-pdf-using-ocr-in-java/
+## Solr
+Is a complete open source system that uses lucine. Not needed currently
+- https://solr.apache.org/
 
 Larry's Example: https://optidat.com/pl/pipe-lakes-district-records-archive/
