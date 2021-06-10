@@ -27,6 +27,7 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-maintenance">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
                     <a class="dropdown-item text-light" th:href="@{/documentMaintenance}">Documents</a>
+                    <a class="dropdown-item text-light" th:href="@{/fundingSourceMaintenance}">Funding Sources</a>
                     <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
                     <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
@@ -71,6 +72,13 @@
                 <div class="row form-group" id="toDateSelectionDiv">
                     <h5><label for="toDateChoice">To Date:</label></h5>
                     <input class="form-control" id="toDateChoice" name="toDateChoice" th:type="date"/>
+                </div>
+                <div class="row form-group pt-3" id="fundingSourceSelectionDiv">
+                    <h5><label for="fundingSourceChoice">Funding Source:</label></h5>
+                    <select class="form-control" id="fundingSourceChoice" name="fundingSourceChoice">
+                        <option value=""></option>
+                        <option th:each="fundingSource : ${fundingSources}" th:utext="${fundingSource.name}" th:value="${fundingSource.id}" th:title="${fundingSource.description}"/>
+                    </select>
                 </div>
                 <div class="row form-group pt-3" id="submitSelectionDiv">
                     <button class="btn btn-primary" id='submitButton' name='submitButton' type="button">Search</button>

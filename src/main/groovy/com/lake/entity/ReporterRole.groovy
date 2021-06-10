@@ -3,7 +3,7 @@ package com.lake.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "reporter_role")
+@Table(name = 'reporter_role')
 class ReporterRole {
 
     @Id
@@ -16,9 +16,8 @@ class ReporterRole {
     @Column(name = 'role', nullable = false, length = 50)
     RoleType role
 
-    @Deprecated
-    @ManyToOne
-    @JoinColumn(name = "reporter_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'reporter_id', referencedColumnName = 'id', nullable = false)
     Reporter reporter
 
 }

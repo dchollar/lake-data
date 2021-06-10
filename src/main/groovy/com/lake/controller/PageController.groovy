@@ -26,11 +26,14 @@ class PageController {
     ReporterService reporterService
     @Autowired
     AuditService auditService
+    @Autowired
+    FundingSourceService fundingSourceService
 
     @GetMapping(['/', '/index', '/home'])
     String index(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/index', this.class.simpleName)
         model.addAttribute('sites', siteService.getAll())
+        model.addAttribute('fundingSources', fundingSourceService.getAll())
         return 'index'
     }
 
@@ -98,6 +101,13 @@ class PageController {
         model.addAttribute('characteristicOptions', getCharacteristics())
         model.addAttribute('locationOptions', getLocations())
         return 'dataMaintenance'
+    }
+
+    @Secured('ROLE_ADMIN')
+    @GetMapping('/fundingSourceMaintenance')
+    String fundingSourceMaintenance(Model model) {
+        auditService.audit(HttpMethod.GET.name(), '/fundingSourceMaintenance', this.class.simpleName)
+        return 'fundingSourceMaintenance'
     }
 
     @Secured('ROLE_ADMIN')

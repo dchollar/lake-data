@@ -10,7 +10,7 @@ import java.time.LocalDate
 @EqualsAndHashCode(includes = ['id'])
 @Sortable(includes = ['siteId', 'characteristicId', 'locationId', 'collectionDate', 'depth', 'id'])
 @ToString
-class SavedMeasurementDto {
+class MeasurementMaintenanceDto {
     Integer id
     LocalDate collectionDate
     BigDecimal value
@@ -20,4 +20,5 @@ class SavedMeasurementDto {
     Integer characteristicId
     Integer siteId
     CharacteristicType characteristicType
+    String reporterName
 }

@@ -18,7 +18,7 @@ spring:
       jmx-enabled: false
   jpa:
     show-sql: false
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl

@@ -1,9 +1,11 @@
 package com.lake.entity
 
+import org.locationtech.jts.geom.Point
+
 import javax.persistence.*
 
 @Entity
-@Table(name = "location")
+@Table(name = 'location')
 class Location {
 
     @Id
@@ -12,18 +14,25 @@ class Location {
     Integer id
 
     @Basic
-    @Column(name = "description", nullable = false, length = 100)
+    @Column(name = 'description', nullable = false, length = 100)
     String description
 
     @Basic
-    @Column(name = "comment", nullable = true, length = 200)
+    @Column(name = 'comment', nullable = true, length = 200)
     String comment
 
-    @ManyToOne
-    @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
+    @Basic
+    @Column(name = 'coordinates', nullable = true)
+    Point coordinates
+    // x is Latitude and y is Longitude
+    //44.888325946504935, -93.25492567440092
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'site_id', referencedColumnName = 'id', nullable = false)
     Site site
 
-    @OneToMany(mappedBy = "location")
+    @OneToMany(mappedBy = 'location')
     Set<CharacteristicLocation> characteristicLocations
+
 
 }

@@ -18,5 +18,5 @@ class MeasurementDto {
     CharacteristicDto characteristic
     LocationDto location
     ReporterDto reporter
-
+    FundingSourceDto fundingSource
 }

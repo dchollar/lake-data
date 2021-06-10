@@ -2,8 +2,9 @@ $(document).ready(function () {
 
     let siteId;
     let characteristicId;
-    let selectedCharacteristic
-    let chart
+    let selectedCharacteristic;
+    let selectedLocation;
+    let chart;
 
     $('#sitesChoice').on('change', function () {
         $("#message").text("").hide();
@@ -38,8 +39,17 @@ $(document).ready(function () {
 
     $('#submitButton').on('click', function () {
         $("#message").text("").hide();
+
+        let locationId = undefined;
+        if (selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
+            locationId = $('#locationsChoice').val();
+            getLocation(locationId);
+        } else {
+            selectedLocation = undefined;
+        }
+
         if (siteId && characteristicId) {
-            let url = buildSubmitUrl();
+            let url = buildSubmitUrl(locationId);
             $.ajax(
                 {
                     type: "GET",
@@ -57,10 +67,9 @@ $(document).ready(function () {
         }
     });
 
-    function buildSubmitUrl() {
+    function buildSubmitUrl(locationId) {
         let url = "public/api/measurements?siteId=" + siteId + "&characteristicId=" + characteristicId;
-        if (selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
-            let locationId = $('#locationsChoice').val();
+        if (locationId) {
             url += '&locationId=' + locationId;
         }
         let fromDate = $('#fromDateChoice').val();
@@ -70,6 +79,10 @@ $(document).ready(function () {
         let toDate = $('#toDateChoice').val();
         if (toDate) {
             url += '&toDate=' + toDate;
+        }
+        let fundingSourceId = $('#fundingSourceChoice').val();
+        if (fundingSourceId) {
+            url += '&fundingSourceId=' + fundingSourceId;
         }
         return url
     }
@@ -95,6 +108,25 @@ $(document).ready(function () {
             options += '<option value="' + characteristic.id + '">' + characteristic.description + '</option>';
         }
         $('#characteristicsChoice').html(options);
+    }
+
+    function getLocation(locationId) {
+        if (locationId && selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
+            $.ajax(
+                {
+                    type: "GET",
+                    url: "public/api/locations/" + locationId,
+                    dataType: "json",
+                    success: function (location) {
+                        selectedLocation = location
+                    },
+                    error: function (response) {
+                        console.log(response);
+                    }
+                });
+        } else {
+            selectedLocation = undefined;
+        }
     }
 
     function getLocations() {
@@ -152,7 +184,20 @@ $(document).ready(function () {
 
     function buildResultSection(measurements) {
         let resultHtml = '';
-        resultHtml += '<h3>Results for ' + selectedCharacteristic.shortDescription + ': ' + selectedCharacteristic.description + '</h3>';
+        resultHtml += '<h4>Results for ' + selectedCharacteristic.shortDescription + ': ' + selectedCharacteristic.description;
+        if (selectedLocation) {
+            resultHtml += '<small> Measured at <i>' + selectedLocation.description + '</i> on <i>' + selectedLocation.siteDescription + '</i></small>';
+            if (selectedLocation.latitude && selectedLocation.longitude) {
+                resultHtml += ' <a href="https://www.mapquest.com/latlng/';
+                resultHtml +=  selectedLocation.latitude;
+                resultHtml += ',';
+                resultHtml += selectedLocation.longitude;
+                resultHtml += '?zoom=0" target="_blank">';
+                resultHtml += '<i class="fas fa-map-marked-alt" style="font-size:24px"></i>';
+                resultHtml += '</a>';
+            }
+        }
+        resultHtml += '</h4>';
         resultHtml += '<table id="resultTable" class="table table-responsive table-bordered table-striped">';
         resultHtml += buildTableHeader();
         resultHtml += buildTableBody(measurements);
@@ -162,7 +207,7 @@ $(document).ready(function () {
 
     function buildChartDiv(measurements) {
         if (chart) {
-            chart.destroy()
+            chart.destroy();
         }
         if (measurements === undefined || measurements.length === 0) {
             $('#resultDiv').html('<h4>No Data Found</h4>');

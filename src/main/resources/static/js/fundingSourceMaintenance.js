@@ -1,8 +1,6 @@
 $(function () {
     $("#message").text("").hide();
 
-    let sites = JSON.parse($('#siteOptions').val());
-
     $("#jsGrid").jsGrid({
 
         height: "auto",
@@ -20,7 +18,7 @@ $(function () {
                 $("#message").text("").hide();
                 return $.ajax({
                     type: "GET",
-                    url: "api/locations",
+                    url: "public/api/fundingSources",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
@@ -32,7 +30,7 @@ $(function () {
                 $("#message").text("").hide();
                 return $.ajax({
                     type: "POST",
-                    url: "api/locations",
+                    url: "api/fundingSources",
                     contentType: 'application/json',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -45,7 +43,7 @@ $(function () {
                 $("#message").text("").hide();
                 return $.ajax({
                     type: "PUT",
-                    url: "api/locations/" + item.id,
+                    url: "api/fundingSources/" + item.id,
                     contentType: 'application/json',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -58,7 +56,7 @@ $(function () {
                 $("#message").text("").hide();
                 return $.ajax({
                     type: "DELETE",
-                    url: "api/locations/" + item.id,
+                    url: "api/fundingSources/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseText).show();
                     }
@@ -68,11 +66,10 @@ $(function () {
 
         fields: [
             {title: "Id", name: "id", type: "number", visible: false},
-            {title: "Site", name: "siteId", editing: false, width: 150, type: "select", items: sites, valueField: "id", textField: "name", valueType: "number"},
-            {title: "Description", name: "description", type: "text", width: 150, validate: "required"},
-            {title: "Comment", name: "comment", type: "text", width: 200},
-            {title: "Latitude", name: "latitude", type: "text", width: 150},
-            {title: "Longitude", name: "longitude", type: "text", width: 150},
+            {title: "Name", name: "name", type: "text", width: 100, validate: "required"},
+            {title: "Description", name: "description", type: "text", width: 200, validate: "required"},
+            {title: "Start Date", name: "startDate", type: "text", width: 100, validate: "required"},
+            {title: "End Date", name: "endDate", type: "text", width: 100, validate: "required"},
             {type: "control"}
         ]
     });

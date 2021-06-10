@@ -1,7 +1,7 @@
 package com.lake.service
 
 import com.lake.dto.CharacteristicDto
-import com.lake.dto.SavedMeasurementDto
+import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -15,7 +15,7 @@ class ValidationService {
     @Autowired
     CharacteristicService service
 
-    void isValidForChange(SavedMeasurementDto dto) {
+    void isValidForChange(MeasurementMaintenanceDto dto) {
         List valid = isValid(dto.siteId, dto.characteristicId, dto.locationId, null, null)
         String errorMessage = valid[1] as String
         CharacteristicDto characteristicDto = service.getById(dto.characteristicId)

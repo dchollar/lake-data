@@ -5,7 +5,7 @@ import java.sql.Blob
 import java.time.Instant
 
 @Entity
-@Table(name = "document")
+@Table(name = 'document')
 class Document {
 
     @Id
@@ -13,37 +13,37 @@ class Document {
     @Column(name = 'id', nullable = false)
     Integer id
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = 'site_id', referencedColumnName = 'id', nullable = false)
     Site site
 
     @Basic
-    @Column(name = "title", nullable = false, length = 400)
+    @Column(name = 'title', nullable = false, length = 400)
     String title
 
     @Basic
-    @Column(name = "path", nullable = false, length = 1000)
+    @Column(name = 'path', nullable = false, length = 1000)
     String path
 
     @Basic
-    @Column(name = "file_size", nullable = false)
+    @Column(name = 'file_size', nullable = false)
     Integer fileSize
 
     @Basic
-    @Column(name = "created", nullable = false)
+    @Column(name = 'created', nullable = false)
     Instant created
 
     @Basic
-    @Column(name = "last_updated", nullable = false)
+    @Column(name = 'last_updated', nullable = false)
     Instant lastUpdated
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "document", nullable = false)
+    @Column(name = 'document', nullable = false)
     Blob document
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "text", nullable = false)
+    @Column(name = 'text', nullable = false)
     String text
 }

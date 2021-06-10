@@ -19,6 +19,15 @@ class LocationService {
     @Autowired
     SiteRepository siteRepository
 
+    @Cacheable('locationDtoById')
+    LocationDto getLocation(Integer id) {
+        if (id) {
+            return ConverterUtil.convert(repository.getById(id))
+        } else {
+            return null
+        }
+    }
+
     @Secured('ROLE_ADMIN')
     @Cacheable('locations')
     Set<LocationDto> getAll() {
@@ -27,13 +36,13 @@ class LocationService {
 
     @Cacheable('locationsBySite')
     Set<LocationDto> getLocationsBySite(Integer siteId) {
-        Site site = siteRepository.getOne(siteId)
+        Site site = siteRepository.getById(siteId)
         return ConverterUtil.convertLocations(site.locations)
     }
 
     Set<LocationDto> getLocationsBySite(Integer siteId, Integer characteristicId) {
         Set<LocationDto> dtos = new TreeSet<>()
-        Site site = siteRepository.getOne(siteId)
+        Site site = siteRepository.getById(siteId)
         site.locations.each {location ->
             location.characteristicLocations.each {
                 if (it.characteristic.id == characteristicId) {
@@ -45,23 +54,23 @@ class LocationService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto save(LocationDto dto) {
         Location location = ConverterUtil.convert(dto, new Location())
-        location.site = siteRepository.getOne(dto.siteId)
+        location.site = siteRepository.getById(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto update(Integer id, LocationDto dto) {
-        Location location = repository.getOne(id)
+        Location location = repository.getById(id)
         ConverterUtil.convert(dto, location)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['locations', 'locationsBySite', 'locationsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
     }
@@ -69,7 +78,7 @@ class LocationService {
     @Cacheable('locationsById')
     Location getOne(Integer id) {
         if (id) {
-            return repository.getOne(id)
+            return repository.getById(id)
         } else {
             return null
         }

@@ -3,7 +3,7 @@ package com.lake.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "characteristic_location")
+@Table(name = 'characteristic_location')
 class CharacteristicLocation {
 
     @Id
@@ -11,11 +11,11 @@ class CharacteristicLocation {
     @Column(name = 'id', nullable = false)
     Integer id
 
-    @ManyToOne
-    @JoinColumn(name = "characteristic_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'characteristic_id', referencedColumnName = 'id', nullable = false)
     Characteristic characteristic
 
-    @ManyToOne
-    @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'location_id', referencedColumnName = 'id', nullable = false)
     Location location
 }

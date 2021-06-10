@@ -1,6 +1,6 @@
 package com.lake.job
 
-import com.lake.dto.SavedMeasurementDto
+import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
 import com.lake.entity.Reporter
 import com.lake.service.AuditService
@@ -170,7 +170,7 @@ class SwimsDataCollector {
                          String collectionDate,
                          String value,
                          String depth = null) {
-        SavedMeasurementDto dto = new SavedMeasurementDto(siteId: siteId, locationId: locationId, characteristicId: characteristicId, characteristicType: CharacteristicType.WATER)
+        MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto(siteId: siteId, locationId: locationId, characteristicId: characteristicId, characteristicType: CharacteristicType.WATER)
         dto.collectionDate = LocalDate.parse(collectionDate, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
         dto.value = value && value.isBigDecimal() ? new BigDecimal(value) : null
         dto.depth = depth && depth.isBigDecimal() ? new BigDecimal(depth) : null

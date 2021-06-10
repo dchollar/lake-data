@@ -1,5 +1,9 @@
 # lake-data
-web application for maintaining lake water quality data on pipe lake.
+web application for maintaining lake water quality data on pipe lake
+
+Characteristic Types:
+  EVENT: something that happens once a year for a specific characteristic.
+  WATER: Something that happens once a day for a specific characteristic.
 
 # TODO
  - create a database backup process on ubuntu machine

@@ -11,6 +11,8 @@ import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.ImageType
 import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.PDFTextStripper
+import org.locationtech.jts.geom.Point
+import org.locationtech.jts.io.WKTReader
 
 import javax.sql.rowset.serial.SerialBlob
 import java.awt.image.BufferedImage
@@ -52,6 +54,14 @@ class ConverterUtil {
         return dtos
     }
 
+    static Collection<FundingSourceDto> convertFundingSources(Collection<FundingSource> entities) {
+        Set<FundingSourceDto> dtos = new TreeSet<>()
+        entities.each {
+            dtos.add(convert(it))
+        }
+        return dtos
+    }
+
     static Set<LocationDto> convertLocations(Collection<Location> entities) {
         Set<LocationDto> dtos = new TreeSet<>()
         entities.each {
@@ -84,16 +94,16 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<SavedMeasurementDto> convertSavedEvents(Collection<Event> entities) {
-        Set<SavedMeasurementDto> dtos = new TreeSet<>()
+    static Collection<MeasurementMaintenanceDto> convertSavedEvents(Collection<Event> entities) {
+        Set<MeasurementMaintenanceDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convertSavedMeasurement(it))
         }
         return dtos
     }
 
-    static Collection<SavedMeasurementDto> convertSavedMeasurements(Collection<Measurement> entities) {
-        Set<SavedMeasurementDto> dtos = new TreeSet<>()
+    static Collection<MeasurementMaintenanceDto> convertSavedMeasurements(Collection<Measurement> entities) {
+        Set<MeasurementMaintenanceDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convertSavedMeasurement(it))
         }
@@ -164,6 +174,8 @@ class ConverterUtil {
         dto.siteId = entity.site.id
         dto.siteDescription = entity.site.description
         dto.comment = entity.comment
+        dto.latitude = entity?.coordinates?.x?.toString()
+        dto.longitude = entity?.coordinates?.y?.toString()
         entity.characteristicLocations.each {
             dto.characteristics.add(convert(it.characteristic))
         }
@@ -179,6 +191,17 @@ class ConverterUtil {
         return dto
     }
 
+    static FundingSourceDto convert(FundingSource entity) {
+        FundingSourceDto dto = new FundingSourceDto()
+        dto.id = entity.id
+        dto.name = entity.name
+        dto.description = entity.description
+        dto.startDate = entity.startDate
+        dto.endDate = entity.endDate
+        dto.type = entity.type
+        return dto
+    }
+
     static MeasurementDto convert(Measurement entity) {
         MeasurementDto dto = new MeasurementDto()
         dto.id = entity.id
@@ -190,6 +213,7 @@ class ConverterUtil {
         dto.characteristic = convert(entity.characteristicLocation.characteristic)
         dto.location = convert(entity.characteristicLocation.location)
         dto.reporter = convert(entity.reporter)
+        dto.fundingSource = dto.fundingSource ? convert(entity.fundingSource) : null
         return dto
     }
 
@@ -237,8 +261,8 @@ class ConverterUtil {
         return dto
     }
 
-    static SavedMeasurementDto convertSavedMeasurement(Event entity) {
-        SavedMeasurementDto dto = new SavedMeasurementDto()
+    static MeasurementMaintenanceDto convertSavedMeasurement(Event entity) {
+        MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto()
         Characteristic characteristic = entity.characteristic
 
         dto.id = entity.id
@@ -250,11 +274,12 @@ class ConverterUtil {
         dto.characteristicType = characteristic.type
         dto.locationId = null
         dto.siteId = entity.site.id
+        dto.reporterName = "${entity.reporter.firstName} ${entity.reporter.lastName}"
         return dto
     }
 
-    static SavedMeasurementDto convertSavedMeasurement(Measurement entity) {
-        SavedMeasurementDto dto = new SavedMeasurementDto()
+    static MeasurementMaintenanceDto convertSavedMeasurement(Measurement entity) {
+        MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto()
         Characteristic characteristic = entity.characteristicLocation.characteristic
         Location location = entity.characteristicLocation.location
 
@@ -267,16 +292,39 @@ class ConverterUtil {
         dto.characteristicType = characteristic.type
         dto.locationId = location.id
         dto.siteId = location.site.id
+        dto.reporterName = "${entity.reporter.firstName} ${entity.reporter.lastName}"
         return dto
     }
 
     //----------------------------------------------------------------------------------
 
+    static FundingSource convert(FundingSourceDto dto, FundingSource entity) {
+        entity.id = dto.id
+        entity.name = StringUtils.stripToNull(dto.name)
+        entity.description = StringUtils.stripToNull(dto.description)
+        entity.startDate = dto.startDate
+        entity.endDate = dto.endDate
+        entity.type = FundingSourceType.GRANT
+        return entity
+    }
+
     static Location convert(LocationDto dto, Location entity) {
         entity.id = dto.id
         entity.description = StringUtils.stripToNull(dto.description)
         entity.comment = StringUtils.stripToNull(stripNonAscii(dto.comment))
+        entity.coordinates = createPoint(dto)
         return entity
+    }
+
+    private static Point createPoint(LocationDto dto) {
+        String lat = StringUtils.stripToNull(dto.latitude)
+        String lon = StringUtils.stripToNull(dto.longitude)
+        if (lat && lon) {
+            String pointString = "POINT (${lat} ${lon})"
+            return new WKTReader().read(pointString) as Point;
+        } else {
+            return null;
+        }
     }
 
     static Reporter convert(ReporterDto dto, Reporter entity) {

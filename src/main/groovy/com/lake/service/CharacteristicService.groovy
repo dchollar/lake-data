@@ -27,7 +27,7 @@ class CharacteristicService {
 
     @Cacheable('characteristics')
     CharacteristicDto getById(Integer id) {
-        ConverterUtil.convert(repository.getOne(id))
+        ConverterUtil.convert(repository.getById(id))
     }
 
     @Cacheable('characteristicsBySite')
@@ -53,7 +53,7 @@ class CharacteristicService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristicsBySiteForDataEntry', 'characteristicsBySite', 'characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     CharacteristicDto update(Integer id, CharacteristicDto dto) {
-        Characteristic characteristic = repository.getOne(id)
+        Characteristic characteristic = repository.getById(id)
         ConverterUtil.convert(dto, characteristic)
         ConverterUtil.convert(repository.saveAndFlush(characteristic))
     }
@@ -71,7 +71,7 @@ class CharacteristicService {
     @Cacheable('characteristicsById')
     Characteristic getOne(Integer id) {
         if (id) {
-            return repository.getOne(id)
+            return repository.getById(id)
         } else {
             return null
         }

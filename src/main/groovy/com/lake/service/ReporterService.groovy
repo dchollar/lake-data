@@ -53,7 +53,7 @@ class ReporterService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     ReporterDto update(Integer id, ReporterDto dto) {
-        Reporter reporter = repository.getOne(id)
+        Reporter reporter = repository.getById(id)
         // if there is a password, then it was changed. otherwise it would be blank
         String password = StringUtils.stripToNull(dto.password)
         if (password) {

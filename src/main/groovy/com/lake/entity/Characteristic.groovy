@@ -3,7 +3,7 @@ package com.lake.entity
 import javax.persistence.*
 
 @Entity
-@Table(name = "characteristic")
+@Table(name = 'characteristic')
 class Characteristic {
 
     @Id
@@ -12,26 +12,26 @@ class Characteristic {
     Integer id
 
     @Basic
-    @Column(name = "unit_description", nullable = false, length = 20)
+    @Column(name = 'unit_description', nullable = false, length = 20)
     String unitDescription
 
     @Basic
-    @Column(name = "description", nullable = false, length = 100)
+    @Column(name = 'description', nullable = false, length = 100)
     String description
 
     @Basic
-    @Column(name = "short_description", nullable = false, length = 50)
+    @Column(name = 'short_description', nullable = false, length = 50)
     String shortDescription
 
     @Basic
-    @Column(name = "enable_depth", nullable = false)
+    @Column(name = 'enable_depth', nullable = false)
     Boolean enableDepth
 
     @Enumerated(EnumType.STRING)
     @Basic
-    @Column(name = "type", nullable = false, length = 50)
+    @Column(name = 'type', nullable = false, length = 50)
     CharacteristicType type
 
-    @OneToMany(mappedBy = "characteristic")
+    @OneToMany(mappedBy = 'characteristic')
     Set<CharacteristicLocation> characteristicLocations
 }

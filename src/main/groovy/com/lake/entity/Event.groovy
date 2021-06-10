@@ -4,7 +4,7 @@ import javax.persistence.*
 import java.time.LocalDate
 
 @Entity
-@Table(name = "event")
+@Table(name = 'event')
 class Event {
 
     @Id
@@ -13,26 +13,26 @@ class Event {
     Integer id
 
     @Basic
-    @Column(name = "value", nullable = false)
+    @Column(name = 'value', nullable = false)
     LocalDate value
 
     @Basic
-    @Column(name = "comment", nullable = true, length = 4000)
+    @Column(name = 'comment', nullable = true, length = 4000)
     String comment
 
     @Basic
     @Column(name = 'year', nullable = false)
     Integer year
 
-    @ManyToOne
-    @JoinColumn(name = "site_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'site_id', referencedColumnName = 'id', nullable = false)
     Site site
 
-    @ManyToOne
-    @JoinColumn(name = "characteristic_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'characteristic_id', referencedColumnName = 'id', nullable = false)
     Characteristic characteristic
 
-    @ManyToOne
-    @JoinColumn(name = "reporter_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = 'reporter_id', referencedColumnName = 'id')
     Reporter reporter
 }

@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Pipe Lake Data Entry</title>
+    <title>Pipe Lake User Data</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" rel="stylesheet" type="text/css"/>
     <link rel="icon" th:src="@{/ico/favicon-32x32.png}" type="image/png"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script th:src="@{/js/dataEntry.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js" type="text/javascript"></script>
+    <script th:src="@{/js/fundingSourceMaintenance.js}"></script>
 </head>
 <body>
 
@@ -21,12 +24,12 @@
             <li class="nav-item"><a class="nav-link" th:href="@{/documents}">Documents</a></li>
             <li class="nav-item"><a class="nav-link" href="http://pipelakes.org/">Pipe Lake District</a></li>
             <li class="nav-item"><a class="nav-link" href="https://dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=2490500">DNR Pipe Lake</a></li>
-            <li class="nav-item active" sec:authorize="hasRole('ROLE_REPORTER')"><a class="nav-link" th:href="@{/dataEntry}">Enter Data</a></li>
+            <li class="nav-item" sec:authorize="hasRole('ROLE_REPORTER')"><a class="nav-link" th:href="@{/dataEntry}">Enter Data</a></li>
             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-maintenance">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
                     <a class="dropdown-item text-light" th:href="@{/documentMaintenance}">Documents</a>
-                    <a class="dropdown-item text-light" th:href="@{/fundingSourceMaintenance}">Funding Sources</a>
+                    <a class="dropdown-item text-light active" th:href="@{/fundingSourceMaintenance}">Funding Sources</a>
                     <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
                     <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
@@ -45,55 +48,19 @@
 
 <div class="container-fluid text-center">
     <div class="row content">
-        <div class="col-sm-2 bg-secondary text-light" id="selectionDiv">
-            <div class="container">
-                <div class="row form-group pt-3" id="siteSelectionDiv">
-                    <h5><label for="sitesChoice">Site:</label></h5>
-                    <select class="form-control" id="sitesChoice" name="sitesChoice">
-                        <option value=""></option>
-                        <option th:each="site : ${sites}" th:utext="${site.description}" th:value="${site.id}"/>
-                    </select>
-                </div>
-                <div class="row form-group" id="characteristicSelectionDiv">
-                    <h5><label for="characteristicsChoice">Characteristic:</label></h5>
-                    <select class="form-control" id="characteristicsChoice" name="characteristicsChoice">
-                        <option value=""></option>
-                        <option th:each="characteristic : ${characteristics}" th:utext="${characteristic.description}" th:value="${characteristic.id}"/>
-                    </select>
-                </div>
-
-                <div class="row form-group" id="locationSelectionDiv">
-                </div>
-                <div class="row form-group pt-3" id="submitSelectionDiv">
-                    <input class="btn btn-primary" id='submitButton' name='submitButton' type="submit" value="Submit"/>
-                </div>
-            </div>
+        <div class="col-sm-1 bg-secondary text-light" id="selectionDiv">
+            <div class="container"></div>
         </div>
 
-        <div class="col-sm-6 text-left" id="resultDiv">
-            <div class="container">
-                <span id="message" style="color: red;"></span><br>
-                <p></p>
-                <div class="row form-group" id="collectionDateDiv">
-                    <div class="col-sm-12">
-                        <label for="collectionDateField"><b>Collection Date:</b></label>
-                        <input class="form-control" id="collectionDateField" required type="date">
-                    </div>
-                </div>
-                <!--            hide if characteristic is for EVENT -->
-                <div class="row form-group" id="valueDiv"></div>
-                <!--            hide if characteristic.enableDepth is false -->
-                <div class="row form-group" id="depthDiv"></div>
-                <div class="row form-group" id="commenthDiv">
-                    <div class="col-sm-12">
-                        <label for="commentField"><b>Comment:</b></label>
-                        <textarea class="form-control" id="commentField" rows="5"></textarea>
-                    </div>
-                </div>
+        <div class="col-sm-11 text-left" id="resultDiv">
+            <span id="message" style="color: red;"></span><br>
+            <div class="container-fluid">
+                <div id="jsGrid"></div>
             </div>
         </div>
     </div>
 </div>
+
 <footer class="container-fluid text-center bg-dark text-light" style="padding: 1px;">
     <p></p>
 </footer>

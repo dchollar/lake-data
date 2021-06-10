@@ -20,6 +20,12 @@ class LocationController {
     @Autowired
     AuditService auditService
 
+    @GetMapping(value = '/public/api/locations/{id}', produces = APPLICATION_JSON_VALUE)
+    LocationDto getLocation(@PathVariable(name = 'id', required = true) Integer id) {
+        auditService.audit(HttpMethod.GET.name(), "/api/locations/${id}", this.class.simpleName)
+        return service.getLocation(id)
+    }
+
     @Secured('ROLE_ADMIN')
     @GetMapping(value = '/api/locations', produces = APPLICATION_JSON_VALUE)
     Collection<LocationDto> getAll() {

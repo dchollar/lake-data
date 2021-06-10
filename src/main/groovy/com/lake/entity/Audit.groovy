@@ -4,7 +4,7 @@ import javax.persistence.*
 import java.time.Instant
 
 @Entity
-@Table(name = "audit")
+@Table(name = 'audit')
 class Audit {
 
     @Id
@@ -13,22 +13,22 @@ class Audit {
     Integer id
 
     @Basic
-    @Column(name = "created", nullable = false)
+    @Column(name = 'created', nullable = false)
     Instant created
 
     @Basic
-    @Column(name = "http_method", nullable = false, length = 10)
+    @Column(name = 'http_method', nullable = false, length = 10)
     String httpMethod
 
     @Basic
-    @Column(name = "endpoint", nullable = false, length = 100)
+    @Column(name = 'endpoint', nullable = false, length = 100)
     String endpoint
 
     @Basic
-    @Column(name = "controller", nullable = false, length = 100)
+    @Column(name = 'controller', nullable = false, length = 100)
     String controller
 
     @ManyToOne
-    @JoinColumn(name = "reporter_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = 'reporter_id', referencedColumnName = 'id', nullable = true)
     Reporter reporter
 }

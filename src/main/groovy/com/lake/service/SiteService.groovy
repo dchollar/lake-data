@@ -25,7 +25,7 @@ class SiteService {
     @Cacheable('siteById')
     Site getOne(Integer id) {
         if (id) {
-            return repository.getOne(id)
+            return repository.getById(id)
         } else {
             return null
         }
