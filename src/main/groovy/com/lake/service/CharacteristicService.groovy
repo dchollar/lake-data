@@ -30,12 +30,10 @@ class CharacteristicService {
         ConverterUtil.convert(repository.getById(id))
     }
 
-    @Cacheable('characteristicsBySite')
     Set<CharacteristicDto> getCharacteristicsBySite(Integer siteId) {
         ConverterUtil.convertCharacteristics(repository.findCharacteristicsBySite(siteId, siteId))
     }
 
-    @Cacheable('characteristicsBySiteForDataEntry')
     Set<CharacteristicDto> getCharacteristicsBySiteForDataEntry(Integer siteId) {
         List<Characteristic> characteristics = repository.findAllForDataEntry(siteId)
         if (siteId && (siteId == NORTH_PIPE_LAKE_SITE_ID || siteId == PIPE_LAKE_SITE_ID)) {
@@ -45,13 +43,13 @@ class CharacteristicService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['characteristicsBySiteForDataEntry', 'characteristicsBySite', 'characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     CharacteristicDto save(CharacteristicDto dto) {
         ConverterUtil.convert(repository.saveAndFlush(ConverterUtil.convert(dto, new Characteristic())))
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['characteristicsBySiteForDataEntry', 'characteristicsBySite', 'characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     CharacteristicDto update(Integer id, CharacteristicDto dto) {
         Characteristic characteristic = repository.getById(id)
         ConverterUtil.convert(dto, characteristic)
@@ -59,12 +57,12 @@ class CharacteristicService {
     }
 
     @Secured('ROLE_ADMIN')
-    @CacheEvict(cacheNames = ['characteristicsBySiteForDataEntry', 'characteristicsBySite', 'characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
     }
 
-    @CacheEvict(cacheNames = ['characteristicsBySiteForDataEntry', 'characteristicsBySite', 'characteristicsById'], allEntries = true)
+    @CacheEvict(cacheNames = ['characteristicsById'], allEntries = true)
     void clearCache() {
     }
 
