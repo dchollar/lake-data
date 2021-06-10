@@ -4,6 +4,7 @@ $(function () {
     let characteristics = JSON.parse($('#characteristicOptions').val());
     let locations = JSON.parse($('#locationOptions').val());
     let sites = JSON.parse($('#siteOptions').val());
+    let fundingSources = JSON.parse($('#fundingSourceOptions').val());
 
     $("#jsGrid").jsGrid({
 
@@ -76,6 +77,7 @@ $(function () {
                 textField: "name",
                 valueType: "number"
             },
+            {title: "Funding", name: "fundingSourceId", editing: true, width: 110, type: "select", items: fundingSources, valueField: "id", textField: "name", valueType: "number"},
             {title: "Collection Date", name: "collectionDate", validate: "required", type: "text", width: 75},
             {title: "Depth", name: "depth", filtering: false, type: "number", width: 50},
             {title: "Value", name: "value", filtering: false, type: "number", width: 50},

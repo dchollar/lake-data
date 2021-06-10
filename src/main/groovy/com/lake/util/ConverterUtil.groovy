@@ -213,7 +213,7 @@ class ConverterUtil {
         dto.characteristic = convert(entity.characteristicLocation.characteristic)
         dto.location = convert(entity.characteristicLocation.location)
         dto.reporter = convert(entity.reporter)
-        dto.fundingSource = dto.fundingSource ? convert(entity.fundingSource) : null
+        dto.fundingSource = entity.fundingSource ? convert(entity.fundingSource) : null
         return dto
     }
 
@@ -293,6 +293,7 @@ class ConverterUtil {
         dto.locationId = location.id
         dto.siteId = location.site.id
         dto.reporterName = "${entity.reporter.firstName} ${entity.reporter.lastName}"
+        dto.fundingSourceId = entity?.fundingSource?.id
         return dto
     }
 

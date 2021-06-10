@@ -50,6 +50,7 @@ class PageController {
         auditService.audit(HttpMethod.GET.name(), '/dataEntry', this.class.simpleName)
         model.addAttribute('sites', siteService.getAll())
         model.addAttribute('characteristics', characteristicService.getAll())
+        model.addAttribute('fundingSources', fundingSourceService.getAll())
         return 'dataEntry'
     }
 
@@ -100,6 +101,7 @@ class PageController {
         model.addAttribute('siteOptions', getSites())
         model.addAttribute('characteristicOptions', getCharacteristics())
         model.addAttribute('locationOptions', getLocations())
+        model.addAttribute('fundingSourceOptions', getFundingSources())
         return 'dataMaintenance'
     }
 
@@ -149,6 +151,14 @@ class PageController {
         List results = [[id: -1, name: '']]
         locationService.getAll().each {
             results.add([id: it.id, name: it.description])
+        }
+        return JsonOutput.toJson(results)
+    }
+
+    private String getFundingSources() {
+        List results = [[id: -1, name: '']]
+        fundingSourceService.getAll().each {
+            results.add([id: it.id, name: it.name])
         }
         return JsonOutput.toJson(results)
     }

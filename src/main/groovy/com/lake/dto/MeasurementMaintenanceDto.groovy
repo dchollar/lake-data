@@ -19,6 +19,7 @@ class MeasurementMaintenanceDto {
     Integer locationId
     Integer characteristicId
     Integer siteId
+    Integer fundingSourceId
     CharacteristicType characteristicType
     String reporterName
 }

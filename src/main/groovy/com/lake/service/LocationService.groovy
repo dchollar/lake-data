@@ -77,7 +77,7 @@ class LocationService {
 
     @Cacheable('locationsById')
     Location getOne(Integer id) {
-        if (id) {
+        if (id && id > 0) {
             return repository.getById(id)
         } else {
             return null

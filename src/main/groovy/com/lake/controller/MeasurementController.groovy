@@ -54,6 +54,7 @@ class MeasurementController {
                                                  @RequestParam(name = 'characteristicId', required = false) Integer characteristicId,
                                                  @RequestParam(name = 'locationId', required = false) Integer locationId,
                                                  @RequestParam(name = 'reporterName', required = false) String reporterName,
+                                                 @RequestParam(name = 'fundingSourceId', required = false) Integer fundingSourceId,
                                                  @RequestParam(name = 'collectionDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate collectionDate) {
         auditService.audit(HttpMethod.GET.name(), '/api/measurements', this.class.simpleName)
         MeasurementMaintenanceDto filter = new MeasurementMaintenanceDto()
@@ -62,6 +63,7 @@ class MeasurementController {
         filter.locationId = locationId == -1 ? null : locationId
         filter.collectionDate = collectionDate
         filter.reporterName = StringUtils.stripToNull(reporterName)
+        filter.fundingSourceId = fundingSourceId
         return measurementService.getAll(filter)
     }
 

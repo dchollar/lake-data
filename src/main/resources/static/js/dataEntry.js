@@ -82,7 +82,8 @@ $(document).ready(function () {
             "comment": $('#commentField').val(),
             "locationId": locationId,
             "siteId": siteId,
-            "characteristicId": characteristicId
+            "characteristicId": characteristicId,
+            "fundingSourceId": $('#fundingSourceChoice').val(),
         };
     }
 
