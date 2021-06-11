@@ -34,18 +34,17 @@ class LocationService {
         ConverterUtil.convertLocations(repository.findAll())
     }
 
-    @Cacheable('locationsBySite')
     Set<LocationDto> getLocationsBySite(Integer siteId) {
         Site site = siteRepository.getById(siteId)
         return ConverterUtil.convertLocations(site.locations)
     }
 
-    Set<LocationDto> getLocationsBySite(Integer siteId, Integer characteristicId) {
+    Set<LocationDto> getLocationsBySite(Integer siteId, Integer characteristicId, Boolean restricted) {
         Set<LocationDto> dtos = new TreeSet<>()
         Site site = siteRepository.getById(siteId)
-        site.locations.each {location ->
+        site.locations.each { location ->
             location.characteristicLocations.each {
-                if (it.characteristic.id == characteristicId) {
+                if (it.characteristic.id == characteristicId && (!restricted || (restricted && it.measurements.size() > 0))) {
                     dtos.add(ConverterUtil.convert(location))
                 }
             }

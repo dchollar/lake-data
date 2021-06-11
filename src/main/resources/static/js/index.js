@@ -134,7 +134,7 @@ $(document).ready(function () {
             $.ajax(
                 {
                     type: "GET",
-                    url: "public/api/sites/" + siteId + "/locations",
+                    url: "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId + "&restricted=true",
                     dataType: "json",
                     success: function (locations) {
                         buildLocationsChoice(locations);
@@ -153,19 +153,15 @@ $(document).ready(function () {
         locationOptions += '<select name="locationsChoice" id="locationsChoice" class="form-control">';
         locationOptions += '<option value=""></option>';
         for (let location of locations) {
-            for (let characteristic of location.characteristics) {
-                if (selectedCharacteristic.id === characteristic.id) {
-                    locationOptions += '<option value="';
-                    locationOptions += location.id;
-                    if (location.comment) {
-                        locationOptions += '" title="';
-                        locationOptions += location.comment;
-                    }
-                    locationOptions += '">'
-                    locationOptions += location.description;
-                    locationOptions += '</option>';
-                }
+            locationOptions += '<option value="';
+            locationOptions += location.id;
+            if (location.comment) {
+                locationOptions += '" title="';
+                locationOptions += location.comment;
             }
+            locationOptions += '">'
+            locationOptions += location.description;
+            locationOptions += '</option>';
         }
         locationOptions += '</select>';
         $('#locationSelectionDiv').html(locationOptions);
@@ -189,7 +185,7 @@ $(document).ready(function () {
             resultHtml += '<small> Measured at <i>' + selectedLocation.description + '</i> on <i>' + selectedLocation.siteDescription + '</i></small>';
             if (selectedLocation.latitude && selectedLocation.longitude) {
                 resultHtml += ' <a href="https://www.mapquest.com/latlng/';
-                resultHtml +=  selectedLocation.latitude;
+                resultHtml += selectedLocation.latitude;
                 resultHtml += ',';
                 resultHtml += selectedLocation.longitude;
                 resultHtml += '?zoom=0" target="_blank">';

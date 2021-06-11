@@ -13,5 +13,4 @@ class LocationDto {
     String siteDescription
     String latitude
     String longitude
-    Set<CharacteristicDto> characteristics = new TreeSet<>()
 }

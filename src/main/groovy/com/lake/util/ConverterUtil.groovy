@@ -176,9 +176,6 @@ class ConverterUtil {
         dto.comment = entity.comment
         dto.latitude = entity?.coordinates?.x?.toString()
         dto.longitude = entity?.coordinates?.y?.toString()
-        entity.characteristicLocations.each {
-            dto.characteristics.add(convert(it.characteristic))
-        }
         return dto
     }
 
@@ -297,7 +294,7 @@ class ConverterUtil {
         return dto
     }
 
-    //----------------------------------------------------------------------------------
+    // Merges ----------------------------------------------------------------------------------
 
     static FundingSource convert(FundingSourceDto dto, FundingSource entity) {
         entity.id = dto.id
@@ -322,9 +319,9 @@ class ConverterUtil {
         String lon = StringUtils.stripToNull(dto.longitude)
         if (lat && lon) {
             String pointString = "POINT (${lat} ${lon})"
-            return new WKTReader().read(pointString) as Point;
+            return new WKTReader().read(pointString) as Point
         } else {
-            return null;
+            return null
         }
     }
 

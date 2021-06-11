@@ -18,4 +18,7 @@ class CharacteristicLocation {
     @ManyToOne(optional = false)
     @JoinColumn(name = 'location_id', referencedColumnName = 'id', nullable = false)
     Location location
+
+    @OneToMany(mappedBy = 'characteristicLocation')
+    Set<Measurement> measurements
 }
