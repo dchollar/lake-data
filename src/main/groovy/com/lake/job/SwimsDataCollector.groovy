@@ -111,13 +111,14 @@ class SwimsDataCollector {
         GPathResult srow = clmnAnnualReport.getProperty('srow') as GPathResult
         if (srow) {
             String lakeName = StringUtils.stripToNull(srow?.getProperty('official_name')?.toString())
+            if (lakeName) {
+                Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
+                Integer topDeepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
+                Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
 
-            Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
-            Integer topDeepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
-            Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
-
-            processSecchiRows(srow, reporter, siteId, topDeepHoleLocationId, deepHoleLocationId)
-            processProfileRows(srow, reporter, siteId, deepHoleLocationId)
+                processSecchiRows(srow, reporter, siteId, topDeepHoleLocationId, deepHoleLocationId)
+                processProfileRows(srow, reporter, siteId, deepHoleLocationId)
+            }
         }
     }
 
