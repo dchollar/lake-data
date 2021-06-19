@@ -1,9 +1,12 @@
 package com.lake.entity
 
+import groovy.transform.CompileStatic
+
 import javax.persistence.*
 import java.sql.Blob
 import java.time.Instant
 
+@CompileStatic
 @Entity
 @Table(name = 'document')
 class Document {

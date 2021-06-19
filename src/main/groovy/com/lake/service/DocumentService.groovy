@@ -5,6 +5,7 @@ import com.lake.entity.Document
 import com.lake.entity.Site
 import com.lake.repository.DocumentRepository
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,6 +16,7 @@ import javax.sql.rowset.serial.SerialBlob
 import java.sql.Blob
 import java.time.Instant
 
+@CompileStatic
 @Service
 class DocumentService {
     @Autowired
@@ -74,15 +76,15 @@ class DocumentService {
     void bulkSave() {
         String subPath = '/home/dan/tmp/PipeLakesRecords'
         File startDir = new File(subPath)
-        String[] extensions = ['pdf'].toArray()
+        String[] extensions = ['pdf'].toArray() as String[]
         Collection<File> files = FileUtils.listFiles(startDir, extensions, true)
         files.each { file ->
             byte[] bytes = FileUtils.readFileToByteArray(file)
             Document entity = new Document()
             entity.document = new SerialBlob(bytes)
             entity.fileSize = (bytes.length / 1024).toInteger()
-            entity.path = ConverterUtil.cleanPath(StringUtils.replace(StringUtils.replace(file.parent, subPath, ''), '\\','/'))
-            entity.title = StringUtils.replace(file.name,'.pdf','')
+            entity.path = ConverterUtil.cleanPath(StringUtils.replace(StringUtils.replace(file.parent, subPath, ''), '\\', '/'))
+            entity.title = StringUtils.replace(file.name, '.pdf', '')
             entity.text = ConverterUtil.convertPdf(bytes)
             entity.created = Instant.now()
             entity.lastUpdated = Instant.now()

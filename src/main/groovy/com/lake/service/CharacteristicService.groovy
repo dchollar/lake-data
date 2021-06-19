@@ -5,12 +5,14 @@ import com.lake.entity.Characteristic
 import com.lake.entity.CharacteristicType
 import com.lake.repository.CharacteristicRepository
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+@CompileStatic
 @Service
 class CharacteristicService {
 

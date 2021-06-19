@@ -4,6 +4,7 @@ package com.lake.controller
 import com.lake.entity.CharacteristicType
 import com.lake.service.*
 import groovy.json.JsonOutput
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 
+@CompileStatic
 @Slf4j
 @Controller
 class PageController {
@@ -39,7 +41,7 @@ class PageController {
 
     @GetMapping('/documents')
     String documents(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/documents', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/public/documents', this.class.simpleName)
         model.addAttribute('sites', siteService.getSitesWithDocuments())
         return 'documents'
     }

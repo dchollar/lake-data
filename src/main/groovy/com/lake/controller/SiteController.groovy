@@ -6,6 +6,7 @@ import com.lake.dto.LocationDto
 import com.lake.dto.SiteDto
 import com.lake.service.*
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
+@CompileStatic
 @Slf4j
 @RestController
 class SiteController {

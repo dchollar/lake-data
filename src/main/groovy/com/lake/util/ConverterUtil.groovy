@@ -2,6 +2,7 @@ package com.lake.util
 
 import com.lake.dto.*
 import com.lake.entity.*
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import net.sourceforge.tess4j.ITesseract
 import net.sourceforge.tess4j.Tesseract
@@ -21,6 +22,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 
+@CompileStatic
 @Slf4j
 class ConverterUtil {
 

@@ -2,6 +2,7 @@ package com.lake.controller
 
 import com.lake.dto.AuditDto
 import com.lake.service.AuditService
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
+@CompileStatic
 @Slf4j
 @RestController
 class AuditController {

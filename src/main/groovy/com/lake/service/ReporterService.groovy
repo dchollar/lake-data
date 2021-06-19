@@ -6,6 +6,7 @@ import com.lake.entity.ReporterRole
 import com.lake.entity.RoleType
 import com.lake.repository.ReporterRepository
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
@@ -15,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
+@CompileStatic
 @Service
 class ReporterService {
     @Autowired

@@ -7,9 +7,12 @@ import com.lake.service.AuditService
 import com.lake.service.MeasurementService
 import com.lake.service.ReporterService
 import com.lake.service.ValidationService
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
-import groovy.util.slurpersupport.GPathResult
-import groovy.util.slurpersupport.NodeChild
+import groovy.xml.XmlSlurper
+import groovy.xml.slurpersupport.GPathResult
+import groovy.xml.slurpersupport.Node
+import groovy.xml.slurpersupport.NodeChild
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +26,7 @@ import java.time.LocalDate
 import java.time.Year
 import java.time.format.DateTimeFormatter
 
+@CompileStatic
 @Slf4j
 @Component
 class SwimsDataCollector {
@@ -53,10 +57,10 @@ class SwimsDataCollector {
     private static final int TEMPERATURE_PROFILE_ID = 29
     private static final int DISSOLVED_OXYGEN_PROFILE_ID = 28
 
-    private static final BigDecimal FOOT = new BigDecimal(3.28084)
+    private static final BigDecimal FOOT = 3.28084 //number of feet in a meter
 
-    private static final List<String> urls = ['http://dnrx.wisconsin.gov/swims/public/reporting.do?type=58&action=post&stationNo=493105&year1=START_YEAR&year2=CURRENT_YEAR&format=xml',
-                                              'http://dnrx.wisconsin.gov/swims/public/reporting.do?type=58&action=post&stationNo=493097&year1=START_YEAR&year2=CURRENT_YEAR&format=xml']
+    private static final List<String> urls = ['https://dnrx.wisconsin.gov/swims/public/reporting.do?type=58&action=post&stationNo=493105&year1=START_YEAR&year2=CURRENT_YEAR&format=xml',
+                                              'https://dnrx.wisconsin.gov/swims/public/reporting.do?type=58&action=post&stationNo=493097&year1=START_YEAR&year2=CURRENT_YEAR&format=xml']
 
     @Autowired
     MeasurementService measurementService
@@ -78,7 +82,8 @@ class SwimsDataCollector {
     }
 
     private List<String> fetchDataInternal(String year1, String year2) {
-        auditService.audit('JOB', "fetchData ${year1} ${year2}", this.class.simpleName)
+        String userName = ReporterService.username ?: REPORTER_USERNAME
+        auditService.audit('JOB', "fetchData ${year1} ${year2}", this.class.simpleName, reporterService.getReporter(userName))
         urls.each {
             String urlString = it.replace(CURRENT_YEAR, year2).replace(START_YEAR, year1)
             log.info(urlString)
@@ -101,66 +106,91 @@ class SwimsDataCollector {
      */
     private void parseXml(String xml) {
         Reporter reporter = reporterService.getReporter(REPORTER_USERNAME)
-
         GPathResult clmnAnnualReport = new XmlSlurper().parseText(xml)
-        String lakeName = StringUtils.stripToNull(clmnAnnualReport.srow.official_name.toString())
-        Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
-        Integer topDeepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
-        Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
 
-        clmnAnnualReport.srow.secchi_rows.secchi_row.each { NodeChild row ->
-            processSecchiRow(reporter, siteId, topDeepHoleLocationId, deepHoleLocationId, row)
+        GPathResult srow = clmnAnnualReport.getProperty('srow') as GPathResult
+        if (srow) {
+            String lakeName = StringUtils.stripToNull(srow?.getProperty('official_name')?.toString())
+
+            Integer siteId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_SITE_ID : NORTH_PIPE_LAKE_SITE_ID
+            Integer topDeepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
+            Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
+
+            processSecchiRows(srow, reporter, siteId, topDeepHoleLocationId, deepHoleLocationId)
+            processProfileRows(srow, reporter, siteId, deepHoleLocationId)
         }
-        clmnAnnualReport.srow.profile_rows.profile_row.each { NodeChild row ->
-            processProfileRow(reporter, siteId, deepHoleLocationId, row)
+    }
+
+    private void processProfileRows(GPathResult srow, Reporter reporter, int siteId, int deepHoleLocationId) {
+        GPathResult profileRows = srow?.getProperty('profile_rows') as GPathResult
+        GPathResult profileRow = profileRows?.getProperty('profile_row') as GPathResult
+        profileRow?.each { Object row ->
+            if (row) {
+                processProfileRow(reporter, siteId, deepHoleLocationId, row as NodeChild)
+            }
+        }
+    }
+
+    private void processSecchiRows(GPathResult srow, Reporter reporter, int siteId, int topDeepHoleLocationId, int deepHoleLocationId) {
+        GPathResult secchiRows = srow?.getProperty('secchi_rows') as GPathResult
+        GPathResult secchiRow = secchiRows?.getProperty('secchi_row') as GPathResult
+        secchiRow?.each { Object row ->
+            if (row) {
+                processSecchiRow(reporter, siteId, topDeepHoleLocationId, deepHoleLocationId, row as NodeChild)
+            }
         }
     }
 
     private void processSecchiRow(Reporter reporter, Integer siteId, Integer topDeepHoleLocationId, Integer deepHoleLocationId, NodeChild row) {
-        String startDate = StringUtils.stripToNull(row.start_date.toString())
-        saveDto(reporter, siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.secchi.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.chlorophyll.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.total_phosphorus.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.TSI_SD.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.TSI_TP.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.TSI_CHL.toString()))
+        String startDate = StringUtils.stripToNull(row.getProperty('start_date')?.toString())
+        saveDto(reporter, siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.getProperty('secchi')?.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.getProperty('chlorophyll')?.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.getProperty('total_phosphorus')?.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_SD')?.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_TP')?.toString()))
+        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_CHL')?.toString()))
     }
 
     private void processProfileRow(Reporter reporter, Integer siteId, Integer deepHoleLocationId, NodeChild row) {
-        String startDate = StringUtils.stripToNull(row.start_date2.toString())
+        String startDate = StringUtils.stripToNull(row.getProperty('start_date2')?.toString())
         String depth = extractDepth(row)
         saveDto(reporter, siteId, deepHoleLocationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
         saveDto(reporter, siteId, deepHoleLocationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, extractDissolvedOxygen(row), depth)
     }
 
     private static String extractDissolvedOxygen(final NodeChild row) {
-        return StringUtils.stripToNull(row.dissolved_oxygen.toString())
+        return StringUtils.stripToNull(row.getProperty('dissolved_oxygen')?.toString())
     }
 
     private static String extractDepth(final NodeChild row) {
-        String depth = StringUtils.stripToNull(row.depth.toString())
-        String depthUnits = StringUtils.stripToNull(row.childNodes()[1].attributes().units.toString())
+        final String nodeName = 'depth'
+        final String depth = StringUtils.stripToNull(row.getProperty(nodeName)?.toString())
+        final Node depthNode = row.childNodes().find { Node node -> node.name() == nodeName } as Node
+        final String depthUnits = StringUtils.stripToNull(depthNode?.attributes()?.get('units')?.toString())
         if (depth && depthUnits && depthUnits == 'METERS') {
             BigDecimal meters = new BigDecimal(depth)
-            depth = FOOT.multiply(meters).round(0).toString()
+            return (FOOT * meters).round(0).toString()
+        } else {
+            return depth
         }
-        depth
     }
 
     private static String extractTemperature(final NodeChild row) {
-        String temp = StringUtils.stripToNull(row.temperature.toString())
-        String temperatureUnits = StringUtils.stripToNull(row.childNodes()[2].attributes().units.toString())
+        final String nodeName = 'temperature'
+        final String temp = StringUtils.stripToNull(row.getProperty(nodeName)?.toString())
+        final Node tempNode = row.childNodes().find { Node node -> node.name() == nodeName } as Node
+        final String temperatureUnits = StringUtils.stripToNull(tempNode?.attributes()?.get('units')?.toString())
         if (temp && temperatureUnits && temperatureUnits.contains('C')) {
             if (temp.contains('F')) {
                 // some bad data appears to be encoded as celsius but is not
-                temp = temp.replace('F', '').trim()
+                return temp.replace('F', '').trim()
             } else {
                 // convert to fahrenheit
                 BigDecimal c = new BigDecimal(temp)
-                temp = ((c * 9.0 / 5.0) + 32.0).round(1).toString()
+                return ((c * 9.0 / 5.0) + 32.0).round(1).toString()
             }
         }
-        temp
+        return temp
     }
 
     private void saveDto(Reporter reporter,

@@ -6,6 +6,7 @@ import com.lake.entity.*
 import com.lake.repository.EventRepository
 import com.lake.repository.MeasurementRepository
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional
 
 import java.time.LocalDate
 
+@CompileStatic
 @Slf4j
 @Service
 class MeasurementService {
@@ -216,7 +218,7 @@ class MeasurementService {
         measurement.depth = dto.depth == null ? -1 : dto.depth
         measurement.characteristicLocation = characteristicLocationService.get(characteristic, location)
         if (measurement.characteristicLocation == null) {
-            throw new RuntimeException("Must define the location characteristic in the maintenance section before entering a measurement for it.")
+            throw new RuntimeException("Must define the location (site=${location.site.description} name=${location.description}) characteristic (name=${characteristic.description}) in the maintenance section before entering a measurement for it.")
         }
         measurement.fundingSource = fundingSourceService.getOne(dto.fundingSourceId)
         measurement.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())

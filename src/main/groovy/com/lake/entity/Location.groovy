@@ -1,9 +1,11 @@
 package com.lake.entity
 
+import groovy.transform.CompileStatic
 import org.locationtech.jts.geom.Point
 
 import javax.persistence.*
 
+@CompileStatic
 @Entity
 @Table(name = 'location')
 class Location {

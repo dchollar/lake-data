@@ -4,6 +4,7 @@ import com.lake.dto.MeasurementDto
 import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
 import com.lake.service.*
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,6 +18,7 @@ import java.time.LocalDate
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
+@CompileStatic
 @Slf4j
 @RestController
 class MeasurementController {

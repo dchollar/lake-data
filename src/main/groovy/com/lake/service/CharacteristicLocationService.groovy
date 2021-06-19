@@ -7,12 +7,14 @@ import com.lake.entity.Location
 import com.lake.entity.Site
 import com.lake.repository.CharacteristicLocationRepository
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+@CompileStatic
 @Service
 class CharacteristicLocationService {
 

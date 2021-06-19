@@ -3,12 +3,14 @@ package com.lake.service
 import com.lake.dto.CharacteristicDto
 import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 import javax.xml.bind.ValidationException
 import java.time.LocalDate
 
+@CompileStatic
 @Service
 class ValidationService {
 

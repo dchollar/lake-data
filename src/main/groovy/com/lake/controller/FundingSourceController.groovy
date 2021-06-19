@@ -3,6 +3,7 @@ package com.lake.controller
 import com.lake.dto.FundingSourceDto
 import com.lake.service.AuditService
 import com.lake.service.FundingSourceService
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
+@CompileStatic
 @Slf4j
 @RestController
 class FundingSourceController {

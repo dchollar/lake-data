@@ -1,5 +1,6 @@
 package com.lake
 
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 import javax.sql.DataSource
 
+@CompileStatic
 @Configuration
 @EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -25,12 +27,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) {
-        http.authorizeRequests()
-                .antMatchers('/', '/index', '/home', '/public/api/**', '/js/**', '/documents').permitAll()
-                .anyRequest().authenticated()
-                .and().formLogin()
+
+        http
+                .csrf().disable()
+                .formLogin()
+                .and().logout().logoutSuccessUrl('/')
                 .and().httpBasic()
-                .and().csrf().disable()
+                .and().authorizeRequests()
+                .antMatchers('/', '/index', '/home', '/public/api/**', '/js/**', '/ico/**', '/documents').permitAll()
+                .anyRequest().authenticated()
     }
 
     @Bean

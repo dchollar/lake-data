@@ -1,12 +1,14 @@
 package com.lake.dto
 
 import com.lake.entity.CharacteristicType
+import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 import groovy.transform.ToString
 
 import java.time.LocalDate
 
+@CompileStatic
 @EqualsAndHashCode(includes = ['id'])
 @Sortable(includes = ['siteId', 'characteristicId', 'locationId', 'collectionDate', 'depth', 'id'])
 @ToString

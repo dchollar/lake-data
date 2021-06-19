@@ -1,16 +1,11 @@
 package com.lake.entity
 
-import javax.persistence.Basic
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
-import javax.persistence.Table
+import groovy.transform.CompileStatic
+
+import javax.persistence.*
 import java.time.LocalDate
 
+@CompileStatic
 @Entity
 @Table(name = 'funding_source')
 class FundingSource {

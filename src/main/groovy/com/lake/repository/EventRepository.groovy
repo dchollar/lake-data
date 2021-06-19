@@ -3,10 +3,12 @@ package com.lake.repository
 import com.lake.entity.Characteristic
 import com.lake.entity.Event
 import com.lake.entity.Site
+import groovy.transform.CompileStatic
 import org.springframework.data.jpa.repository.JpaRepository
 
 import java.time.LocalDate
 
+@CompileStatic
 interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findAllBySiteAndCharacteristicAndValueBetween(Site site, Characteristic characteristic, LocalDate fromDate, LocalDate toDate)
 

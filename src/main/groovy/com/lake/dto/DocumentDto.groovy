@@ -1,9 +1,11 @@
 package com.lake.dto
 
+import groovy.transform.CompileStatic
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.Sortable
 import org.springframework.web.multipart.MultipartFile
 
+@CompileStatic
 @EqualsAndHashCode(includes = ['id'])
 @Sortable(includes = ['siteId', 'path', 'title', 'id'])
 class DocumentDto {

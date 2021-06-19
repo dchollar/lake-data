@@ -4,10 +4,12 @@ import com.lake.dto.SiteDto
 import com.lake.entity.Site
 import com.lake.repository.SiteRepository
 import com.lake.util.ConverterUtil
+import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
+@CompileStatic
 @Service
 class SiteService {
     @Autowired

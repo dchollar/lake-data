@@ -20,7 +20,7 @@
     <div class="container-fluid">
         <ul class="navbar-nav">
             <li class="nav-item"><a class="nav-link" th:href="@{/documents}">Documents</a></li>
-            <li class="nav-item"><a class="nav-link" href="http://pipelakes.org/">Pipe Lake District</a></li>
+            <li class="nav-item"><a class="nav-link" href="https://pipelakes.org/">Pipe Lake District</a></li>
             <li class="nav-item"><a class="nav-link" href="https://dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=2490500">DNR Pipe Lake</a></li>
             <li class="nav-item" sec:authorize="hasRole('ROLE_REPORTER')"><a class="nav-link" th:href="@{/dataEntry}">Enter Data</a></li>
             <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">

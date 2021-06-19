@@ -1,7 +1,10 @@
 package com.lake.entity
 
+import groovy.transform.CompileStatic
+
 import javax.persistence.*
 
+@CompileStatic
 @Entity
 @Table(name = 'characteristic_location')
 class CharacteristicLocation {

@@ -1,5 +1,6 @@
 package com.lake.controller
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.dao.DataIntegrityViolationException
@@ -14,6 +15,7 @@ import javax.persistence.NoResultException
 import javax.persistence.OptimisticLockException
 import javax.xml.bind.ValidationException
 
+@CompileStatic
 @Slf4j
 @ControllerAdvice
 class ErrorController {
