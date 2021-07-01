@@ -44,9 +44,8 @@ $(document).ready(function () {
                 success: function (aSite) {
                     site = aSite;
                 },
-                error: function (xhr, resp) {
-                    console.log(resp);
-                    $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                error: function (xhr) {
+                    $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                 }
             });
     }
@@ -60,9 +59,8 @@ $(document).ready(function () {
                 success: function (documents) {
                     buildResultDiv(documents);
                 },
-                error: function (xhr, resp) {
-                    console.log(resp);
-                    $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                error: function (xhr) {
+                    $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                 }
             });
     }

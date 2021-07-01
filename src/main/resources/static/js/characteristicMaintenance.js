@@ -23,8 +23,8 @@ $(function () {
                         type: "GET",
                         url: "api/characteristics",
                         data: filter,
-                        error: function (xhr, resp, text) {
-                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        error: function (xhr) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                         }
                     });
                 },
@@ -34,10 +34,10 @@ $(function () {
                     return $.ajax({
                         type: "POST",
                         url: "api/characteristics",
-                        contentType: 'application/json',
+                        contentType: 'application/json; charset=UTF-8',
                         data: JSON.stringify(item),
-                        error: function (xhr, resp, text) {
-                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        error: function (xhr) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                         }
                     });
                 },
@@ -47,10 +47,10 @@ $(function () {
                     return $.ajax({
                         type: "PUT",
                         url: "api/characteristics/" + item.id,
-                        contentType: 'application/json',
+                        contentType: 'application/json; charset=UTF-8',
                         data: JSON.stringify(item),
-                        error: function (xhr, resp, text) {
-                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        error: function (xhr) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                         }
                     });
                 },
@@ -60,8 +60,8 @@ $(function () {
                     return $.ajax({
                         type: "DELETE",
                         url: "api/characteristics/" + item.id,
-                        error: function (xhr, resp, text) {
-                            $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        error: function (xhr) {
+                            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                         }
                     });
                 },

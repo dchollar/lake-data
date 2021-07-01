@@ -34,7 +34,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout().logoutSuccessUrl('/')
                 .and().httpBasic()
                 .and().authorizeRequests()
-                .antMatchers('/', '/index', '/home', '/public/api/**', '/js/**', '/ico/**', '/documents').permitAll()
+                .antMatchers('/', '/index', '/home', '/public/api/**', '/js/**', '/ico/**', '/documents', '/favicon.ico').permitAll()
                 .anyRequest().authenticated()
     }
 

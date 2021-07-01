@@ -59,9 +59,8 @@ $(document).ready(function () {
                         buildResultDiv(measurements);
                         buildChartDiv(measurements);
                     },
-                    error: function (xhr, resp, text) {
-                        console.log(xhr, resp, text);
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                    error: function (xhr) {
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
         }

@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<html lang="en-US" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Pipe Lake Data Entry</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/ico/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/ico/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/ico/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/ico/site.webmanifest}">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
-    <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
-          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" rel="stylesheet"/>
-    <link rel="icon" th:src="@{/ico/favicon-32x32.png}" type="image/png"/>
+    <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -31,8 +33,7 @@
                     <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
                     <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
-                    <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic
-                        Locations</a>
+                    <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
                     <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
                     <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
                 </div>
@@ -43,6 +44,7 @@
                     aria-hidden="true" class="fas fa-sign-in-alt"></i>Login</a></li>
             <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/logout}"><i
                     aria-hidden="true" class="fas fa-sign-out-alt"></i>Logout</a></li>
+            <li class="nav-item" data-toggle="modal" data-target="#helpModal"><i class="text-secondary far fa-question-circle"></i></li>
         </ul>
     </div>
 </nav>
@@ -77,7 +79,7 @@
 
         <div class="col-sm-6 text-left" id="resultDiv">
             <div class="container">
-                <span id="message" style="color: red;"></span><br>
+                <span id="message" class="bg-danger text-white"></span><br>
                 <p></p>
                 <div class="row form-group" id="collectionDateDiv">
                     <div class="col-sm-12">
@@ -112,6 +114,51 @@
 <footer class="container-fluid text-center bg-dark text-light" style="padding: 1px;">
     <p></p>
 </footer>
+
+<!-- The Help Modal -->
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">Data Entry Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h5>Site</h5>
+                <p>Choose the site you want to enter data for.</p>
+                <h5>Characteristic</h5>
+                <p>Choose the characteristic you want to enter data for. Only characteristics that are appropriate for the site will be displayed. The list of characteristics will
+                    change based on what site you have picked. Depending on which characteristic you choose a Location will also need to be selected. If the appropriate
+                    characteristic is not in the list talk to your site administrator.</p>
+                <h5>Location</h5>
+                <p>Depending on the characteristic, you will need to select a location. Only the appropriate locations will be available. If the location you need is not available
+                    talk to your site administrator.</p>
+                <h5>Collection Date</h5>
+                <p>Enter the date that the sample was collected</p>
+                <h5>Actual Measurement</h5>
+                <p>This is the actual value of the measurement. Be sure to enter the value in the specified units.</p>
+                <h5>Depth</h5>
+                <p>Depending on the characteristic, you will need to enter the depth in feet at which the specific measurement was taken.</p>
+                <h5>Comment</h5>
+                <p>Enter any comments you would like to make about the measurement and how it was taken. This is optional.</p>
+                <h5>Funding Source</h5>
+                <p>If these measurements were being taken as part of a specific grant for example then select if.</p>
+                <h5>Submit</h5>
+                <p>When done press the Submit button to save your data entry. If all goes well you will get a message that it is saved and the screen will be reset so you can enter
+                    a new measurement. If something went wrong the error message will be displayed at the top of the page and you will need to fix your data.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

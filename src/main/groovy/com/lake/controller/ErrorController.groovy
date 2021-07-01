@@ -6,8 +6,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.RestControllerAdvice
 
 import javax.persistence.EntityExistsException
 import javax.persistence.EntityNotFoundException
@@ -17,34 +17,28 @@ import javax.xml.bind.ValidationException
 
 @CompileStatic
 @Slf4j
-@ControllerAdvice
+@RestControllerAdvice
 class ErrorController {
 
     @ExceptionHandler([EntityNotFoundException, NoResultException])
-    ResponseEntity handleNotFound(Exception e) {
+    ResponseEntity handleDataNotFound(Exception e) {
         log.debug('NOT FOUND', e)
-        return new ResponseEntity(createBody(e), HttpStatus.NOT_FOUND)
+        return new ResponseEntity(createBody(e), HttpStatus.NO_CONTENT)
     }
 
     @ExceptionHandler([EntityExistsException, DataIntegrityViolationException, OptimisticLockException])
-    ResponseEntity handleConflict(Exception e) {
+    ResponseEntity handleDataConflict(Exception e) {
         log.error('DATA CONFLICT', e)
         return new ResponseEntity(createBody(e), HttpStatus.CONFLICT)
     }
 
-    @ExceptionHandler
-    ResponseEntity handleBadRequests(ValidationException e) {
-        log.error('BAD REQUEST', e)
+    @ExceptionHandler([ValidationException, IllegalArgumentException])
+    ResponseEntity handleBadRequests(Exception e) {
+        log.info('Validation issue: ' + ExceptionUtils.getRootCauseMessage(e))
         return new ResponseEntity(createBody(e), HttpStatus.BAD_REQUEST)
     }
 
-    @ExceptionHandler
-    ResponseEntity handleBadRequests(IllegalArgumentException e) {
-        log.error('Not really sure what happened here but we threw this one', e)
-        return new ResponseEntity(createBody(e), HttpStatus.INTERNAL_SERVER_ERROR)
-    }
-
-    @ExceptionHandler
+    @ExceptionHandler(Exception)
     ResponseEntity handleUnknownException(Exception e) {
         log.error('Something really bad happened', e)
         return new ResponseEntity(createBody(e), HttpStatus.INTERNAL_SERVER_ERROR)

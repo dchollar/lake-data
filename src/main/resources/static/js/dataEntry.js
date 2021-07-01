@@ -46,7 +46,7 @@ $(document).ready(function () {
                 {
                     type: "POST",
                     url: "api/measurements",
-                    contentType: 'application/json',
+                    contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(data),
                     success: function () {
                         alert("Your data has been saved.");
@@ -56,9 +56,8 @@ $(document).ready(function () {
                         // $('#commentField').value = '';
                         window.location = "dataEntry";
                     },
-                    error: function (xhr, resp, text) {
-                        console.log(xhr, resp, text);
-                        $("#message").text("There was an issue saving your data. Check your submission. " + xhr.responseText).show();
+                    error: function (xhr) {
+                        $("#message").text("There was an issue saving your data. Check your submission. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
         }

@@ -29,7 +29,7 @@ $(function () {
                     url: "api/measurements",
                     data: filter,
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },
@@ -41,10 +41,10 @@ $(function () {
                 return $.ajax({
                     type: "PUT",
                     url: "api/measurements/" + item.id,
-                    contentType: 'application/json',
+                    contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },
@@ -55,7 +55,7 @@ $(function () {
                     type: "DELETE",
                     url: "api/measurements/" + item.id + "?characteristicType=" + item.characteristicType,
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },

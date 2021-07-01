@@ -22,7 +22,7 @@ $(function () {
                 return $.ajax({
                     type: "GET",
                     url: "api/audits?timezone=" + timezone,
-                    contentType: 'application/json',
+                    contentType: 'application/json; charset=UTF-8',
                     data: filter
                 });
             },

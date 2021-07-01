@@ -1,6 +1,5 @@
 package com.lake.controller
 
-
 import com.lake.entity.CharacteristicType
 import com.lake.service.*
 import groovy.json.JsonOutput
@@ -12,6 +11,7 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ResponseBody
 
 @CompileStatic
 @Slf4j
@@ -30,6 +30,12 @@ class PageController {
     AuditService auditService
     @Autowired
     FundingSourceService fundingSourceService
+
+    @GetMapping(['favicon.ico'])
+    @ResponseBody
+    String favicon() {
+        return "forward:/ico/favicon.ico"
+    }
 
     @GetMapping(['/', '/index', '/home'])
     String index(Model model) {
@@ -109,7 +115,7 @@ class PageController {
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/fundingSourceMaintenance')
-    String fundingSourceMaintenance(Model model) {
+    String fundingSourceMaintenance() {
         auditService.audit(HttpMethod.GET.name(), '/fundingSourceMaintenance', this.class.simpleName)
         return 'fundingSourceMaintenance'
     }

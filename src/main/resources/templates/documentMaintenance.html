@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
+<html lang="en-US" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Pipe Lake Document Maintenance</title>
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/ico/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/ico/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/ico/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/ico/site.webmanifest}">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"/>
     <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" rel="stylesheet" type="text/css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" rel="stylesheet" type="text/css"/>
-    <link rel="icon" th:src="@{/ico/favicon-32x32.png}" type="image/png"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -54,7 +57,7 @@
         </div>
 
         <div class="col-sm-11 text-left" id="resultDiv">
-            <span id="message" style="color: red;"></span><br>
+            <span id="message" class="bg-danger text-white"></span><br>
             <div class="container-fluid">
                 <div id="jsGrid"></div>
             </div>

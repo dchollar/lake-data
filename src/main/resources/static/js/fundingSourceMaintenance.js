@@ -21,7 +21,7 @@ $(function () {
                     url: "public/api/fundingSources",
                     data: filter,
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },
@@ -31,10 +31,10 @@ $(function () {
                 return $.ajax({
                     type: "POST",
                     url: "api/fundingSources",
-                    contentType: 'application/json',
+                    contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },
@@ -44,10 +44,10 @@ $(function () {
                 return $.ajax({
                     type: "PUT",
                     url: "api/fundingSources/" + item.id,
-                    contentType: 'application/json',
+                    contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },
@@ -58,7 +58,7 @@ $(function () {
                     type: "DELETE",
                     url: "api/fundingSources/" + item.id,
                     error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseText).show();
+                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
                 });
             },
