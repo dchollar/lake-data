@@ -11,7 +11,6 @@ Characteristic Types:
  - allow power users a read only view of the maintenance pages
     - low priority. not sure of the need yet.
   - Add a privacy statement page linked from the footer
-  - Add a version that is displayed in the page footer
   - Get someone to add the other documents to the system
   - Link documents to pipe lake web site
   - Change style sheet to make site look more like the pipe lake site.

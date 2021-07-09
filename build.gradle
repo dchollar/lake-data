@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'com.lake'
-version = '1.0.0'
+version = '3.1.0'
 
 java {
     sourceCompatibility(JavaVersion.VERSION_11)
@@ -19,6 +19,10 @@ java {
 repositories {
     mavenLocal()
     mavenCentral()
+}
+
+springBoot {
+    buildInfo()
 }
 
 dependencies {

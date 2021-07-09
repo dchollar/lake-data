@@ -6,6 +6,7 @@ import groovy.json.JsonOutput
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.info.BuildProperties
 import org.springframework.http.HttpMethod
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Controller
@@ -30,6 +31,8 @@ class PageController {
     AuditService auditService
     @Autowired
     FundingSourceService fundingSourceService
+    @Autowired
+    private BuildProperties buildProperties
 
     @GetMapping(['favicon.ico'])
     @ResponseBody
@@ -42,6 +45,7 @@ class PageController {
         auditService.audit(HttpMethod.GET.name(), '/index', this.class.simpleName)
         model.addAttribute('sites', siteService.getAll())
         model.addAttribute('fundingSources', fundingSourceService.getAll())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'index'
     }
 
@@ -49,6 +53,7 @@ class PageController {
     String documents(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/public/documents', this.class.simpleName)
         model.addAttribute('sites', siteService.getSitesWithDocuments())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'documents'
     }
 
@@ -59,36 +64,41 @@ class PageController {
         model.addAttribute('sites', siteService.getAll())
         model.addAttribute('characteristics', characteristicService.getAll())
         model.addAttribute('fundingSources', fundingSourceService.getAll())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'dataEntry'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/userMaintenance')
-    String userMaintenance() {
+    String userMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/userMaintenance', this.class.simpleName)
+        model.addAttribute('version', buildProperties.getVersion())
         return 'userMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/documentMaintenance')
     String documentMaintenance(Model model) {
-        model.addAttribute('siteOptions', getSites())
         auditService.audit(HttpMethod.GET.name(), '/documentMaintenance', this.class.simpleName)
+        model.addAttribute('siteOptions', getSites())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'documentMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/locationMaintenance')
     String locationMaintenance(Model model) {
-        model.addAttribute('siteOptions', getSites())
         auditService.audit(HttpMethod.GET.name(), '/locationMaintenance', this.class.simpleName)
+        model.addAttribute('siteOptions', getSites())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'locationMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/characteristicMaintenance')
-    String characteristicMaintenance() {
+    String characteristicMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/characteristicMaintenance', this.class.simpleName)
+        model.addAttribute('version', buildProperties.getVersion())
         return 'characteristicMaintenance'
     }
 
@@ -99,6 +109,7 @@ class PageController {
         model.addAttribute('siteOptions', getSites())
         model.addAttribute('characteristicOptions', getWaterCharacteristics())
         model.addAttribute('locationOptions', getLocations())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'characteristicLocationMaintenance'
     }
 
@@ -110,20 +121,23 @@ class PageController {
         model.addAttribute('characteristicOptions', getCharacteristics())
         model.addAttribute('locationOptions', getLocations())
         model.addAttribute('fundingSourceOptions', getFundingSources())
+        model.addAttribute('version', buildProperties.getVersion())
         return 'dataMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/fundingSourceMaintenance')
-    String fundingSourceMaintenance() {
+    String fundingSourceMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/fundingSourceMaintenance', this.class.simpleName)
+        model.addAttribute('version', buildProperties.getVersion())
         return 'fundingSourceMaintenance'
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/audit')
-    String audit() {
+    String audit(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/audit', this.class.simpleName)
+        model.addAttribute('version', buildProperties.getVersion())
         return 'audit'
     }
 
