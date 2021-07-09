@@ -3,4 +3,5 @@ build/
 .idea/
 *.iml
 database/*.mwb.bak
+database/defaults.cnf
 out/
