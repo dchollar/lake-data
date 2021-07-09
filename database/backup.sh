@@ -20,6 +20,7 @@ rm $zipfile
 zip -9 -q $zipfile $sqlfile
 rm $sqlfile
 
+git add database/dump.zip
 git commit -m "database backup"
 git push
 

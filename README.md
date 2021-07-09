@@ -55,3 +55,35 @@ Is a complete open source system that uses lucine. Not needed currently
 - https://solr.apache.org/
 
 Larry's Example: https://optidat.com/pl/pipe-lakes-district-records-archive/
+
+# DB Backup Issues
+On branch db-backup
+Your branch is ahead of 'origin/db-backup' by 1 commit.
+(use "git push" to publish your local commits)
+
+Changes not staged for commit:
+(use "git add <file>..." to update what will be committed)
+(use "git restore <file>..." to discard changes in working directory)
+modified:   database/dump.zip
+
+Untracked files:
+(use "git add <file>..." to include in what will be committed)
+database/defaults.cnf
+
+no changes added to commit (use "git add" and/or "git commit -a")
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 165.23 MiB | 2.90 MiB/s, done.
+Total 5 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.
+remote: error: Trace: 1b7cf5b3cea9940633f7e2b40b61a52c900426aef2d2b29ad82e3bbe351a5bfc
+remote: error: See http://git.io/iEPt8g for more information.
+remote: error: File database/dump.zip is 165.24 MB; this exceeds GitHub's file size limit of 100.00 MB
+To github.com:dchollar/lake-data.git
+! [remote rejected] db-backup -> db-backup (pre-receive hook declined)
+error: failed to push some refs to 'git@github.com:dchollar/lake-data.git'
+dan@ubuntu-PC:~/IdeaProjects/db-backup/lake-data/database$ 
+
