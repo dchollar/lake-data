@@ -1,1 +1,1 @@
-*.zip filter=lfs diff=lfs merge=lfs -text
+database/large_dump.zip filter=lfs diff=lfs merge=lfs -text

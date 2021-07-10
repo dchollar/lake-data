@@ -7,8 +7,8 @@ backupfolder=$projectfolder/database
 # MySQL user
 user=backup
 
-sqlfile=$backupfolder/dump.sql
-zipfile=$backupfolder/dump.zip
+sqlfile=$backupfolder/large_dump.sql
+zipfile=$backupfolder/large_dump.zip
 #this file holds the password and is not checked in
 defaultfile=$backupfolder/defaults.cnf
 
@@ -20,7 +20,7 @@ rm $zipfile
 zip -9 -q $zipfile $sqlfile
 rm $sqlfile
 
-git add database/dump.zip
+git add database/large_dump.zip
 git commit -m "database backup"
 git push
 
