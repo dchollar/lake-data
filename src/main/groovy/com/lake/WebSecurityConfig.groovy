@@ -15,7 +15,6 @@ import javax.sql.DataSource
 
 @CompileStatic
 @Configuration
-@EnableWebSecurity
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -27,7 +26,6 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) {
-
         http
                 .csrf().disable()
                 .formLogin()

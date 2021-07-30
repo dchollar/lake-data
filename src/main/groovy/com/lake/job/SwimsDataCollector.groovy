@@ -73,20 +73,24 @@ class SwimsDataCollector {
 
     @Scheduled(cron = "0 0 0 1 * *")
     void fetchData() {
-        String year = Year.now().getValue().toString()
+        String year = currentYear()
         fetchDataInternal(year, year)
     }
 
     void fetchData(String year1) {
-        fetchDataInternal(year1, Year.now().getValue().toString())
+        fetchDataInternal(year1, currentYear())
     }
 
-    private List<String> fetchDataInternal(String year1, String year2) {
+    static String currentYear() {
+        return Year.now().getValue().toString()
+    }
+
+    private void fetchDataInternal(String year1, String year2) {
         String userName = ReporterService.username ?: REPORTER_USERNAME
         auditService.audit('JOB', "fetchData ${year1} ${year2}", this.class.simpleName, reporterService.getReporter(userName))
         urls.each {
             String urlString = it.replace(CURRENT_YEAR, year2).replace(START_YEAR, year1)
-            log.info(urlString)
+            log.debug(urlString)
             getSwimData(urlString)
         }
     }

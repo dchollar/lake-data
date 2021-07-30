@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Pipe Lake Audit Data</title>
+    <title>Pipe Lake Jobs</title>
 
     <link rel="apple-touch-icon" sizes="180x180" th:href="@{/ico/apple-touch-icon.png}"/>
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/ico/favicon-32x32.png}"/>
@@ -19,7 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js" type="text/javascript"></script>
-    <script th:src="@{/js/audit.js}"></script>
 </head>
 <body>
 
@@ -41,8 +40,8 @@
                     <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
                     <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
                     <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
-                    <a class="dropdown-item text-light active" th:href="@{/audit}">Audit</a>
-                    <a class="dropdown-item text-light" th:href="@{/jobs}">Job Maintenance</a>
+                    <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
+                    <a class="dropdown-item text-light active" th:href="@{/jobs}">Job Maintenance</a>
                 </div>
             </li>
         </ul>
@@ -60,8 +59,18 @@
         </div>
 
         <div class="col-sm-11 text-left" id="resultDiv">
+            <span id="message" class="bg-danger text-white"></span><br>
             <div class="container-fluid">
-                <div id="jsGrid"></div>
+                <p>The following buttons allow you to run the normally scheduled jobs on demand. These jobs normally run in the background on a scheduled basis.
+                This page allows you to run these jobs as soon as you push the button. When the job is complete you will be returned to the home page.
+                It may take several minutes for the job to complete.</p>
+                <p></p>
+                <a class="btn btn-info" th:href="@{/jobs/swims}">Collect SWIMS Data since beginning of time</a>
+                <p></p>
+                <a class="btn btn-info" th:href="@{/jobs/swims?currentYear=true}">Collect SWIMS Data for current year</a>
+                <p></p>
+                <a class="btn btn-info" th:href="@{/jobs/audit/truncate}">Truncate audit logs</a>
+                <p></p>
             </div>
         </div>
     </div>

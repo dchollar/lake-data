@@ -16,6 +16,7 @@ import springfox.documentation.spring.web.plugins.Docket
 
 @CompileStatic
 @SpringBootApplication
+//@EnableSwagger2
 @EnableJpaRepositories
 @EnableCaching
 @EnableScheduling

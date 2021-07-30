@@ -4,12 +4,12 @@ plugins {
     id 'groovy'
     id 'eclipse'
     id 'idea'
-    id 'org.springframework.boot' version '2.5.2'
+    id 'org.springframework.boot' version '2.5.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 group = 'com.lake'
-version = '3.1.0'
+version = '3.1.1'
 
 java {
     sourceCompatibility(JavaVersion.VERSION_11)
@@ -29,7 +29,7 @@ dependencies {
     implementation('org.apache.commons:commons-lang3:3.12.0')
     implementation('commons-io:commons-io:2.10.0')
     implementation('org.apache.pdfbox:pdfbox:2.0.24')
-    implementation('net.sourceforge.tess4j:tess4j:4.5.4')
+    implementation('net.sourceforge.tess4j:tess4j:4.5.5')
 
     implementation('org.codehaus.groovy:groovy-all:3.0.8')
 
@@ -39,13 +39,14 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 
-    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE')
-    implementation('org.hibernate:hibernate-spatial:5.5.0.Final')
-
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-    runtimeOnly('mysql:mysql-connector-java')
+
+    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE')
+    implementation('org.hibernate:hibernate-spatial:5.5.4.Final')
 
     implementation('io.springfox:springfox-boot-starter:3.0.0')
+
+    runtimeOnly('mysql:mysql-connector-java')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.spockframework:spock-spring:2.0-groovy-3.0')

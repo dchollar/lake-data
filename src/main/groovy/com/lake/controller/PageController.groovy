@@ -141,6 +141,14 @@ class PageController {
         return 'audit'
     }
 
+    @Secured('ROLE_ADMIN')
+    @GetMapping('/jobs')
+    String jobs(Model model) {
+        auditService.audit(HttpMethod.GET.name(), '/jobs', this.class.simpleName)
+        model.addAttribute('version', buildProperties.getVersion())
+        return 'jobMaintenance'
+    }
+
     //--------------------------------------------------------------------------------------
 
     private String getSites() {
