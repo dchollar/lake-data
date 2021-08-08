@@ -13,7 +13,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 
-import javax.xml.bind.ValidationException
 import java.time.LocalDate
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
@@ -42,12 +41,8 @@ class MeasurementController {
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
                                               @RequestParam(name = 'fundingSourceId', required = false) Integer fundingSourceId) {
         auditService.audit(HttpMethod.GET.name(), '/public/api/measurements', this.class.simpleName)
-        List valid = validationService.isValid(siteId, characteristicId, locationId, fromDate, toDate)
-        if (valid[0]) {
-            return measurementService.doSearch(siteId, characteristicId, locationId, fromDate, toDate, fundingSourceId)
-        } else {
-            throw new ValidationException(valid[1] as String)
-        }
+        validationService.isValid(siteId, characteristicId, locationId, fromDate, toDate)
+        return measurementService.doSearch(siteId, characteristicId, locationId, fromDate, toDate, fundingSourceId)
     }
 
     @Secured('ROLE_ADMIN')

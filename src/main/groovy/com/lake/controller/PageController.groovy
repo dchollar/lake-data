@@ -62,7 +62,6 @@ class PageController {
     String dataEntry(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataEntry', this.class.simpleName)
         model.addAttribute('sites', siteService.getAll())
-        model.addAttribute('characteristics', characteristicService.getAll())
         model.addAttribute('fundingSources', fundingSourceService.getAll())
         model.addAttribute('version', buildProperties.getVersion())
         return 'dataEntry'

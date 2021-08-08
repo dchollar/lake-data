@@ -10,18 +10,22 @@ Characteristic Types:
     - cron process that will dump the db to the project and then commit and push it to git
  - allow power users a read only view of the maintenance pages
     - low priority. not sure of the need yet.
-  - Add a privacy statement page linked from the footer
-  - Get someone to add the other documents to the system
-  - Link documents to pipe lake web site
-  - Change style sheet to make site look more like the pipe lake site.
-  - Create instructions or help documentation for data entry page and all maintenance pages. have this info appears in an overlay.
-  - Enable a date picker in the data maintenance page - NO they have all looked bad
-  - set up https://superset.apache.org/
-  - Enable https on the server - NO not going to do it. requires domain registration  https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
-  - Create a mapping between event type characteristics and sites. This would create a characteristic_site table.
-    This is analogous to the characteristic_location table. Not sure I want to do this. This would limit the
-    events to a specific site for data entry.
-  - Bulk upload and download of documents. Not sure I want to do this. Will do as an on-demand request.
+ - Add a privacy statement page linked from the footer
+ - Get someone to add the other documents to the system
+ - Link documents to pipe lake web site
+ - Change style sheet to make site look more like the pipe lake site.
+ - Create instructions or help documentation for data entry page and all maintenance pages. have this info appears in an overlay.
+ - Enable a date picker in the data maintenance page - NO they have all looked bad
+ - set up https://superset.apache.org/
+ - Enable https on the server - NO not going to do it. requires domain registration  https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
+ - Create a mapping between event type characteristics and sites. This would create a characteristic_site table.
+   This is analogous to the characteristic_location table. Not sure I want to do this. This would limit the
+   events to a specific site for data entry.
+ - Bulk upload and download of documents. Not sure I want to do this. Will do as an on-demand request.
+ - Re-factor the html pages to have a shared menu segment and header segments
+ - Change the document storage to include other documents like excel and word docs.
+   - not sure I want to do this. Reason is that PDF documents are not really editable. 
+   - Purpose of document store is for informational documents about the lake. Excel documents can be saved as PDF
 
 # Technologies Used:
 - Groovy

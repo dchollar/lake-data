@@ -40,8 +40,17 @@ class ErrorController {
 
     @ExceptionHandler(Exception)
     ResponseEntity handleUnknownException(Exception e) {
-        log.error('Something really bad happened', e)
-        return new ResponseEntity(createBody(e), HttpStatus.INTERNAL_SERVER_ERROR)
+        Throwable throwable = ExceptionUtils.getRootCause(e)
+        if (throwable instanceof ValidationException || throwable instanceof IllegalArgumentException) {
+            handleBadRequests(throwable)
+        } else if (throwable instanceof EntityNotFoundException || throwable instanceof NoResultException) {
+            handleDataNotFound(throwable)
+        } else if (throwable instanceof EntityExistsException || throwable instanceof DataIntegrityViolationException || throwable instanceof OptimisticLockException) {
+            handleDataConflict(throwable)
+        } else {
+            log.error('Something really bad happened', e)
+            return new ResponseEntity(createBody(e), HttpStatus.INTERNAL_SERVER_ERROR)
+        }
     }
 
     private static Map<String, Object> createBody(Exception e) {
