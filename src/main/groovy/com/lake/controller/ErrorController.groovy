@@ -40,6 +40,7 @@ class ErrorController {
 
     @ExceptionHandler(Exception)
     ResponseEntity handleUnknownException(Exception e) {
+        //This is here because the security code is wrapping the exception thrown from the controllers. Should just make a handler based on that specific exception.
         Throwable throwable = ExceptionUtils.getRootCause(e)
         if (throwable instanceof ValidationException || throwable instanceof IllegalArgumentException) {
             handleBadRequests(throwable)

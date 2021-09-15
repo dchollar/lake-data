@@ -13,6 +13,9 @@ Characteristic Types:
  - Add a privacy statement page linked from the footer
  - Get someone to add the other documents to the system
  - Link documents to pipe lake web site
+ - Add audit fields (lastUpdated, lastUpdatedBy, created, createdBy) to document and measurement.
+ - Enhance the users to include more details to include property and plot maps and email capabilities.
+ - Add a new role for managing and contacting residents.
  - Change style sheet to make site look more like the pipe lake site.
  - Create instructions or help documentation for data entry page and all maintenance pages. have this info appears in an overlay.
  - Enable a date picker in the data maintenance page - NO they have all looked bad
