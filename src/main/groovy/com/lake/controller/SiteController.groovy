@@ -5,7 +5,6 @@ import com.lake.dto.DocumentDto
 import com.lake.dto.LocationDto
 import com.lake.dto.SiteDto
 import com.lake.service.*
-import com.lake.util.ConverterUtil
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +44,7 @@ class SiteController {
     @GetMapping(value = '/public/api/sites/{siteId}', produces = APPLICATION_JSON_VALUE)
     SiteDto getSite(@PathVariable(name = 'siteId', required = true) Integer siteId) {
         auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}", this.class.simpleName)
-        return ConverterUtil.convert(service.getOne(siteId))
+        return service.get(siteId)
     }
 
     @GetMapping(value = '/public/api/sites/{siteId}/locations', produces = APPLICATION_JSON_VALUE)

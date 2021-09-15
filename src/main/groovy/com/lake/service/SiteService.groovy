@@ -20,11 +20,15 @@ class SiteService {
         ConverterUtil.convertSites(repository.findAll())
     }
 
+    @Cacheable('siteById')
+    SiteDto get(Integer id) {
+        return ConverterUtil.convert(this.getOne(id))
+    }
+
     Set<SiteDto> getSitesWithDocuments() {
         ConverterUtil.convertSites(repository.findAllSitesWithDocuments())
     }
 
-    @Cacheable('siteById')
     Site getOne(Integer id) {
         if (id) {
             return repository.getById(id)
