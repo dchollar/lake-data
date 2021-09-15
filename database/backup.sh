@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-projectfolder=/home/dan/IdeaProjects/db-backup/lake-data
+projectfolder=/home/dan/IdeaProjects/lake-data
 # Backup storage directory
 backupfolder=$projectfolder/database
 
