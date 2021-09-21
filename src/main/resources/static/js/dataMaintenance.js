@@ -82,7 +82,8 @@ $(function () {
             {title: "Depth", name: "depth", filtering: false, type: "number", width: 50},
             {title: "Value", name: "value", filtering: false, type: "number", width: 50},
             {title: "Comment", name: "comment", filtering: false, type: "textarea", width: 150},
-            {title: "Reporter", name: "reporterName", editing: false, filtering: true, type: "textarea", width: 100},
+            {title: "Created By", name: "createdByName", editing: false, filtering: true, type: "textarea", width: 100},
+            {title: "Modified By", name: "modifiedByName", editing: false, filtering: true, type: "textarea", width: 100},
             {type: "control"}
         ]
     });

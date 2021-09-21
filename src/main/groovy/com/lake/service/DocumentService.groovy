@@ -54,7 +54,6 @@ class DocumentService {
     @Secured('ROLE_ADMIN')
     DocumentDto save(DocumentDto dto, String timeZone) {
         Document entity = ConverterUtil.convert(dto, new Document())
-        entity.created = Instant.now()
         entity.site = siteService.getOne(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)
     }

@@ -8,7 +8,7 @@ import java.time.LocalDate
 @CompileStatic
 @Entity
 @Table(name = 'measurement')
-class Measurement {
+class Measurement extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,6 @@ class Measurement {
     @ManyToOne(optional = false)
     @JoinColumn(name = 'characteristic_location_id', referencedColumnName = 'id', nullable = false)
     CharacteristicLocation characteristicLocation
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = 'reporter_id', referencedColumnName = 'id')
-    Reporter reporter
 
     @ManyToOne
     @JoinColumn(name = 'funding_source_id', referencedColumnName = 'id', nullable = true)

@@ -23,5 +23,9 @@ class MeasurementMaintenanceDto {
     Integer siteId
     Integer fundingSourceId
     CharacteristicType characteristicType
-    String reporterName
+    // TODO Set and use these values. Need timezone from UI
+    // String created
+    // String lastUpdated
+    String createdByName
+    String modifiedByName
 }

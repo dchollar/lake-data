@@ -26,6 +26,10 @@ import java.time.ZoneOffset
 @Slf4j
 class ConverterUtil {
 
+    //----------------------------------------------------------------------------------
+    // Collection Converters
+    //----------------------------------------------------------------------------------
+
     static Collection<AuditDto> convertAudits(Collection<Audit> entities, String timezone, AuditDto filter) {
         Set<AuditDto> dtos = new TreeSet<>()
         entities.each {
@@ -129,6 +133,12 @@ class ConverterUtil {
     }
 
     //----------------------------------------------------------------------------------
+    // Individual Converters
+    //----------------------------------------------------------------------------------
+
+    static String convert(Instant time, String timezone) {
+        return time.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
+    }
 
     static AuditDto convert(Audit entity, String timezone) {
         AuditDto dto = new AuditDto()
@@ -141,7 +151,7 @@ class ConverterUtil {
         } else {
             dto.reporterName = ''
         }
-        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm:ss')
+        dto.created = convert(entity.created, timezone)
         return dto
     }
 
@@ -151,9 +161,11 @@ class ConverterUtil {
         dto.path = entity.path
         dto.title = entity.title
         dto.siteId = entity.site.id
-        dto.lastUpdated = entity.lastUpdated.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
-        dto.created = entity.created.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
+        dto.lastUpdated = convert(entity.lastUpdated, timezone)
+        dto.created = convert(entity.created, timezone)
         dto.fileSize = entity.fileSize
+        dto.createdByName = "${entity.createdBy.firstName} ${entity.createdBy.lastName}"
+        dto.modifiedByName = "${entity.modifiedBy.firstName} ${entity.modifiedBy.lastName}"
         dto.document = null
         return dto
     }
@@ -165,7 +177,8 @@ class ConverterUtil {
         dto.dayOfYear = entity.value.dayOfYear
         dto.comment = StringUtils.stripToEmpty(entity.comment)
         dto.characteristic = convert(entity.characteristic)
-        dto.reporter = convert(entity.reporter)
+        dto.createdBy = convert(entity.createdBy)
+        dto.modifiedBy = convert(entity.modifiedBy)
         return dto
     }
 
@@ -211,7 +224,8 @@ class ConverterUtil {
         dto.comment = StringUtils.stripToEmpty(entity.comment)
         dto.characteristic = convert(entity.characteristicLocation.characteristic)
         dto.location = convert(entity.characteristicLocation.location)
-        dto.reporter = convert(entity.reporter)
+        dto.createdBy = convert(entity.createdBy)
+        dto.modifiedBy = convert(entity.modifiedBy)
         dto.fundingSource = entity.fundingSource ? convert(entity.fundingSource) : null
         return dto
     }
@@ -273,7 +287,8 @@ class ConverterUtil {
         dto.characteristicType = characteristic.type
         dto.locationId = null
         dto.siteId = entity.site.id
-        dto.reporterName = "${entity.reporter.firstName} ${entity.reporter.lastName}"
+        dto.createdByName = "${entity.createdBy.firstName} ${entity.createdBy.lastName}"
+        dto.modifiedByName = "${entity.modifiedBy.firstName} ${entity.modifiedBy.lastName}"
         return dto
     }
 
@@ -291,12 +306,15 @@ class ConverterUtil {
         dto.characteristicType = characteristic.type
         dto.locationId = location.id
         dto.siteId = location.site.id
-        dto.reporterName = "${entity.reporter.firstName} ${entity.reporter.lastName}"
+        dto.createdByName = "${entity.createdBy.firstName} ${entity.createdBy.lastName}"
+        dto.modifiedByName = "${entity.modifiedBy.firstName} ${entity.modifiedBy.lastName}"
         dto.fundingSourceId = entity?.fundingSource?.id
         return dto
     }
 
-    // Merges ----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    // Merging Methods
+    //----------------------------------------------------------------------------------
 
     static FundingSource convert(FundingSourceDto dto, FundingSource entity) {
         entity.id = dto.id
@@ -314,17 +332,6 @@ class ConverterUtil {
         entity.comment = StringUtils.stripToNull(stripNonAscii(dto.comment))
         entity.coordinates = createPoint(dto)
         return entity
-    }
-
-    private static Point createPoint(LocationDto dto) {
-        String lat = StringUtils.stripToNull(dto.latitude)
-        String lon = StringUtils.stripToNull(dto.longitude)
-        if (lat && lon) {
-            String pointString = "POINT (${lat} ${lon})"
-            return new WKTReader().read(pointString) as Point
-        } else {
-            return null
-        }
     }
 
     static Reporter convert(ReporterDto dto, Reporter entity) {
@@ -372,9 +379,22 @@ class ConverterUtil {
         entity.text = dto.document == null ? entity.text : convertPdf(dto.document.bytes)
         entity.fileSize = dto.document == null ? entity.fileSize : (dto.document.bytes.length / 1024).toInteger()
 
-        entity.lastUpdated = Instant.now()
-
         return entity
+    }
+
+    //----------------------------------------------------------------------------------
+    // Helping Methods
+    //----------------------------------------------------------------------------------
+
+    private static Point createPoint(LocationDto dto) {
+        String lat = StringUtils.stripToNull(dto.latitude)
+        String lon = StringUtils.stripToNull(dto.longitude)
+        if (lat && lon) {
+            String pointString = "POINT (${lat} ${lon})"
+            return new WKTReader().read(pointString) as Point
+        } else {
+            return null
+        }
     }
 
     static String cleanPath(final String dtoPath) {

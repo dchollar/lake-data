@@ -67,12 +67,12 @@ class MeasurementService {
     }
 
     @Transactional
-    void save(MeasurementMaintenanceDto dto, Reporter reporter = null) {
+    void save(MeasurementMaintenanceDto dto) {
         Characteristic characteristic = characteristicService.getOne(dto.characteristicId)
         if (characteristic.type == CharacteristicType.EVENT) {
-            saveEvent(new Event(), dto, characteristic, reporter)
+            saveEvent(new Event(), dto, characteristic)
         } else {
-            saveMeasurement(new Measurement(), dto, characteristic, reporter)
+            saveMeasurement(new Measurement(), dto, characteristic)
         }
     }
 
@@ -84,9 +84,9 @@ class MeasurementService {
         FundingSource fundingSource = fundingSourceService.getOne(filter.fundingSourceId)
 
         Collection<MeasurementMaintenanceDto> results = [] as TreeSet
-        getAllMeasurements(results, site, characteristic, location, filter.collectionDate, filter.reporterName, fundingSource)
+        getAllMeasurements(results, site, characteristic, location, filter.collectionDate, filter.createdByName, filter.modifiedByName, fundingSource)
         if (!location && !fundingSource) {
-            getAllEvents(results, site, characteristic, filter.collectionDate, filter.reporterName)
+            getAllEvents(results, site, characteristic, filter.collectionDate, filter.createdByName, filter.modifiedByName,)
         }
 
         return results
@@ -115,7 +115,7 @@ class MeasurementService {
     }
 
     private void getAllEvents(Collection<MeasurementMaintenanceDto> results,
-                              Site site, Characteristic characteristic, LocalDate collectionDate, String reporterName) {
+                              Site site, Characteristic characteristic, LocalDate collectionDate, String createdBy, String modifiedBy) {
         List<Event> events = []
         if (!site && !characteristic && !collectionDate) {
             events.addAll(eventRepository.findAll())
@@ -135,12 +135,7 @@ class MeasurementService {
             events.addAll(eventRepository.findAllByValue(collectionDate))
         }
 
-        List<Event> filteredEvents
-        if (reporterName) {
-            filteredEvents = events.findAll { Event event -> "${event.reporter.firstName} ${event.reporter.lastName}".contains(reporterName) }
-        } else {
-            filteredEvents = events
-        }
+        List<Event> filteredEvents = filterEventsByCreatedBy(createdBy, filterEventsByModifiedBy(modifiedBy, events))
 
         results.addAll(ConverterUtil.convertSavedEvents(filteredEvents))
     }
@@ -148,7 +143,8 @@ class MeasurementService {
     private void getAllMeasurements(Collection<MeasurementMaintenanceDto> results,
                                     Site site, Characteristic characteristic,
                                     Location location, LocalDate collectionDate,
-                                    String reporterName, FundingSource fundingSource) {
+                                    String createdBy, String modifiedBy,
+                                    FundingSource fundingSource) {
         List<CharacteristicLocation> characteristicLocations = getCharacteristicLocations(characteristic, location, site)
 
         List<Measurement> measurements = []
@@ -164,16 +160,40 @@ class MeasurementService {
             measurements.addAll(measurementRepository.findAllByCollectionDate(collectionDate))
         }
 
-        List<Measurement> filteredMeasurements = filterByFundingSource(fundingSource, filterByReporter(reporterName, measurements))
+        List<Measurement> filteredMeasurements = filterByFundingSource(fundingSource, filterByCreatedBy(createdBy, filterByModifiedBy(modifiedBy, measurements)))
 
         results.addAll(ConverterUtil.convertSavedMeasurements(filteredMeasurements))
     }
 
-    private static List<Measurement> filterByReporter(String reporterName, List<Measurement> measurements) {
+    private static List<Measurement> filterByCreatedBy(String reporterName, List<Measurement> measurements) {
         if (reporterName) {
-            return measurements.findAll { Measurement measurement -> "${measurement.reporter.firstName} ${measurement.reporter.lastName}".contains(reporterName) }
+            return measurements.findAll { Measurement measurement -> "${measurement.createdBy.firstName} ${measurement.createdBy.lastName}".contains(reporterName) }
         } else {
             return measurements
+        }
+    }
+
+    private static List<Measurement> filterByModifiedBy(String reporterName, List<Measurement> measurements) {
+        if (reporterName) {
+            return measurements.findAll { Measurement measurement -> "${measurement.modifiedBy.firstName} ${measurement.modifiedBy.lastName}".contains(reporterName) }
+        } else {
+            return measurements
+        }
+    }
+
+    private static List<Event> filterEventsByCreatedBy(String reporterName, List<Event> events) {
+        if (reporterName) {
+            return events.findAll { Event event -> "${event.createdBy.firstName} ${event.createdBy.lastName}".contains(reporterName) }
+        } else {
+            return events
+        }
+    }
+
+    private static List<Event> filterEventsByModifiedBy(String reporterName, List<Event> events) {
+        if (reporterName) {
+            return events.findAll { Event event -> "${event.modifiedBy.firstName} ${event.modifiedBy.lastName}".contains(reporterName) }
+        } else {
+            return events
         }
     }
 
@@ -210,7 +230,7 @@ class MeasurementService {
         characteristicLocations
     }
 
-    private void saveMeasurement(Measurement measurement, MeasurementMaintenanceDto dto, Characteristic characteristic, Reporter reporter = null) {
+    private void saveMeasurement(Measurement measurement, MeasurementMaintenanceDto dto, Characteristic characteristic) {
         Location location = locationService.getOne(dto.locationId)
         measurement.comment = ConverterUtil.stripNonAscii(dto.comment)
         measurement.value = dto.value
@@ -221,17 +241,15 @@ class MeasurementService {
             throw new RuntimeException("Must define the location (site=${location.site.description} name=${location.description}) characteristic (name=${characteristic.description}) in the maintenance section before entering a measurement for it.")
         }
         measurement.fundingSource = fundingSourceService.getOne(dto.fundingSourceId)
-        measurement.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
         measurementRepository.save(measurement)
     }
 
-    private void saveEvent(Event event, MeasurementMaintenanceDto dto, Characteristic characteristic, Reporter reporter = null) {
+    private void saveEvent(Event event, MeasurementMaintenanceDto dto, Characteristic characteristic) {
         event.value = dto.collectionDate
         event.comment = ConverterUtil.stripNonAscii(dto.comment)
         event.site = siteService.getOne(dto.siteId)
         event.year = dto.collectionDate.year
         event.characteristic = characteristic
-        event.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
         eventRepository.save(event)
         if (!characteristicService.getCharacteristicsBySite(dto.siteId).contains(ConverterUtil.convert(characteristic))) {
             characteristicService.clearCache()

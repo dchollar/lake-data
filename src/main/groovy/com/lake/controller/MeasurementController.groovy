@@ -50,7 +50,8 @@ class MeasurementController {
     Collection<MeasurementMaintenanceDto> getAll(@RequestParam(name = 'siteId', required = false) Integer siteId,
                                                  @RequestParam(name = 'characteristicId', required = false) Integer characteristicId,
                                                  @RequestParam(name = 'locationId', required = false) Integer locationId,
-                                                 @RequestParam(name = 'reporterName', required = false) String reporterName,
+                                                 @RequestParam(name = 'createdByName', required = false) String createdByName,
+                                                 @RequestParam(name = 'modifiedByName', required = false) String modifiedByName,
                                                  @RequestParam(name = 'fundingSourceId', required = false) Integer fundingSourceId,
                                                  @RequestParam(name = 'collectionDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate collectionDate) {
         auditService.audit(HttpMethod.GET.name(), '/api/measurements', this.class.simpleName)
@@ -59,7 +60,8 @@ class MeasurementController {
         filter.characteristicId = characteristicId == -1 ? null : characteristicId
         filter.locationId = locationId == -1 ? null : locationId
         filter.collectionDate = collectionDate
-        filter.reporterName = StringUtils.stripToNull(reporterName)
+        filter.createdByName = StringUtils.stripToNull(createdByName)
+        filter.modifiedByName = StringUtils.stripToNull(modifiedByName)
         filter.fundingSourceId = fundingSourceId
         return measurementService.getAll(filter)
     }

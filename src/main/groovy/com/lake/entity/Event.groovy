@@ -8,7 +8,7 @@ import java.time.LocalDate
 @CompileStatic
 @Entity
 @Table(name = 'event')
-class Event {
+class Event extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +34,4 @@ class Event {
     @ManyToOne(optional = false)
     @JoinColumn(name = 'characteristic_id', referencedColumnName = 'id', nullable = false)
     Characteristic characteristic
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = 'reporter_id', referencedColumnName = 'id')
-    Reporter reporter
 }

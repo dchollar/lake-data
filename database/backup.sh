@@ -1,24 +1,24 @@
 #!/usr/bin/env sh
 
-projectfolder=/home/dan/IdeaProjects/lake-data
+projectFolder=/home/dan/IdeaProjects/lake-data
 # Backup storage directory
-backupfolder=$projectfolder/database
+backupFolder=$projectFolder/database
 
 # MySQL user
 user=backup
 
-sqlfile=$backupfolder/large_dump.sql
-zipfile=$backupfolder/large_dump.zip
+sqlFile=$backupFolder/large_dump.sql
+zipFile=$backupFolder/large_dump.zip
 #this file holds the password and is not checked in
-defaultfile=$backupfolder/defaults.cnf
+defaultFile=$backupFolder/defaults.cnf
 
-cd $projectfolder
-mysqldump --defaults-file=$defaultfile --databases pipe_lake --user=$user --lock-tables --add-drop-database --result-file=$sqlfile
+cd $projectFolder
+mysqldump --defaults-file=$defaultFile --databases pipe_lake --user=$user --lock-tables --add-drop-database --result-file=$sqlFile
 
 # Compress backup
-rm $zipfile
-zip -9 -q $zipfile $sqlfile
-rm $sqlfile
+rm $zipFile
+zip -9 -q $zipFile $sqlFile
+rm $sqlFile
 
 git add database/large_dump.zip
 git commit -m "database backup"

@@ -10,7 +10,6 @@ import java.time.LocalDate
 @EqualsAndHashCode(includes = ['id'])
 @Sortable(includes = ['collectionDate', 'depth', 'id'])
 class MeasurementDto {
-
     Integer id
     LocalDate collectionDate
     Integer dayOfYear
@@ -19,6 +18,10 @@ class MeasurementDto {
     String comment
     CharacteristicDto characteristic
     LocationDto location
-    ReporterDto reporter
     FundingSourceDto fundingSource
+    // TODO Set and use these values. Need timezone from UI
+    // String created
+    // String lastUpdated
+    ReporterDto createdBy
+    ReporterDto modifiedBy
 }

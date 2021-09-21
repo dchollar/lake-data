@@ -2,7 +2,6 @@ package com.lake.job
 
 import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
-import com.lake.entity.Reporter
 import com.lake.service.AuditService
 import com.lake.service.MeasurementService
 import com.lake.service.ReporterService
@@ -18,6 +17,9 @@ import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.scheduling.annotation.Scheduled
+import org.springframework.security.access.annotation.Secured
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 import javax.xml.bind.ValidationException
@@ -73,10 +75,14 @@ class SwimsDataCollector {
 
     @Scheduled(cron = "0 0 0 1 * *")
     void fetchData() {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, null)
+        SecurityContextHolder.getContext().setAuthentication(token)
         String year = currentYear()
         fetchDataInternal(year, year)
     }
 
+    // This is called from the controller
+    @Secured('ROLE_ADMIN')
     void fetchData(String year1) {
         fetchDataInternal(year1, currentYear())
     }
@@ -86,8 +92,7 @@ class SwimsDataCollector {
     }
 
     private void fetchDataInternal(String year1, String year2) {
-        String userName = ReporterService.username ?: REPORTER_USERNAME
-        auditService.audit('JOB', "fetchData ${year1} ${year2}", this.class.simpleName, reporterService.getReporter(userName))
+        auditService.audit('JOB', "fetchData ${year1} ${year2}", this.class.simpleName)
         urls.each {
             String urlString = it.replace(CURRENT_YEAR, year2).replace(START_YEAR, year1)
             log.debug(urlString)
@@ -109,7 +114,6 @@ class SwimsDataCollector {
      * @param xml
      */
     private void parseXml(String xml) {
-        Reporter reporter = reporterService.getReporter(REPORTER_USERNAME)
         GPathResult clmnAnnualReport = new XmlSlurper().parseText(xml)
 
         GPathResult srow = clmnAnnualReport.getProperty('srow') as GPathResult
@@ -120,47 +124,47 @@ class SwimsDataCollector {
                 Integer topDeepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_TOP_DEEP_HOLE_LOCATION_ID
                 Integer deepHoleLocationId = lakeName == PIPE_LAKE_NAME ? PIPE_LAKE_DEEP_HOLE_LOCATION_ID : NORTH_PIPE_LAKE_DEEP_HOLE_LOCATION_ID
 
-                processSecchiRows(srow, reporter, siteId, topDeepHoleLocationId, deepHoleLocationId)
-                processProfileRows(srow, reporter, siteId, deepHoleLocationId)
+                processSecchiRows(srow, siteId, topDeepHoleLocationId, deepHoleLocationId)
+                processProfileRows(srow, siteId, deepHoleLocationId)
             }
         }
     }
 
-    private void processProfileRows(GPathResult srow, Reporter reporter, int siteId, int deepHoleLocationId) {
+    private void processProfileRows(GPathResult srow, int siteId, int deepHoleLocationId) {
         GPathResult profileRows = srow?.getProperty('profile_rows') as GPathResult
         GPathResult profileRow = profileRows?.getProperty('profile_row') as GPathResult
         profileRow?.each { Object row ->
             if (row) {
-                processProfileRow(reporter, siteId, deepHoleLocationId, row as NodeChild)
+                processProfileRow(siteId, deepHoleLocationId, row as NodeChild)
             }
         }
     }
 
-    private void processSecchiRows(GPathResult srow, Reporter reporter, int siteId, int topDeepHoleLocationId, int deepHoleLocationId) {
+    private void processSecchiRows(GPathResult srow, int siteId, int topDeepHoleLocationId, int deepHoleLocationId) {
         GPathResult secchiRows = srow?.getProperty('secchi_rows') as GPathResult
         GPathResult secchiRow = secchiRows?.getProperty('secchi_row') as GPathResult
         secchiRow?.each { Object row ->
             if (row) {
-                processSecchiRow(reporter, siteId, topDeepHoleLocationId, deepHoleLocationId, row as NodeChild)
+                processSecchiRow(siteId, topDeepHoleLocationId, deepHoleLocationId, row as NodeChild)
             }
         }
     }
 
-    private void processSecchiRow(Reporter reporter, Integer siteId, Integer topDeepHoleLocationId, Integer deepHoleLocationId, NodeChild row) {
+    private void processSecchiRow(Integer siteId, Integer topDeepHoleLocationId, Integer deepHoleLocationId, NodeChild row) {
         String startDate = StringUtils.stripToNull(row.getProperty('start_date')?.toString())
-        saveDto(reporter, siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.getProperty('secchi')?.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.getProperty('chlorophyll')?.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.getProperty('total_phosphorus')?.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_SD')?.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_TP')?.toString()))
-        saveDto(reporter, siteId, topDeepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_CHL')?.toString()))
+        saveDto(siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.getProperty('secchi')?.toString()))
+        saveDto(siteId, topDeepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.getProperty('chlorophyll')?.toString()))
+        saveDto(siteId, topDeepHoleLocationId, TOTAL_PHOSPHORUS_ID, startDate, StringUtils.stripToNull(row.getProperty('total_phosphorus')?.toString()))
+        saveDto(siteId, topDeepHoleLocationId, TSI_SD_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_SD')?.toString()))
+        saveDto(siteId, topDeepHoleLocationId, TSI_TP_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_TP')?.toString()))
+        saveDto(siteId, topDeepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_CHL')?.toString()))
     }
 
-    private void processProfileRow(Reporter reporter, Integer siteId, Integer deepHoleLocationId, NodeChild row) {
+    private void processProfileRow(Integer siteId, Integer deepHoleLocationId, NodeChild row) {
         String startDate = StringUtils.stripToNull(row.getProperty('start_date2')?.toString())
         String depth = extractDepth(row)
-        saveDto(reporter, siteId, deepHoleLocationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
-        saveDto(reporter, siteId, deepHoleLocationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, extractDissolvedOxygen(row), depth)
+        saveDto(siteId, deepHoleLocationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
+        saveDto(siteId, deepHoleLocationId, DISSOLVED_OXYGEN_PROFILE_ID, startDate, extractDissolvedOxygen(row), depth)
     }
 
     private static String extractDissolvedOxygen(final NodeChild row) {
@@ -198,8 +202,7 @@ class SwimsDataCollector {
         return temp
     }
 
-    private void saveDto(Reporter reporter,
-                         Integer siteId,
+    private void saveDto(Integer siteId,
                          Integer locationId,
                          Integer characteristicId,
                          String collectionDate,
@@ -212,7 +215,7 @@ class SwimsDataCollector {
 
         try {
             validationService.isValidForChange(dto)
-            measurementService.save(dto, reporter)
+            measurementService.save(dto)
         } catch (DataIntegrityViolationException di) {
             log.debug("Duplicate data for ${dto}", di)
         } catch (ValidationException v) {

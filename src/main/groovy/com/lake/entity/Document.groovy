@@ -4,12 +4,11 @@ import groovy.transform.CompileStatic
 
 import javax.persistence.*
 import java.sql.Blob
-import java.time.Instant
 
 @CompileStatic
 @Entity
 @Table(name = 'document')
-class Document {
+class Document extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,14 +30,6 @@ class Document {
     @Basic
     @Column(name = 'file_size', nullable = false)
     Integer fileSize
-
-    @Basic
-    @Column(name = 'created', nullable = false)
-    Instant created
-
-    @Basic
-    @Column(name = 'last_updated', nullable = false)
-    Instant lastUpdated
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
