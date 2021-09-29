@@ -1,7 +1,10 @@
 # lake-data
 web application for maintaining lake water quality data on pipe lake
 
-Characteristic Types:
+#Swagger UI
+   http://localhost:8081/swagger-ui/
+
+#Characteristic Types
   EVENT: something that happens once a year for a specific characteristic.
   WATER: Something that happens once a day for a specific characteristic.
 

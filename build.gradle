@@ -1,3 +1,4 @@
+//file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'base'
     id 'war'
@@ -9,7 +10,7 @@ plugins {
 }
 
 group = 'com.lake'
-version = '3.1.3'
+version = '3.1.4'
 
 java {
     sourceCompatibility(JavaVersion.VERSION_11)
@@ -17,7 +18,6 @@ java {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
