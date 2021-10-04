@@ -34,10 +34,10 @@ class ConverterUtil {
         Set<AuditDto> dtos = new TreeSet<>()
         entities.each {
             AuditDto dto = convert(it, timezone)
-            if ((!filter.reporterName || (filter.reporterName && dto.reporterName.contains(filter.reporterName)))
-                    && (!filter.controller || (filter.controller && dto.controller.contains(filter.controller)))
-                    && (!filter.endpoint || (filter.endpoint && dto.endpoint.contains(filter.endpoint)))
-                    && (!filter.httpMethod || (filter.httpMethod && dto.httpMethod.contains(filter.httpMethod)))) {
+            if ((!filter.reporterName || (filter.reporterName && dto.reporterName.containsIgnoreCase(filter.reporterName)))
+                    && (!filter.controller || (filter.controller && dto.controller.containsIgnoreCase(filter.controller)))
+                    && (!filter.endpoint || (filter.endpoint && dto.endpoint.containsIgnoreCase(filter.endpoint)))
+                    && (!filter.httpMethod || (filter.httpMethod && dto.httpMethod.containsIgnoreCase(filter.httpMethod)))) {
                 dtos.add(dto)
             }
         }
