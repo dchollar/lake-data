@@ -14,6 +14,13 @@ web application for maintaining lake water quality data on pipe lake
  - allow power users a read only view of the maintenance pages
     - low priority. not sure of the need yet.
  - Add a privacy statement page linked from the footer
+ - Add a district layer. 
+   - Sites are part of a district
+   - Consider documents can be associated to a district
+   - Consider measurements can be at a district level
+   - Administration can be constrained to a district level
+   - Data entry can be constrained to a district level
+   - Board members are constrained to a district
  - Get someone to add the other documents to the system
  - Link documents to pipe lake web site
  - Add audit fields (lastUpdated, lastUpdatedBy, created, createdBy) to document and measurement.
@@ -65,4 +72,15 @@ Is a complete open source system that uses lucine. Not needed currently
 - https://solr.apache.org/
 
 Larry's Example: https://optidat.com/pl/pipe-lakes-district-records-archive/
+
+Map Data Research:
+https://polkcowi.wgxtreme.com/
+https://www.co.polk.wi.us/landinfoparcelmapping
+https://www.sco.wisc.edu/data/parcels/
+https://www.arcgis.com/apps/webappviewer/index.html?id=4ca7d1c99bb04e4aac8351e8fcb25897
+https://maps.sco.wisc.edu/Parcels/
+https://www.sco.wisc.edu/parcels/data/
+https://mapservices.legis.wisconsin.gov/arcgis/rest/services/WLIP
+https://www.co.polk.wi.us/landrecords
+https://www.co.polk.wi.us/landinfogisdataportal
 

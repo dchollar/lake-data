@@ -57,6 +57,13 @@ class PageController {
         return 'documents'
     }
 
+    @GetMapping('/privacy')
+    String privacyStatement(Model model) {
+        auditService.audit(HttpMethod.GET.name(), '/privacy', this.class.simpleName)
+        model.addAttribute('version', buildProperties.getVersion())
+        return 'privacy'
+    }
+
     @Secured('ROLE_REPORTER')
     @GetMapping('/dataEntry')
     String dataEntry(Model model) {
