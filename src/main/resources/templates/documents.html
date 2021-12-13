@@ -27,22 +27,24 @@
             <li class="nav-item"><a class="nav-link active" th:href="@{/documents}">Documents</a></li>
             <li class="nav-item"><a class="nav-link" href="https://pipelakes.org/">Pipe Lake District</a></li>
             <li class="nav-item"><a class="nav-link" href="https://dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=2490500">DNR Pipe Lake</a></li>
-            <li class="nav-item" sec:authorize="hasRole('ROLE_REPORTER')"><a class="nav-link" th:href="@{/dataEntry}">Enter Data</a></li>
-            <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item" sec:authorize="hasAnyRole('ROLE_REPORTER','ROLE_ADMIN')"><a class="nav-link" th:href="@{/dataEntry}">Enter Data</a></li>
+            <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_DOCUMENT_ADMIN','ROLE_ADMIN')">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-maintenance">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
                     <a class="dropdown-item text-light" th:href="@{/documentMaintenance}">Documents</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-light" th:href="@{/fundingSourceMaintenance}">Funding Sources</a>
-                    <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
-                    <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
-                    <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
-                    <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
-                    <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
-                    <a class="dropdown-item text-light" th:href="@{/jobs}">Job Maintenance</a>
-                    <a class="dropdown-item text-light" th:href="@{/swagger-ui/}">API Documentation</a>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-light" th:href="@{/fundingSourceMaintenance}">Funding Sources</a>
+                        <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
+                        <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
+                        <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
+                        <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
+                        <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
+                        <a class="dropdown-item text-light" th:href="@{/jobs}">Job Maintenance</a>
+                        <a class="dropdown-item text-light" th:href="@{/swagger-ui/}">API Documentation</a>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -119,7 +121,7 @@
             </div>
             <div class="col-sm-8"></div>
             <div class="col-sm-2 text-right">
-                <p><small>Version: <span th:text="${version}" ></span></small></p>
+                <p><small>Version: <span th:text="${version}"></span></small></p>
             </div>
         </div>
     </div>

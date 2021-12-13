@@ -7,6 +7,7 @@ import com.lake.repository.AuditRepository
 import com.lake.util.ConverterUtil
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -33,6 +34,7 @@ class AuditService {
         repository.saveAndFlush(audit)
     }
 
+    @Secured('ROLE_ADMIN')
     Collection<AuditDto> getAll(String timezone, AuditDto filter) {
         Collection<Audit> entities = repository.findAll()
         ConverterUtil.convertAudits(entities, timezone, filter)

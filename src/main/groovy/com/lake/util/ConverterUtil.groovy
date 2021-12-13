@@ -249,6 +249,7 @@ class ConverterUtil {
         dto.enabled = entity.enabled
         dto.roleAdmin = entity.roles.any { it.role == RoleType.ROLE_ADMIN }
         dto.rolePowerUser = entity.roles.any { it.role == RoleType.ROLE_POWER_USER }
+        dto.roleDocumentAdmin = entity.roles.any { it.role == RoleType.ROLE_DOCUMENT_ADMIN }
         dto.roleReporter = entity.roles.any { it.role == RoleType.ROLE_REPORTER }
         return dto
     }
@@ -350,6 +351,9 @@ class ConverterUtil {
             }
             if (dto.rolePowerUser) {
                 entity.roles.add(new ReporterRole(reporter: entity, role: RoleType.ROLE_POWER_USER))
+            }
+            if (dto.roleDocumentAdmin) {
+                entity.roles.add(new ReporterRole(reporter: entity, role: RoleType.ROLE_DOCUMENT_ADMIN))
             }
             if (dto.roleAdmin) {
                 entity.roles.add(new ReporterRole(reporter: entity, role: RoleType.ROLE_ADMIN))

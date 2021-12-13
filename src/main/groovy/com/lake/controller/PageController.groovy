@@ -51,7 +51,7 @@ class PageController {
 
     @GetMapping('/documents')
     String documents(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/public/documents', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/documents', this.class.simpleName)
         model.addAttribute('sites', siteService.getSitesWithDocuments())
         model.addAttribute('version', buildProperties.getVersion())
         return 'documents'
@@ -64,7 +64,7 @@ class PageController {
         return 'privacy'
     }
 
-    @Secured('ROLE_REPORTER')
+    @Secured(['ROLE_ADMIN', 'ROLE_REPORTER'])
     @GetMapping('/dataEntry')
     String dataEntry(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/dataEntry', this.class.simpleName)
@@ -82,7 +82,7 @@ class PageController {
         return 'userMaintenance'
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @GetMapping('/documentMaintenance')
     String documentMaintenance(Model model) {
         auditService.audit(HttpMethod.GET.name(), '/documentMaintenance', this.class.simpleName)

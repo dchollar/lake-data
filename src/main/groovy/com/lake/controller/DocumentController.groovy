@@ -38,14 +38,14 @@ class DocumentController {
         return service.findDocumentsContaining(siteId, searchWord, timezone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @GetMapping(value = '/api/documents', produces = APPLICATION_JSON_VALUE)
     Collection<DocumentDto> getAll(@RequestParam(name = 'timezone', required = true) String timezone) {
         auditService.audit(HttpMethod.GET.name(), '/api/documents', this.class.simpleName)
         return service.getAll(timezone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @PostMapping(value = '/api/documents', produces = APPLICATION_JSON_VALUE)
     DocumentDto create(@ModelAttribute DocumentDto dto, @RequestParam(name = 'timezone', required = true) String timezone) {
         auditService.audit(HttpMethod.POST.name(), '/api/documents', this.class.simpleName)
@@ -55,7 +55,7 @@ class DocumentController {
         return service.save(dto, timezone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @PutMapping(value = '/api/documents/{documentId}', produces = APPLICATION_JSON_VALUE)
     DocumentDto update(@PathVariable(name = 'documentId', required = true) Integer documentId,
                        @RequestParam(name = 'timezone', required = true) String timezone,
@@ -65,7 +65,7 @@ class DocumentController {
         return service.update(documentId, dto, timezone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @DeleteMapping(value = '/api/documents/{documentId}', produces = APPLICATION_JSON_VALUE)
     void delete(@PathVariable(name = 'documentId', required = true) Integer documentId) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/documents/${documentId}", this.class.simpleName)

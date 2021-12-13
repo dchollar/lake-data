@@ -66,7 +66,7 @@ class MeasurementController {
         return measurementService.getAll(filter)
     }
 
-    @Secured('ROLE_REPORTER')
+    @Secured(['ROLE_ADMIN', 'ROLE_REPORTER'])
     @PostMapping(value = '/api/measurements')
     void save(@RequestBody MeasurementMaintenanceDto dto) {
         auditService.audit(HttpMethod.POST.name(), '/api/measurements', this.class.simpleName)

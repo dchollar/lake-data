@@ -16,6 +16,7 @@ class ReporterDto {
     String password
     Boolean enabled
     Boolean roleReporter
+    Boolean roleDocumentAdmin
     Boolean rolePowerUser
     Boolean roleAdmin
 }

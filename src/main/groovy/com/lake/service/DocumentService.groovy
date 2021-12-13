@@ -46,19 +46,19 @@ class DocumentService {
         return bytes
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     Collection<DocumentDto> getAll(String timeZone) {
         ConverterUtil.convertDocuments(repository.findAll(), timeZone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     DocumentDto save(DocumentDto dto, String timeZone) {
         Document entity = ConverterUtil.convert(dto, new Document())
         entity.site = siteService.getOne(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     DocumentDto update(Integer id, DocumentDto dto, String timeZone) {
         Document entity = repository.getById(id)
         ConverterUtil.convert(dto, entity)
@@ -66,7 +66,7 @@ class DocumentService {
         ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     void delete(Integer id) {
         repository.deleteById(id)
     }

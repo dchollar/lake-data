@@ -29,7 +29,7 @@ class CharacteristicController {
         return service.getById(characteristicId)
     }
 
-    @Secured(['ROLE_ADMIN', 'ROLE_POWER_USER', 'ROLE_REPORTER'])
+    @Secured(['ROLE_ADMIN', 'ROLE_REPORTER'])
     @GetMapping(value = '/api/characteristics', produces = APPLICATION_JSON_VALUE)
     Collection<CharacteristicDto> getAll(@RequestParam(name = 'siteId', required = false) Integer siteId) {
         auditService.audit(HttpMethod.GET.name(), '/api/characteristics', this.class.simpleName)

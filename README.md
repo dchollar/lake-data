@@ -13,8 +13,9 @@ web application for maintaining lake water quality data on pipe lake
     - cron process that will dump the db to the project and then commit and push it to git
  - allow power users a read only view of the maintenance pages
     - low priority. not sure of the need yet.
+ - Change reporter to user
  - Add a privacy statement page linked from the footer
- - Add a district layer. 
+ - Add a district layer.
    - Sites are part of a district
    - Consider documents can be associated to a district
    - Consider measurements can be at a district level

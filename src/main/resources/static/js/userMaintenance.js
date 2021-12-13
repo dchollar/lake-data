@@ -73,8 +73,8 @@ $(function () {
             {title: "Password", name: "password", type: "text", width: 100},
             {title: "Enabled", name: "enabled", type: "checkbox", width: 100},
             {title: "ROLE REPORTER", name: "roleReporter", type: "checkbox", width: 100},
-            {title: "ROLE POWER USER", name: "rolePowerUser", type: "checkbox", width: 100},
-            {title: "ROLE ADMIN", name: "roleAdmin", type: "checkbox", width: 100},
+            {title: "ROLE DOCUMENT ADMIN", name: "roleDocumentAdmin", type: "checkbox", width: 100},
+            {title: "ROLE SYSTEM ADMIN", name: "roleAdmin", type: "checkbox", width: 100},
             {type: "control"}
         ]
     });

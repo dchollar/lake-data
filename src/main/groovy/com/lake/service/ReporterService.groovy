@@ -65,6 +65,7 @@ class ReporterService {
 
         syncRoles(reporter, RoleType.ROLE_REPORTER, dto.roleReporter)
         syncRoles(reporter, RoleType.ROLE_POWER_USER, dto.rolePowerUser)
+        syncRoles(reporter, RoleType.ROLE_DOCUMENT_ADMIN, dto.roleDocumentAdmin)
         syncRoles(reporter, RoleType.ROLE_ADMIN, dto.roleAdmin)
 
         ConverterUtil.convertForMaintenance(repository.saveAndFlush(reporter))
