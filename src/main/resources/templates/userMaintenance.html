@@ -54,6 +54,7 @@
         <ul class="navbar-nav">
             <li class="nav-item" sec:authorize="isAnonymous()"><a class="nav-link" th:href="@{/login}"><i aria-hidden="true" class="fas fa-sign-in-alt"></i>Login</a></li>
             <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" th:href="@{/logout}"><i aria-hidden="true" class="fas fa-sign-out-alt"></i>Logout</a></li>
+            <li class="nav-item" data-toggle="modal" data-target="#helpModal"><i class="text-secondary far fa-question-circle"></i></li>
         </ul>
     </div>
 </nav>
@@ -86,6 +87,79 @@
         </div>
     </div>
 </footer>
+
+<!-- The Help Modal -->
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">User Maintenance Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>You have the ability to add, delete, or update privileged system users on this page. These are people that you have designated to help maintain this system. Most
+                    aspects of this system are open to the public, however we control the administration of the content of this system. You can click on each column heading to sort
+                    the list by that column. By clicking on the column heading it will sort the column ascending. Click on the column heading again to sort descending.</p>
+                <p>If something goes wrong, a message will appear at the top of the page. Correct the issue and try again. If you continue to have issues copy the error messaging
+                    or take a screenshot and contact the administrator.</p>
+                <h5>Inserting</h5>
+                <p>To add a new user to the system you can press the + icon in the upper right corner of the header of the grid. Once you click on the + button a row of blank
+                    fields will appear directly below the header row. Fill in the data appropriately and then click on the + icon at the end of the row to save the data to the
+                    system. If you decide to not create the user after clicking on the + icon in the header row, just click on that same + icon in the header row and the blank row
+                    will go away. See below for additional details about each attribute.</p>
+                <h5>Deleting</h5>
+                <p>If you created a user by mistake you can delete them. Deletion is permanent. You can only delete a user if that user has not done anything on the system. For
+                    example, if the user entered data, then we want to keep that user around so that we know who entered that data. If you want to prevent the user from logging in,
+                    and you cannot delete them, then you can disable the user.</p>
+                <h5>Updating</h5>
+                <p>Any user can be updated or changed by clicking on the pencil icon at the end of the row for the user you want to change. When you click on the pencil
+                    icon, the row will change to reflect the fields you can change. If you change your mind, and want to cancel you edits you can click on the X icon at the end of
+                    the row. When you are done making your updates, you will need to click on the checkmark icon at the end of the row to save your changes. Once you click on the
+                    checkmark icon to save your changes they will be instantly saved. If an error does occur, you will get a message at the top of the grid. See below for
+                    additional details about each attribute.
+                </p>
+                <h5>Attribute Descriptions</h5>
+                <h6>First Name</h6>
+                <p>The first name of the user. This is required. You are limited to 45 characters.</p>
+                <h6>Last Name</h6>
+                <p>The last name of the user. This is required. You are limited to 45 characters</p>
+                <h6>Email Address</h6>
+                <p>An email address where we can contact the individual. This email address is only for the administration of this system. It is for other privileged users to
+                    contact this person only for matters pertaining to this system and the administration of it. This is limited to 200 characters.</p>
+                <h6>User Name</h6>
+                <p>A short name that is unique to the system used by the user to log into this system. You are limited to 50 characters.</p>
+                <h6>Password</h6>
+                <p>This is set by the administrator and cannot be changed by the user. Once created, it is encrypted and stored in the system. You will never be able to see it
+                    again. Thus, it is left blank in this view. If a user forgets their password, just update it to something and let the user know.</p>
+                <h6>Enabled</h6>
+                <p>A simple boolean that indicates if the user is able to access the system or not. If the box is not checked, then the user cannot log into the system.</p>
+                <h6>Roles</h6>
+                <p>A user can be assigned one or more roles. Roles determine what a privileged user can do and has access to. A privileged user will maintain their access to all
+                    publicly available data.</p>
+                <div class="pl-4">
+                    <h6>Role Reporter</h6>
+                    <p>This individual has the ability to enter data into the system. When the user logs in they will have access to the "Enter Data" tab only. This user cannot
+                        change or alter the data once entered.</p>
+                    <h6>Role Document Admin</h6>
+                    <p>This individual has the ability to maintain the documents that appear in the Documents tab. This individual will have access to the Maintenance -> Document
+                        menu option only. This individual will have the ability to add, update, and delete all the documents in the system</p>
+                    <h6>Role System Admin</h6>
+                    <p>This individual has access to all aspects of the system and has complete authority to manage all the content. It would be redundant to assign this individual
+                        any other roles because they already are able to do everything.</p>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
