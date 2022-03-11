@@ -7,12 +7,7 @@ import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
-import javax.persistence.Basic
-import javax.persistence.Column
-import javax.persistence.EntityListeners
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
-import javax.persistence.MappedSuperclass
+import javax.persistence.*
 import java.time.Instant
 
 @CompileStatic

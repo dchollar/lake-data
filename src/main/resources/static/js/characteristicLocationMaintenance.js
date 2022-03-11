@@ -61,7 +61,17 @@ $(function () {
             {title: "Id", name: "id", type: "number", visible: false},
             {title: "Site", name: "siteId", editing: false, width: 150, type: "select", items: sites, valueField: "id", textField: "name", valueType: "number"},
             {title: "Location", name: "locationId", editing: false, width: 150, type: "select", items: locations, valueField: "id", textField: "name", valueType: "number"},
-            {title: "Characteristic", name: "characteristicId", editing: false, width: 150, type: "select", items: characteristics, valueField: "id", textField: "name", valueType: "number"},
+            {
+                title: "Characteristic",
+                name: "characteristicId",
+                editing: false,
+                width: 150,
+                type: "select",
+                items: characteristics,
+                valueField: "id",
+                textField: "name",
+                valueType: "number"
+            },
 
             {type: "control"}
         ]

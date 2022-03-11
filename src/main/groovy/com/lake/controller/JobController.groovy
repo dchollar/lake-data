@@ -11,8 +11,6 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 
-import java.time.Year
-
 @CompileStatic
 @Slf4j
 @Controller
@@ -28,7 +26,7 @@ class JobController {
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/swims')
     String getSwimsData(Model model, @RequestParam(name = 'currentYear', required = false) Boolean currentYear) {
-        String year = currentYear ?  SwimsDataCollector.currentYear() : SwimsDataCollector.FIRST_YEAR
+        String year = currentYear ? SwimsDataCollector.currentYear() : SwimsDataCollector.FIRST_YEAR
         swimsDataCollector.fetchData(year)
         pageController.index(model)
     }
