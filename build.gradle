@@ -1,16 +1,14 @@
-//file:noinspection GroovyAssignabilityCheck
 plugins {
     id 'base'
     id 'war'
     id 'groovy'
-    id 'eclipse'
     id 'idea'
-    id 'org.springframework.boot' version '2.6.4'
+    id 'org.springframework.boot' version '2.6.6'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 group = 'com.lake'
-version = '3.1.8'
+version = '3.1.9'
 
 java {
     sourceCompatibility(JavaVersion.VERSION_17)
@@ -31,7 +29,7 @@ dependencies {
     implementation('org.apache.pdfbox:pdfbox:2.0.24')
     implementation('net.sourceforge.tess4j:tess4j:5.1.1')
 
-    implementation('org.codehaus.groovy:groovy-all:3.0.9')
+    implementation('org.codehaus.groovy:groovy-all:3.0.10')
 
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -47,8 +45,15 @@ dependencies {
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
-    runtimeOnly('mysql:mysql-connector-java:8.0.28')
+    runtimeOnly('mysql:mysql-connector-java')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.spockframework:spock-spring:2.1-groovy-3.0')
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }

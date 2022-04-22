@@ -75,10 +75,14 @@ class SwimsDataCollector {
 
     @Scheduled(cron = "0 0 0 1 * *")
     void fetchData() {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, null)
-        SecurityContextHolder.getContext().setAuthentication(token)
-        String year = currentYear()
-        fetchDataInternal(year, year)
+        try {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, null)
+            SecurityContextHolder.getContext().setAuthentication(token)
+            String year = currentYear()
+            fetchDataInternal(year, year)
+        } catch (Exception e) {
+            log.error('Issue processing SWIMS data', e)
+        }
     }
 
     // This is called from the controller

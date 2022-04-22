@@ -25,3 +25,7 @@ spring:
   groovy:
     template:
       check-template-location: false
+ftp:
+  upload-location: /home/lake-data-ftp/ftp/upload
+  process-location: /home/lake-data-ftp/process
+  archive-location: /home/lake-data-ftp/archive

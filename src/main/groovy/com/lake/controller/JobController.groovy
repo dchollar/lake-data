@@ -1,6 +1,7 @@
 package com.lake.controller
 
 import com.lake.job.AuditTruncate
+import com.lake.job.FtpFileProcessor
 import com.lake.job.SwimsDataCollector
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
@@ -22,6 +23,8 @@ class JobController {
     AuditTruncate auditTruncate
     @Autowired
     PageController pageController
+    @Autowired
+    FtpFileProcessor ftpFileProcessor
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/swims')
@@ -35,6 +38,13 @@ class JobController {
     @GetMapping('/jobs/audit/truncate')
     String auditTruncate(Model model) {
         auditTruncate.truncate()
+        pageController.index(model)
+    }
+
+    @Secured('ROLE_ADMIN')
+    @GetMapping('/jobs/ftp/process')
+    String ftpFileProcessor(Model model) {
+        ftpFileProcessor.processUploadedFiles()
         pageController.index(model)
     }
 
