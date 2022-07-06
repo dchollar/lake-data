@@ -40,7 +40,7 @@ dependencies {
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE')
     implementation('org.hibernate:hibernate-spatial:6.0.0.Final')
 
-    implementation('org.springdoc:springdoc-openapi-ui:1.6.7')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.9')
     implementation('org.springdoc:springdoc-openapi-groovy:1.6.7')
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
