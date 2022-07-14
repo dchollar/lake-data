@@ -39,6 +39,7 @@
                         <a class="dropdown-item text-light" th:href="@{/locationMaintenance}">Locations</a>
                         <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
                         <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
+                        <a class="dropdown-item text-light" th:href="@{/dataFileUpload}">Data File Upload</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
                         <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
@@ -94,7 +95,7 @@
                 <div class="row form-group" id="valueDiv"></div>
                 <!--            hide if characteristic.enableDepth is false -->
                 <div class="row form-group" id="depthDiv"></div>
-                <div class="row form-group" id="commenthDiv">
+                <div class="row form-group" id="commentDiv">
                     <div class="col-sm-12">
                         <label for="commentField"><b>Comment (Optional):</b></label>
                         <textarea class="form-control" id="commentField" rows="5"></textarea>

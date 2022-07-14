@@ -31,7 +31,7 @@ class SiteService {
 
     Site getOne(Integer id) {
         if (id) {
-            return repository.getById(id)
+            return repository.findById(id).orElse(null)
         } else {
             return null
         }

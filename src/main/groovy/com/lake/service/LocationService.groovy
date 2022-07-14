@@ -24,7 +24,7 @@ class LocationService {
     @Cacheable('locationDtoById')
     LocationDto getLocation(Integer id) {
         if (id) {
-            return ConverterUtil.convert(repository.getById(id))
+            return ConverterUtil.convert(getOne(id))
         } else {
             return null
         }
@@ -37,13 +37,13 @@ class LocationService {
     }
 
     Set<LocationDto> getLocationsBySite(Integer siteId) {
-        Site site = siteRepository.getById(siteId)
+        Site site = siteRepository.getReferenceById(siteId)
         return ConverterUtil.convertLocations(site.locations)
     }
 
     Set<LocationDto> getLocationsBySite(Integer siteId, Integer characteristicId, Boolean restricted) {
         Set<LocationDto> dtos = new TreeSet<>()
-        Site site = siteRepository.getById(siteId)
+        Site site = siteRepository.getReferenceById(siteId)
         site.locations.each { location ->
             location.characteristicLocations.each {
                 if (it.characteristic.id == characteristicId && (!restricted || (restricted && it.measurements.size() > 0))) {
@@ -58,14 +58,14 @@ class LocationService {
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto save(LocationDto dto) {
         Location location = ConverterUtil.convert(dto, new Location())
-        location.site = siteRepository.getById(dto.siteId)
+        location.site = siteRepository.getReferenceById(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     LocationDto update(Integer id, LocationDto dto) {
-        Location location = repository.getById(id)
+        Location location = repository.getReferenceById(id)
         ConverterUtil.convert(dto, location)
         ConverterUtil.convert(repository.saveAndFlush(location))
     }
@@ -79,10 +79,14 @@ class LocationService {
     @Cacheable('locationsById')
     Location getOne(Integer id) {
         if (id && id > 0) {
-            return repository.getById(id)
+            return repository.findById(id).orElse(null)
         } else {
             return null
         }
+    }
+
+    Location getByDescription(Site site, String description) {
+        return repository.findBySiteAndDescriptionIgnoreCase(site, description)
     }
 
 }

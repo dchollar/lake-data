@@ -19,6 +19,7 @@ class ValidationService {
 
     void isValidForChange(MeasurementMaintenanceDto dto) {
         isValid(dto.siteId, dto.characteristicId, dto.locationId, null, null)
+
         String errorMessage = ''
         CharacteristicDto characteristicDto = service.getById(dto.characteristicId)
         if (characteristicDto.enableDepth && (dto.depth == null || dto.depth < 0)) {
@@ -33,6 +34,7 @@ class ValidationService {
         if (!dto.collectionDate) {
             errorMessage += 'Collection Date is missing '
         }
+
         if (errorMessage) {
             throw new ValidationException(errorMessage)
         }

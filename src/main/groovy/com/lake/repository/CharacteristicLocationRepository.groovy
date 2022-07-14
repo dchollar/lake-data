@@ -19,4 +19,6 @@ interface CharacteristicLocationRepository extends JpaRepository<CharacteristicL
 
     @Query('select distinct cl from CharacteristicLocation cl where cl.location.site = ?1')
     List<CharacteristicLocation> findBySite(Site site)
+
+    CharacteristicLocation findByLocationAndCharacteristic(Location location, Characteristic characteristic)
 }

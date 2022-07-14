@@ -28,7 +28,7 @@ class Audit {
     String endpoint
 
     @Basic
-    @Column(name = 'controller', nullable = false, length = 100)
+    @Column(name = 'controller', nullable = false, length = 45)
     String controller
 
     @ManyToOne

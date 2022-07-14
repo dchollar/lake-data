@@ -57,9 +57,10 @@ class CharacteristicLocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
     CharacteristicLocationDto save(CharacteristicLocationDto dto) {
-        CharacteristicLocation entity = new CharacteristicLocation()
-        entity.location = locationService.getOne(dto.locationId)
-        entity.characteristic = characteristicService.getOne(dto.characteristicId)
+        CharacteristicLocation entity = new CharacteristicLocation(
+                location: locationService.getOne(dto.locationId),
+                characteristic: characteristicService.getOne(dto.characteristicId)
+        )
         ConverterUtil.convert(repository.saveAndFlush(entity))
     }
 
@@ -67,6 +68,13 @@ class CharacteristicLocationService {
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
     void delete(Integer id) {
         repository.deleteById(id)
+    }
+
+    @Secured('ROLE_ADMIN')
+    @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
+    CharacteristicLocation save(Characteristic characteristic, Location location) {
+        CharacteristicLocation entity = new CharacteristicLocation(location: location, characteristic: characteristic)
+        return repository.saveAndFlush(entity)
     }
 
 }

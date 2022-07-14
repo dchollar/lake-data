@@ -76,12 +76,13 @@ class SwimsDataCollector {
     @Scheduled(cron = "0 0 0 1 * *")
     void fetchData() {
         try {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, null)
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'swims_password')
             SecurityContextHolder.getContext().setAuthentication(token)
             String year = currentYear()
             fetchDataInternal(year, year)
         } catch (Exception e) {
             log.error('Issue processing SWIMS data', e)
+            auditService.audit(e)
         }
     }
 
@@ -226,6 +227,7 @@ class SwimsDataCollector {
             log.debug("Invalid data for ${dto}", v)
         } catch (Exception e) {
             log.error("Issue saving data ${dto}", e)
+            auditService.audit(e)
         }
     }
 

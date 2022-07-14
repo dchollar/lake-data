@@ -5,6 +5,7 @@ spring:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
+      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/pipe_lake?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
@@ -18,10 +19,13 @@ spring:
       jmx-enabled: false
   jpa:
     show-sql: false
-    database-platform: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database: mysql
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
   groovy:
     template:
       check-template-location: false

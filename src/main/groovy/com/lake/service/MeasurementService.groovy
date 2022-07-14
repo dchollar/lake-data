@@ -96,10 +96,10 @@ class MeasurementService {
     @Transactional
     MeasurementMaintenanceDto update(Integer id, MeasurementMaintenanceDto dto) {
         Characteristic characteristic = characteristicService.getOne(dto.characteristicId)
-        if (dto.locationId) {
-            saveMeasurement(measurementRepository.getById(id), dto, characteristic)
+        if (characteristic.type == CharacteristicType.EVENT) {
+            saveEvent(eventRepository.getReferenceById(id), dto, characteristic)
         } else {
-            saveEvent(eventRepository.getById(id), dto, characteristic)
+            saveMeasurement(measurementRepository.getReferenceById(id), dto, characteristic)
         }
         return dto
     }

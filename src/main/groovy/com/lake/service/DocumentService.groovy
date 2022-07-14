@@ -40,7 +40,7 @@ class DocumentService {
     }
 
     byte[] getDocument(Integer id) {
-        Blob blob = repository.getById(id).document
+        Blob blob = repository.getReferenceById(id).document
         byte[] bytes = blob.getBytes(1, (int) blob.length())
         blob.free()
         return bytes
@@ -60,7 +60,7 @@ class DocumentService {
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     DocumentDto update(Integer id, DocumentDto dto, String timeZone) {
-        Document entity = repository.getById(id)
+        Document entity = repository.getReferenceById(id)
         ConverterUtil.convert(dto, entity)
         entity.site = siteService.getOne(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)

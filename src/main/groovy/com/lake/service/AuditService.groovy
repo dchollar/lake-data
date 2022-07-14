@@ -6,6 +6,7 @@ import com.lake.entity.Reporter
 import com.lake.repository.AuditRepository
 import com.lake.util.ConverterUtil
 import groovy.transform.CompileStatic
+import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
@@ -15,6 +16,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 @CompileStatic
+@Transactional
 @Service
 class AuditService {
     @Autowired
@@ -22,16 +24,20 @@ class AuditService {
     @Autowired
     ReporterService reporterService
 
-    @Transactional
     void audit(String method, String endpoint, String controller, Reporter reporter = null) {
         Audit audit = new Audit()
         audit.created = Instant.now()
-        audit.endpoint = endpoint
-        audit.controller = controller
-        audit.httpMethod = method
+        audit.endpoint = endpoint?.take(100)
+        audit.controller = controller?.take(45)
+        audit.httpMethod = method?.take(10)
         audit.reporter = reporter ? reporter : reporterService.getReporter(ReporterService.getUsername())
 
         repository.saveAndFlush(audit)
+    }
+
+    void audit(Exception e) {
+        Throwable rootCause = ExceptionUtils.getRootCause(e)
+        audit('ERROR', rootCause.getMessage(), rootCause.getClass().getSimpleName())
     }
 
     @Secured('ROLE_ADMIN')
@@ -40,7 +46,6 @@ class AuditService {
         ConverterUtil.convertAudits(entities, timezone, filter)
     }
 
-    @Transactional
     int truncate(long days) {
         List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(days, ChronoUnit.DAYS))
         if (audits && !audits.empty) {

@@ -1,8 +1,10 @@
 package com.lake.controller
 
+import com.lake.service.AuditService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.exception.ExceptionUtils
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,6 +22,9 @@ import javax.xml.bind.ValidationException
 @RestControllerAdvice
 class ErrorController {
 
+    @Autowired
+    AuditService auditService
+
     @ExceptionHandler([EntityNotFoundException, NoResultException])
     ResponseEntity handleDataNotFound(Exception e) {
         log.debug('NOT FOUND', e)
@@ -28,7 +33,7 @@ class ErrorController {
 
     @ExceptionHandler([EntityExistsException, DataIntegrityViolationException, OptimisticLockException])
     ResponseEntity handleDataConflict(Exception e) {
-        log.error('DATA CONFLICT', e)
+        logError('DATA CONFLICT', e)
         return new ResponseEntity(createBody(e), HttpStatus.CONFLICT)
     }
 
@@ -49,9 +54,14 @@ class ErrorController {
         } else if (throwable instanceof EntityExistsException || throwable instanceof DataIntegrityViolationException || throwable instanceof OptimisticLockException) {
             handleDataConflict(throwable)
         } else {
-            log.error('Something really bad happened', e)
+            logError('Something really bad happened', e)
             return new ResponseEntity(createBody(e), HttpStatus.INTERNAL_SERVER_ERROR)
         }
+    }
+
+    private logError(String message, Exception e) {
+        log.error(message, e)
+        auditService.audit(e)
     }
 
     private static Map<String, Object> createBody(Exception e) {

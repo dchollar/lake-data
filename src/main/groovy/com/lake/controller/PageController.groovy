@@ -32,7 +32,7 @@ class PageController {
     @Autowired
     FundingSourceService fundingSourceService
     @Autowired
-    private BuildProperties buildProperties
+    BuildProperties buildProperties
 
     @GetMapping(['favicon.ico'])
     @ResponseBody

@@ -26,7 +26,7 @@ class AuditTruncate {
 
     @Scheduled(cron = "0 0 0 * * *")
     void truncateJob() {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, null)
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'audit_password')
         SecurityContextHolder.getContext().setAuthentication(token)
         truncate()
     }
@@ -38,6 +38,7 @@ class AuditTruncate {
             log.info("Truncated audit log by ${count} records")
         } catch (Exception e) {
             log.error('Issues in truncate job', e)
+            auditService.audit(e)
         }
     }
 }
