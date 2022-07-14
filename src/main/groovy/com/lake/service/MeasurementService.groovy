@@ -94,6 +94,17 @@ class MeasurementService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
+    MeasurementMaintenanceDto updateMeasurement(CharacteristicLocation cl, MeasurementMaintenanceDto dto) {
+        Measurement measurement = measurementRepository.findByCharacteristicLocationAndCollectionDateAndDepth(cl, dto.collectionDate, getDepth(dto))
+        if (measurement) {
+            saveMeasurement(measurement, dto, cl.characteristic)
+            dto.id = measurement.id
+        }
+        return dto
+    }
+
+    @Secured('ROLE_ADMIN')
+    @Transactional
     MeasurementMaintenanceDto update(Integer id, MeasurementMaintenanceDto dto) {
         Characteristic characteristic = characteristicService.getOne(dto.characteristicId)
         if (characteristic.type == CharacteristicType.EVENT) {
@@ -235,7 +246,7 @@ class MeasurementService {
         measurement.comment = ConverterUtil.stripNonAscii(dto.comment)
         measurement.value = dto.value
         measurement.collectionDate = dto.collectionDate
-        measurement.depth = dto.depth == null ? -1 : dto.depth
+        measurement.depth = getDepth(dto)
         measurement.characteristicLocation = characteristicLocationService.get(characteristic, location)
         if (measurement.characteristicLocation == null) {
             throw new RuntimeException("Must define the location (site=${location.site.description} name=${location.description}) characteristic (name=${characteristic.description}) in the maintenance section before entering a measurement for it.")
@@ -254,6 +265,10 @@ class MeasurementService {
         if (!characteristicService.getCharacteristicsBySite(dto.siteId).contains(ConverterUtil.convert(characteristic))) {
             characteristicService.clearCache()
         }
+    }
+
+    private static BigDecimal getDepth(final MeasurementMaintenanceDto dto) {
+        return dto.depth == null ? new BigDecimal(-1) : dto.depth
     }
 
 }

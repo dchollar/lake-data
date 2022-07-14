@@ -79,7 +79,7 @@ class MeasurementDetailService {
         List<MeasurementDetail> details = repository.findByDateAndCharacteristicLocation(date, cl.id)
         if (details.size() > 0) {
             BigDecimal average = calculateAverageValue(details)
-            createMeasurement(date, average, cl)
+            saveMeasurement(date, average, cl)
             markComplete(details)
         }
     }
@@ -93,7 +93,7 @@ class MeasurementDetailService {
         return total.divide(size, 3, RoundingMode.HALF_UP)
     }
 
-    private void createMeasurement(LocalDate date, BigDecimal average, CharacteristicLocation cl) {
+    private void saveMeasurement(LocalDate date, BigDecimal average, CharacteristicLocation cl) {
         MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto(
                 collectionDate: date,
                 value: average,
@@ -102,7 +102,13 @@ class MeasurementDetailService {
                 siteId: cl.location.site.id,
                 characteristicType: CharacteristicType.WATER
         )
-        measurementService.save(dto)
+
+        try {
+            measurementService.save(dto)
+        } catch (Exception e) {
+            // different data files will contain parts of the same day so updates are necessary
+            measurementService.updateMeasurement(cl, dto)
+        }
     }
 
     private List<MeasurementDetail> markComplete(List<MeasurementDetail> details) {

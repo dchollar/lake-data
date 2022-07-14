@@ -16,4 +16,6 @@ interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
     List<Measurement> findAllByCharacteristicLocationIn(List<CharacteristicLocation> characteristicLocations)
 
     List<Measurement> findAllByCollectionDate(LocalDate collectionDate)
+
+    Measurement findByCharacteristicLocationAndCollectionDateAndDepth(CharacteristicLocation cl, LocalDate collectionDate, BigDecimal depth)
 }
