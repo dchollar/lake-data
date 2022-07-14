@@ -33,3 +33,4 @@ ftp:
   upload-location: /home/lake-data-ftp/ftp/upload
   process-location: /home/lake-data-ftp/process
   archive-location: /home/lake-data-ftp/archive
+  error-location: /home/lake-data-ftp/error

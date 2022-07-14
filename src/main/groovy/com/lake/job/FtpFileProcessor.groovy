@@ -32,7 +32,7 @@ class FtpFileProcessor {
     MeasurementFileService measurementFileService
 
     @Scheduled(cron = "0 0 1 * * *")
-    //@Scheduled(cron = "0 */5 * * * *")
+    //@Scheduled(cron = "0 */5 * * * *") // for testing
     void processFilesJob() {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'ftp_password')
         SecurityContextHolder.getContext().setAuthentication(token)
@@ -58,8 +58,14 @@ class FtpFileProcessor {
 
     private void processFiles(File sourceDir, File archiveLocation) {
         sourceDir.listFiles().each { File file ->
-            processFile(file)
-            archiveFile(file, archiveLocation)
+            try {
+                processFile(file)
+                archiveFile(file, archiveLocation)
+            } catch (Exception e) {
+                log.error('Issue processing the file', e)
+                auditService.audit(e)
+                moveFile(file, ftpConfig.errorLocation)
+            }
         }
     }
 

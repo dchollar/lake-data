@@ -9,4 +9,5 @@ class FtpConfig {
     File uploadLocation
     File processLocation
     File archiveLocation
+    File errorLocation
 }
