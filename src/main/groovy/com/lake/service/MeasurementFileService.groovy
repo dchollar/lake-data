@@ -200,12 +200,7 @@ class MeasurementFileService {
     }
 }
 
-// TODO - the plan for processing this data is to create a new DB table and store all data into it. This table will be just like the measurement table but
-// it will hold data down to the minute or second level. Not just for a day.
-// After the files are processed and the data is stored the next step will be to summarize the data by calculating the daily average and storing it into
-// the daily measurement table. There it can be used for analysis. Once the data is summarized it will be marked as complete. Any data added to that day that isn't
-// summarized will trigger the process to redo that day.
-// The only data they want stored is the flow information
+
 
 // Example data
 //

@@ -9,3 +9,4 @@ ftp:
   upload-location: C:\\temp\\upload
   process-location: C:\\temp\\process
   archive-location: C:\\temp\\archive
+  error-location: C:\\temp\\error
