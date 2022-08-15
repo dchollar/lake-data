@@ -46,7 +46,7 @@ dependencies {
     // when updating, the repo has changed to 'org.hibernate.orm:hibernate-spatial:6.1.1.Final'
     // see https://github.com/spring-projects/spring-data-jpa/issues/2423
 
-    implementation('org.springdoc:springdoc-openapi-ui:1.6.9')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.10')
     implementation('org.springdoc:springdoc-openapi-groovy:1.6.9')
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
