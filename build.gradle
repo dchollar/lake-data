@@ -4,7 +4,7 @@ plugins {
     id 'groovy'
     id 'idea'
     id 'maven-publish'
-    id 'org.springframework.boot' version '2.7.2'
+    id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 }
 
@@ -46,8 +46,8 @@ dependencies {
     // when updating, the repo has changed to 'org.hibernate.orm:hibernate-spatial:6.1.1.Final'
     // see https://github.com/spring-projects/spring-data-jpa/issues/2423
 
-    implementation('org.springdoc:springdoc-openapi-ui:1.6.10')
-    implementation('org.springdoc:springdoc-openapi-groovy:1.6.10')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.11')
+    implementation('org.springdoc:springdoc-openapi-groovy:1.6.11')
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
