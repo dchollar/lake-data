@@ -30,7 +30,7 @@ dependencies {
     implementation('org.apache.pdfbox:pdfbox:2.0.26')
     implementation('net.sourceforge.tess4j:tess4j:5.4.0')
 
-    implementation('org.codehaus.groovy:groovy-all:3.0.12')
+    implementation('org.codehaus.groovy:groovy-all:3.0.13')
 
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
