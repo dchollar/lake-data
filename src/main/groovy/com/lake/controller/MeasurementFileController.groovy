@@ -46,7 +46,7 @@ class MeasurementFileController {
 
     @Secured(['ROLE_ADMIN'])
     @PostMapping("/measurementFileUpload")
-    public String submit(
+    String submit(
             @RequestParam MultipartFile dataFile,
             @RequestParam Integer locationsChoice,
             Model model) {
@@ -64,7 +64,7 @@ class MeasurementFileController {
             model.addAttribute('errorMessage', ExceptionUtils.getRootCauseMessage(e))
         }
 
-        return "dataFileUpload";
+        return "dataFileUpload"
     }
 
 }

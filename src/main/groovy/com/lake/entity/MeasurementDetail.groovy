@@ -6,7 +6,6 @@ import org.springframework.data.annotation.LastModifiedDate
 
 import javax.persistence.*
 import java.time.Instant
-import java.time.LocalDate
 
 @CompileStatic
 @Entity

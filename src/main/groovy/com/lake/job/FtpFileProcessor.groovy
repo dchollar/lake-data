@@ -10,10 +10,7 @@ import org.apache.commons.io.FilenameUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.access.annotation.Secured
-import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
@@ -43,7 +40,7 @@ class FtpFileProcessor {
     void processUploadedFiles() {
         try {
             moveFiles(ftpConfig.uploadLocation, ftpConfig.processLocation)
-            processFiles(ftpConfig.processLocation, ftpConfig.archiveLocation)
+            processFiles(ftpConfig.processLocation, ftpConfig.archiveLocation, ftpConfig.errorLocation)
         } catch (Exception e) {
             log.error('Issue processing uploaded files', e)
             auditService.audit(e)
@@ -51,41 +48,39 @@ class FtpFileProcessor {
     }
 
     private static void moveFiles(File sourceDir, File destinationDir) {
-        sourceDir.listFiles().each { File file ->
+        sourceDir?.listFiles()?.each { File file ->
             moveFile(file, destinationDir)
         }
     }
 
-    private void processFiles(File sourceDir, File archiveLocation) {
-        sourceDir.listFiles().each { File file ->
+    private void processFiles(File sourceDir, File archiveLocation, File errorLocation) {
+        sourceDir?.listFiles()?.each { File file ->
             try {
                 processFile(file)
-                archiveFile(file, archiveLocation)
+                moveFile(file, archiveLocation)
             } catch (Exception e) {
                 log.error('Issue processing the file', e)
                 auditService.audit(e)
-                moveFile(file, ftpConfig.errorLocation)
+                moveFile(file, errorLocation)
             }
         }
     }
 
-    private static void archiveFile(File source, File archiveLocation) {
-        moveFile(source, archiveLocation)
-    }
-
     private static void moveFile(File sourceFile, File destinationDir) {
-        if (sourceFile && !sourceFile.directory) {
+        if (sourceFile && !sourceFile.isDirectory() && destinationDir && destinationDir.isDirectory()) {
             FileUtils.moveFileToDirectory(sourceFile, destinationDir, false)
         }
     }
 
-    void processFile(File file) {
-        auditService.audit('JOB', file.name, this.class.simpleName)
-        String extension = FilenameUtils.getExtension(file.name).toLowerCase()
-        if ('zip' == extension) {
-            measurementFileService.processZipFile(file)
-        } else if ('csv' == extension) {
-            measurementFileService.processCsvFile(file)
+    private void processFile(File file) {
+        if (file) {
+            auditService.audit('JOB', file.name, this.class.simpleName)
+            String extension = FilenameUtils.getExtension(file.name).toLowerCase()
+            if ('zip' == extension) {
+                measurementFileService.processZipFile(file)
+            } else if ('csv' == extension) {
+                measurementFileService.processCsvFile(file)
+            }
         }
     }
 

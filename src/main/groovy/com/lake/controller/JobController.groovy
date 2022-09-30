@@ -22,9 +22,9 @@ class JobController {
     @Autowired
     AuditTruncate auditTruncate
     @Autowired
-    PageController pageController
-    @Autowired
     FtpFileProcessor ftpFileProcessor
+    @Autowired
+    PageController pageController
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/swims')
