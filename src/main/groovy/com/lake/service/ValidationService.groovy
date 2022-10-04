@@ -1,7 +1,7 @@
 package com.lake.service
 
-import com.lake.dto.CharacteristicDto
 import com.lake.dto.MeasurementMaintenanceDto
+import com.lake.entity.Characteristic
 import com.lake.entity.CharacteristicType
 import groovy.transform.CompileStatic
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,14 +21,14 @@ class ValidationService {
         isValid(dto.siteId, dto.characteristicId, dto.locationId, null, null)
 
         String errorMessage = ''
-        CharacteristicDto characteristicDto = service.getById(dto.characteristicId)
-        if (characteristicDto.enableDepth && (dto.depth == null || dto.depth < 0)) {
+        Characteristic characteristic = service.getOne(dto.characteristicId)
+        if (characteristic.enableDepth && (dto.depth == null || dto.depth < 0)) {
             errorMessage += 'Depth is missing or less than zero '
         }
-        if (!characteristicDto.enableDepth && (dto.depth != null && dto.depth != -1)) {
+        if (!characteristic.enableDepth && (dto.depth != null && dto.depth != -1)) {
             errorMessage += 'Depth should be -1 '
         }
-        if (characteristicDto.type != CharacteristicType.EVENT && dto.value == null) {
+        if (characteristic.type != CharacteristicType.EVENT && dto.value == null) {
             errorMessage += 'value is missing '
         }
         if (!dto.collectionDate) {
@@ -46,14 +46,14 @@ class ValidationService {
             message += 'characteristic is missing '
             throw new ValidationException(message)
         }
-        CharacteristicDto characteristicDto = service.getById(characteristicId)
+        Characteristic characteristic = service.getOne(characteristicId)
         if (!siteId) {
             message += 'site is missing '
         } else if (fromDate && toDate && fromDate.isAfter(toDate)) {
             message += 'from date is after to date '
-        } else if (characteristicDto.type == CharacteristicType.EVENT && locationId) {
+        } else if (characteristic.type == CharacteristicType.EVENT && locationId) {
             message += 'Not supposed to have a location '
-        } else if (characteristicDto.type != CharacteristicType.EVENT && !locationId) {
+        } else if (characteristic.type != CharacteristicType.EVENT && !locationId) {
             message += 'location is missing '
         }
         if (message) {

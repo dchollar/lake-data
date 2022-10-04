@@ -11,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 @CompileStatic
 @Service
 class FundingSourceService {
@@ -24,6 +26,7 @@ class FundingSourceService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['fundingSources'], allEntries = true)
+    @Transactional
     FundingSourceDto save(FundingSourceDto dto) {
         FundingSource fundingSource = ConverterUtil.convert(dto, new FundingSource())
         ConverterUtil.convert(repository.saveAndFlush(fundingSource))
@@ -31,6 +34,7 @@ class FundingSourceService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['fundingSources', 'fundingSourceById'], allEntries = true)
+    @Transactional
     FundingSourceDto update(Integer id, FundingSourceDto dto) {
         FundingSource fundingSource = repository.getReferenceById(id)
         ConverterUtil.convert(dto, fundingSource)
@@ -39,6 +43,7 @@ class FundingSourceService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['fundingSources', 'fundingSourceById'], allEntries = true)
+    @Transactional
     void delete(Integer id) {
         repository.deleteById(id)
     }

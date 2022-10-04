@@ -14,6 +14,7 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
+import javax.transaction.Transactional
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -66,6 +67,7 @@ class MeasurementFileService {
     private static final BigDecimal SECONDS_IN_MINUTE = new BigDecimal(60)
 
     @Secured('ROLE_ADMIN')
+    @Transactional
     void saveDataFile(MultipartFile dataFile, Location location) {
         String fileName = dataFile.originalFilename
         String extension = FilenameUtils.getExtension(fileName).toLowerCase()
@@ -80,6 +82,7 @@ class MeasurementFileService {
     }
 
     @Secured('ROLE_ADMIN')
+    @Transactional
     void processZipFile(File file, Location location = null) {
         ZipFile zipFile = new ZipFile(file)
         zipFile.entries().asIterator().each { ZipEntry entry ->
@@ -91,6 +94,7 @@ class MeasurementFileService {
     }
 
     @Secured('ROLE_ADMIN')
+    @Transactional
     void processCsvFile(File file) {
         processCsvStream(FileUtils.openInputStream(file), file.name)
     }

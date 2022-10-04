@@ -24,7 +24,7 @@ springBoot {
 dependencies {
     implementation('org.apache.commons:commons-lang3:3.12.0')
     implementation('commons-io:commons-io:2.11.0')
-    implementation('org.apache.pdfbox:pdfbox:2.0.26')
+    implementation('org.apache.pdfbox:pdfbox:2.0.27')
     implementation('net.sourceforge.tess4j:tess4j:5.4.0')
 
     implementation 'org.apache.groovy:groovy-all:4.0.5'
@@ -51,7 +51,7 @@ dependencies {
     runtimeOnly('mysql:mysql-connector-java')
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
-    testImplementation('org.spockframework:spock-spring:2.2-groovy-4.0')
+    testImplementation('org.spockframework:spock-spring:2.3-groovy-4.0')
 }
 
 test {

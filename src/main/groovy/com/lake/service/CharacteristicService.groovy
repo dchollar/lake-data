@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 @CompileStatic
 @Service
 class CharacteristicService {
@@ -46,12 +48,14 @@ class CharacteristicService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
+    @Transactional
     CharacteristicDto save(CharacteristicDto dto) {
         ConverterUtil.convert(repository.saveAndFlush(ConverterUtil.convert(dto, new Characteristic())))
     }
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
+    @Transactional
     CharacteristicDto update(Integer id, CharacteristicDto dto) {
         Characteristic characteristic = repository.getReferenceById(id)
         ConverterUtil.convert(dto, characteristic)
@@ -60,6 +64,7 @@ class CharacteristicService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
+    @Transactional
     void delete(Integer id) {
         repository.deleteById(id)
     }

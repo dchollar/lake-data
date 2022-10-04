@@ -13,6 +13,7 @@ import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
 import javax.sql.rowset.serial.SerialBlob
+import javax.transaction.Transactional
 import java.sql.Blob
 import java.time.Instant
 
@@ -52,6 +53,7 @@ class DocumentService {
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
+    @Transactional
     DocumentDto save(DocumentDto dto, String timeZone) {
         Document entity = ConverterUtil.convert(dto, new Document())
         entity.site = siteService.getOne(dto.siteId)
@@ -59,6 +61,7 @@ class DocumentService {
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
+    @Transactional
     DocumentDto update(Integer id, DocumentDto dto, String timeZone) {
         Document entity = repository.getReferenceById(id)
         ConverterUtil.convert(dto, entity)
@@ -67,11 +70,13 @@ class DocumentService {
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
+    @Transactional
     void delete(Integer id) {
         repository.deleteById(id)
     }
 
     @Secured('ROLE_ADMIN')
+    @Transactional
     void bulkSave() {
         String subPath = '/home/dan/tmp/PipeLakesRecords'
         File startDir = new File(subPath)

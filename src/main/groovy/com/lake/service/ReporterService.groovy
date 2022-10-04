@@ -16,6 +16,8 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 @CompileStatic
 @Service
 class ReporterService {
@@ -46,6 +48,7 @@ class ReporterService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
+    @Transactional
     ReporterDto save(ReporterDto dto) {
         Reporter entity = ConverterUtil.convert(dto, new Reporter())
         entity.password = passwordEncoder.encode(dto.password)
@@ -54,6 +57,7 @@ class ReporterService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
+    @Transactional
     ReporterDto update(Integer id, ReporterDto dto) {
         Reporter reporter = repository.getReferenceById(id)
         // if there is a password, then it was changed. otherwise it would be blank
@@ -73,6 +77,7 @@ class ReporterService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
+    @Transactional
     void delete(Integer id) {
         repository.deleteById(id)
     }

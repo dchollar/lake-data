@@ -14,6 +14,8 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 @CompileStatic
 @Service
 class CharacteristicLocationService {
@@ -56,6 +58,7 @@ class CharacteristicLocationService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
+    @Transactional
     CharacteristicLocationDto save(CharacteristicLocationDto dto) {
         CharacteristicLocation entity = new CharacteristicLocation(
                 location: locationService.getOne(dto.locationId),
@@ -66,12 +69,14 @@ class CharacteristicLocationService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
+    @Transactional
     void delete(Integer id) {
         repository.deleteById(id)
     }
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
+    @Transactional
     CharacteristicLocation save(Characteristic characteristic, Location location) {
         CharacteristicLocation entity = new CharacteristicLocation(location: location, characteristic: characteristic)
         return repository.saveAndFlush(entity)

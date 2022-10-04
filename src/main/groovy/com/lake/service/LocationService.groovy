@@ -13,6 +13,8 @@ import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
+import javax.transaction.Transactional
+
 @CompileStatic
 @Service
 class LocationService {
@@ -56,6 +58,7 @@ class LocationService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
+    @Transactional
     LocationDto save(LocationDto dto) {
         Location location = ConverterUtil.convert(dto, new Location())
         location.site = siteRepository.getReferenceById(dto.siteId)
@@ -64,6 +67,7 @@ class LocationService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
+    @Transactional
     LocationDto update(Integer id, LocationDto dto) {
         Location location = repository.getReferenceById(id)
         ConverterUtil.convert(dto, location)
@@ -72,6 +76,7 @@ class LocationService {
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
+    @Transactional
     void delete(Integer id) {
         repository.deleteById(id)
     }
