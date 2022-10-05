@@ -28,7 +28,7 @@ class FtpFileProcessor {
     @Autowired
     MeasurementFileService measurementFileService
 
-    @Scheduled(cron = "0 0 1 * * *")
+    //@Scheduled(cron = "0 0 1 * * *")
     //@Scheduled(cron = "0 */5 * * * *") // for testing
     void processFilesJob() {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'ftp_password')
