@@ -38,7 +38,7 @@ dependencies {
 
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE')
 
-    implementation('org.hibernate:hibernate-spatial:5.6.9.Final')
+    implementation('org.hibernate:hibernate-spatial:6.1.4.Final')
     // do not update because newer versions pull in hibernate 6 which is not supported by spring yet
     // when updating, the repo has changed to 'org.hibernate.orm:hibernate-spatial:6.1.1.Final'
     // see https://github.com/spring-projects/spring-data-jpa/issues/2423
