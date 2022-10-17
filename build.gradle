@@ -44,7 +44,7 @@ dependencies {
     // see https://github.com/spring-projects/spring-data-jpa/issues/2423
 
     implementation('org.springdoc:springdoc-openapi-ui:1.6.11')
-    implementation('org.springdoc:springdoc-openapi-groovy:1.6.11')
+    implementation('org.springdoc:springdoc-openapi-groovy:1.6.12')
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
