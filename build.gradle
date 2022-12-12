@@ -36,7 +36,7 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-cache')
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
 
-    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.0.RELEASE')
+    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.1.RELEASE')
 
     implementation('org.hibernate:hibernate-spatial:5.6.9.Final')
     // do not update because newer versions pull in hibernate 6 which is not supported by spring yet
