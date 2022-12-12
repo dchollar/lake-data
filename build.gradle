@@ -4,8 +4,8 @@ plugins {
     id 'groovy'
     id 'idea'
     id 'maven-publish'
-    id 'org.springframework.boot' version '2.7.4'
-    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
 java {
@@ -36,15 +36,15 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-cache')
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
 
-    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE')
+    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.0.RELEASE')
 
     implementation('org.hibernate:hibernate-spatial:5.6.9.Final')
     // do not update because newer versions pull in hibernate 6 which is not supported by spring yet
     // when updating, the repo has changed to 'org.hibernate.orm:hibernate-spatial:6.1.1.Final'
     // see https://github.com/spring-projects/spring-data-jpa/issues/2423
 
-    implementation('org.springdoc:springdoc-openapi-ui:1.6.12')
-    implementation('org.springdoc:springdoc-openapi-groovy:1.6.12')
+    implementation('org.springdoc:springdoc-openapi-ui:1.6.13')
+    implementation('org.springdoc:springdoc-openapi-groovy:1.6.13')
 
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
