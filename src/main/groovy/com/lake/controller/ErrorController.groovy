@@ -3,6 +3,11 @@ package com.lake.controller
 import com.lake.service.AuditService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
+import jakarta.persistence.EntityExistsException
+import jakarta.persistence.EntityNotFoundException
+import jakarta.persistence.NoResultException
+import jakarta.persistence.OptimisticLockException
+import jakarta.validation.ValidationException
 import org.apache.commons.lang3.exception.ExceptionUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
@@ -10,12 +15,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
-
-import javax.persistence.EntityExistsException
-import javax.persistence.EntityNotFoundException
-import javax.persistence.NoResultException
-import javax.persistence.OptimisticLockException
-import javax.xml.bind.ValidationException
 
 @CompileStatic
 @Slf4j

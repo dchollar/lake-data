@@ -4,10 +4,10 @@ import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.Characteristic
 import com.lake.entity.CharacteristicType
 import groovy.transform.CompileStatic
+import jakarta.validation.ValidationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-import javax.xml.bind.ValidationException
 import java.time.LocalDate
 
 @CompileStatic

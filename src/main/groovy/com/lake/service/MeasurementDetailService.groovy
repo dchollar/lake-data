@@ -8,8 +8,8 @@ import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
-import javax.transaction.Transactional
 import java.math.RoundingMode
 import java.time.Instant
 import java.time.LocalDate

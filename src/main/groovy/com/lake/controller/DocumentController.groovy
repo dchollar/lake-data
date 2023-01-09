@@ -4,12 +4,11 @@ import com.lake.dto.DocumentDto
 import com.lake.service.AuditService
 import com.lake.service.DocumentService
 import groovy.transform.CompileStatic
+import jakarta.validation.ValidationException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
-
-import javax.xml.bind.ValidationException
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE

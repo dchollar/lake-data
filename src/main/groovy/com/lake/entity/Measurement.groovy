@@ -2,7 +2,7 @@ package com.lake.entity
 
 import groovy.transform.CompileStatic
 
-import javax.persistence.*
+import jakarta.persistence.*
 import java.time.LocalDate
 
 @CompileStatic

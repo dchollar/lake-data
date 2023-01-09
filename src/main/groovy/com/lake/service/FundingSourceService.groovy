@@ -10,8 +10,7 @@ import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
-
-import javax.transaction.Transactional
+import org.springframework.transaction.annotation.Transactional
 
 @CompileStatic
 @Service

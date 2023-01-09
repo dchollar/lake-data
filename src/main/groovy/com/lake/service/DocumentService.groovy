@@ -11,9 +11,9 @@ import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 import javax.sql.rowset.serial.SerialBlob
-import javax.transaction.Transactional
 import java.sql.Blob
 import java.time.Instant
 

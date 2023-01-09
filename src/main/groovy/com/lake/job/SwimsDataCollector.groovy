@@ -12,6 +12,7 @@ import groovy.xml.XmlSlurper
 import groovy.xml.slurpersupport.GPathResult
 import groovy.xml.slurpersupport.Node
 import groovy.xml.slurpersupport.NodeChild
+import jakarta.validation.ValidationException
 import org.apache.commons.io.IOUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -22,7 +23,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
-import javax.xml.bind.ValidationException
 import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 import java.time.Year
