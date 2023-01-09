@@ -5,3 +5,4 @@ build/
 database/*.mwb.bak
 database/defaults.cnf
 out/
+/database/add_backup_user.sql

@@ -24,7 +24,9 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 import java.nio.charset.StandardCharsets
+import java.time.Instant
 import java.time.LocalDate
+import java.time.Month
 import java.time.Year
 import java.time.format.DateTimeFormatter
 
@@ -78,7 +80,7 @@ class SwimsDataCollector {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'swims_password')
             SecurityContextHolder.getContext().setAuthentication(token)
-            String year = currentYear()
+            final String year = (Month.from(Instant.now()) == Month.JANUARY) ? lastYear() : currentYear()
             fetchDataInternal(year, year)
         } catch (Exception e) {
             log.error('Issue processing SWIMS data', e)
@@ -94,6 +96,11 @@ class SwimsDataCollector {
 
     static String currentYear() {
         return Year.now().getValue().toString()
+    }
+
+    static String lastYear() {
+        int lastYear = Year.now().getValue() - 1
+        return lastYear.toString()
     }
 
     private void fetchDataInternal(String year1, String year2) {
