@@ -1,1 +1,0 @@
-java -Dspring.profiles.active=local -jar ./build/libs/lake-1.0.0.jar
