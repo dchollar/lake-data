@@ -23,7 +23,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "GET",
-                    url: "/api/documents?timezone=" + timezone,
+                    url: "api/documents?timezone=" + timezone,
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -43,7 +43,7 @@ $(function () {
                     async: false,
                     method: "post",
                     type: "POST",
-                    url: "/api/documents?timezone=" + timezone,
+                    url: "api/documents?timezone=" + timezone,
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -68,7 +68,7 @@ $(function () {
                     async: false,
                     method: "put",
                     type: "PUT",
-                    url: "/api/documents/" + item.id + "?timezone=" + timezone,
+                    url: "api/documents/" + item.id + "?timezone=" + timezone,
                     data: formData,
                     contentType: false,
                     processData: false,
@@ -83,7 +83,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "DELETE",
-                    url: "/api/documents/" + item.id,
+                    url: "api/documents/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }

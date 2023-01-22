@@ -1,7 +1,7 @@
 $(function () {
     $("#message").text("").hide();
 
-    $.get("/api/characteristicTypes").done(function (characteristicTypes) {
+    $.get("api/characteristicTypes").done(function (characteristicTypes) {
 
         $("#jsGrid").jsGrid({
 
@@ -22,7 +22,7 @@ $(function () {
                     return $.ajax({
                         async: false,
                         type: "GET",
-                        url: "/api/characteristics",
+                        url: "api/characteristics",
                         data: filter,
                         error: function (xhr) {
                             $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -35,7 +35,7 @@ $(function () {
                     return $.ajax({
                         async: false,
                         type: "POST",
-                        url: "/api/characteristics",
+                        url: "api/characteristics",
                         contentType: 'application/json; charset=UTF-8',
                         data: JSON.stringify(item),
                         error: function (xhr) {
@@ -49,7 +49,7 @@ $(function () {
                     return $.ajax({
                         async: false,
                         type: "PUT",
-                        url: "/api/characteristics/" + item.id,
+                        url: "api/characteristics/" + item.id,
                         contentType: 'application/json; charset=UTF-8',
                         data: JSON.stringify(item),
                         error: function (xhr) {
@@ -63,7 +63,7 @@ $(function () {
                     return $.ajax({
                         async: false,
                         type: "DELETE",
-                        url: "/api/characteristics/" + item.id,
+                        url: "api/characteristics/" + item.id,
                         error: function (xhr) {
                             $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                         }

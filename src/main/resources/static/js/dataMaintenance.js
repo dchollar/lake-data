@@ -27,7 +27,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "GET",
-                    url: "/api/measurements",
+                    url: "api/measurements",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -42,7 +42,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "PUT",
-                    url: "/api/measurements/" + item.id,
+                    url: "api/measurements/" + item.id,
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -56,7 +56,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "DELETE",
-                    url: "/api/measurements/" + item.id + "?characteristicType=" + item.characteristicType,
+                    url: "api/measurements/" + item.id + "?characteristicType=" + item.characteristicType,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }

@@ -23,7 +23,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "GET",
-                    url: "/api/characteristicLocations",
+                    url: "api/characteristicLocations",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -36,7 +36,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "POST",
-                    url: "/api/characteristicLocations",
+                    url: "api/characteristicLocations",
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -52,7 +52,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "DELETE",
-                    url: "/api/characteristicLocations/" + item.id,
+                    url: "api/characteristicLocations/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }
