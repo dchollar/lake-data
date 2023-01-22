@@ -1,5 +1,5 @@
 ./gradlew clean build
 rm ./build/libs/*plain*
-cp ./build/libs/lake-data*war /var/lib/tomcat9/webapps/lake-data.war
+cp ./build/libs/lake-data*war /opt/tomcat/latest/webapps/lake-data.war
 chgrp -R dan ./build
 chown -R dan ./build
