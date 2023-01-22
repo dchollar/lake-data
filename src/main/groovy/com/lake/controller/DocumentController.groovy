@@ -29,14 +29,6 @@ class DocumentController {
         return service.getDocument(documentId)
     }
 
-    @GetMapping(value = '/public/api/documents/site/{siteId}/search', produces = APPLICATION_JSON_VALUE)
-    Collection<DocumentDto> search(@PathVariable(name = 'siteId', required = true) Integer siteId,
-                                   @RequestParam(name = 'searchWord', required = true) String searchWord,
-                                   @RequestParam(name = 'timezone', required = true) String timezone) {
-        auditService.audit(HttpMethod.GET.name(), "/public/api/documents/site/${siteId}/search?searchWord=${searchWord}", this.class.simpleName)
-        return service.findDocumentsContaining(siteId, searchWord, timezone)
-    }
-
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @GetMapping(value = '/api/documents', produces = APPLICATION_JSON_VALUE)
     Collection<DocumentDto> getAll(@RequestParam(name = 'timezone', required = true) String timezone) {
@@ -65,7 +57,7 @@ class DocumentController {
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
-    @DeleteMapping(value = '/api/documents/{documentId}', produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = '/api/documents/{documentId}')
     void delete(@PathVariable(name = 'documentId', required = true) Integer documentId) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/documents/${documentId}", this.class.simpleName)
         service.delete(documentId)

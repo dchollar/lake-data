@@ -1,6 +1,7 @@
 package com.lake.job
 
 import com.lake.configuration.FtpConfig
+import com.lake.entity.RoleType
 import com.lake.service.AuditService
 import com.lake.service.MeasurementFileService
 import groovy.transform.CompileStatic
@@ -8,9 +9,9 @@ import groovy.util.logging.Slf4j
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.FilenameUtils
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Component
 class FtpFileProcessor {
 
     private static final String REPORTER_USERNAME = 'ftp'
+    private static final String REPORTER_CREDENTIALS = 'credentials'
+    private static final List AUTHORITIES = [new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name())]
 
     @Autowired
     FtpConfig ftpConfig
@@ -31,7 +34,7 @@ class FtpFileProcessor {
     //@Scheduled(cron = "0 0 1 * * *")
     //@Scheduled(cron = "0 */5 * * * *") // for testing
     void processFilesJob() {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'ftp_password')
+        final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, REPORTER_CREDENTIALS, AUTHORITIES)
         SecurityContextHolder.getContext().setAuthentication(token)
         processUploadedFiles()
     }
@@ -47,13 +50,13 @@ class FtpFileProcessor {
         }
     }
 
-    private static void moveFiles(File sourceDir, File destinationDir) {
+    private static void moveFiles(final File sourceDir, final File destinationDir) {
         sourceDir?.listFiles()?.each { File file ->
             moveFile(file, destinationDir)
         }
     }
 
-    private void processFiles(File sourceDir, File archiveLocation, File errorLocation) {
+    private void processFiles(final File sourceDir, final File archiveLocation, final File errorLocation) {
         sourceDir?.listFiles()?.each { File file ->
             try {
                 processFile(file)
@@ -66,13 +69,13 @@ class FtpFileProcessor {
         }
     }
 
-    private static void moveFile(File sourceFile, File destinationDir) {
+    private static void moveFile(final File sourceFile, final File destinationDir) {
         if (sourceFile && !sourceFile.isDirectory() && destinationDir && destinationDir.isDirectory()) {
             FileUtils.moveFileToDirectory(sourceFile, destinationDir, false)
         }
     }
 
-    private void processFile(File file) {
+    private void processFile(final File file) {
         if (file) {
             auditService.audit('JOB', file.name, this.class.simpleName)
             String extension = FilenameUtils.getExtension(file.name).toLowerCase()

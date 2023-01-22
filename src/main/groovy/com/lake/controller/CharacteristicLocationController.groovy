@@ -37,7 +37,7 @@ class CharacteristicLocationController {
     }
 
     @Secured('ROLE_ADMIN')
-    @DeleteMapping(value = '/api/characteristicLocations/{id}', produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = '/api/characteristicLocations/{id}')
     void delete(@PathVariable(name = 'id', required = true) Integer id) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/characteristicLocations/${id}", this.class.simpleName)
         service.delete(id)

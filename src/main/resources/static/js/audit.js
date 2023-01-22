@@ -20,8 +20,9 @@ $(function () {
         controller: {
             loadData: function (filter) {
                 return $.ajax({
+                    async: false,
                     type: "GET",
-                    url: "api/audits?timezone=" + timezone,
+                    url: "/api/audits?timezone=" + timezone,
                     contentType: 'application/json; charset=UTF-8',
                     data: filter
                 });

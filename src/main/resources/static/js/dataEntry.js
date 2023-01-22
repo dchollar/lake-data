@@ -16,46 +16,46 @@ $(document).ready(function () {
     $('#characteristicsChoice').on('change', function () {
         $("#message").text("").hide();
         characteristicId = $(this).val();
-        $.ajax(
-            {
-                type: "GET",
-                url: "public/api/characteristics/" + characteristicId,
-                dataType: "json",
-                success: function (characteristic) {
-                    selectedCharacteristic = characteristic;
-                    if (selectedCharacteristic && siteId) {
-                        getLocations();
-                        buildValueDiv();
-                        buildDepthDiv();
-                    } else {
-                        $('#locationSelectionDiv').html('');
-                    }
-                },
-                error: function (response) {
-                    console.log(response);
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "/public/api/characteristics/" + characteristicId,
+            dataType: "json",
+            success: function (characteristic) {
+                selectedCharacteristic = characteristic;
+                if (selectedCharacteristic && siteId) {
+                    getLocations();
+                    buildValueDiv();
+                    buildDepthDiv();
+                } else {
                     $('#locationSelectionDiv').html('');
                 }
-            });
+            },
+            error: function (response) {
+                console.log(response);
+                $('#locationSelectionDiv').html('');
+            }
+        });
     });
 
     $('#submitButton').on('click', function () {
         $("#message").text("").hide();
         if (siteId && characteristicId) {
             let data = buildSubmitData();
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "api/measurements",
-                    contentType: 'application/json; charset=UTF-8',
-                    data: JSON.stringify(data),
-                    success: function () {
-                        alert("Your data has been saved.");
-                        window.location = "dataEntry";
-                    },
-                    error: function (xhr) {
-                        $("#message").text("There was an issue saving your data. Check your submission. " + xhr.responseJSON.errorMessage).show();
-                    }
-                });
+            $.ajax({
+                async: false,
+                type: "POST",
+                url: "/api/measurements",
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(data),
+                success: function () {
+                    alert("Your data has been saved.");
+                    window.location = "dataEntry";
+                },
+                error: function (xhr) {
+                    $("#message").text("There was an issue saving your data. Check your submission. " + xhr.responseJSON.errorMessage).show();
+                }
+            });
         }
     });
 })
@@ -86,18 +86,18 @@ function buildSubmitData() {
 
 function getCharacteristics() {
     if (siteId) {
-        $.ajax(
-            {
-                type: "GET",
-                url: "api/characteristics?siteId=" + siteId,
-                dataType: "json",
-                success: function (characteristics) {
-                    buildCharacteristicsChoice(characteristics);
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-            });
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "/api/characteristics?siteId=" + siteId,
+            dataType: "json",
+            success: function (characteristics) {
+                buildCharacteristicsChoice(characteristics);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
     } else {
         document.getElementById('characteristicsChoice').innerHTML = '';
     }
@@ -113,18 +113,18 @@ function buildCharacteristicsChoice(characteristics) {
 
 function getLocations() {
     if (siteId && selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
-        $.ajax(
-            {
-                type: "GET",
-                url: "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
-                dataType: "json",
-                success: function (locations) {
-                    buildLocationsChoice(locations);
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-            });
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "/public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
+            dataType: "json",
+            success: function (locations) {
+                buildLocationsChoice(locations);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
     } else {
         $('#locationSelectionDiv').html('');
     }

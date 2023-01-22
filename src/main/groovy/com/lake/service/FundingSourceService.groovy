@@ -26,7 +26,7 @@ class FundingSourceService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['fundingSources'], allEntries = true)
     @Transactional
-    FundingSourceDto save(FundingSourceDto dto) {
+    FundingSourceDto save(final FundingSourceDto dto) {
         FundingSource fundingSource = ConverterUtil.convert(dto, new FundingSource())
         ConverterUtil.convert(repository.saveAndFlush(fundingSource))
     }
@@ -34,7 +34,7 @@ class FundingSourceService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['fundingSources', 'fundingSourceById'], allEntries = true)
     @Transactional
-    FundingSourceDto update(Integer id, FundingSourceDto dto) {
+    FundingSourceDto update(final Integer id, final FundingSourceDto dto) {
         FundingSource fundingSource = repository.getReferenceById(id)
         ConverterUtil.convert(dto, fundingSource)
         ConverterUtil.convert(repository.saveAndFlush(fundingSource))
@@ -43,12 +43,12 @@ class FundingSourceService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['fundingSources', 'fundingSourceById'], allEntries = true)
     @Transactional
-    void delete(Integer id) {
+    void delete(final Integer id) {
         repository.deleteById(id)
     }
 
     @Cacheable('fundingSourceById')
-    FundingSource getOne(Integer id) {
+    FundingSource getOne(final Integer id) {
         if (id && id > 0) {
             return repository.findById(id).orElse(null)
         } else {

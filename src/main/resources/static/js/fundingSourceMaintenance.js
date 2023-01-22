@@ -17,8 +17,9 @@ $(function () {
             loadData: function (filter) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "GET",
-                    url: "public/api/fundingSources",
+                    url: "/public/api/fundingSources",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -29,8 +30,9 @@ $(function () {
             insertItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "POST",
-                    url: "api/fundingSources",
+                    url: "/api/fundingSources",
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -42,8 +44,9 @@ $(function () {
             updateItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "PUT",
-                    url: "api/fundingSources/" + item.id,
+                    url: "/api/fundingSources/" + item.id,
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -55,8 +58,9 @@ $(function () {
             deleteItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "DELETE",
-                    url: "api/fundingSources/" + item.id,
+                    url: "/api/fundingSources/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }

@@ -33,7 +33,7 @@ class MeasurementController {
     @Autowired
     ValidationService validationService
 
-    @GetMapping(value = '/public/api/measurements')
+    @GetMapping(value = '/public/api/measurements', produces = APPLICATION_JSON_VALUE)
     Collection<MeasurementDto> getMeasurement(@RequestParam(name = 'siteId', required = true) Integer siteId,
                                               @RequestParam(name = 'characteristicId', required = true) Integer characteristicId,
                                               @RequestParam(name = 'locationId', required = false) Integer locationId,
@@ -84,7 +84,7 @@ class MeasurementController {
     }
 
     @Secured('ROLE_ADMIN')
-    @DeleteMapping(value = '/api/measurements/{measurementId}', produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = '/api/measurements/{measurementId}')
     void delete(@PathVariable(name = 'measurementId', required = true) Integer measurementId,
                 @RequestParam(name = 'characteristicType', required = true) CharacteristicType characteristicType) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/measurements/${measurementId}?characteristicType=${characteristicType}", this.class.simpleName)

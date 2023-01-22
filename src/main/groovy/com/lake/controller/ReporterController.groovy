@@ -48,7 +48,7 @@ class ReporterController {
     }
 
     @Secured('ROLE_ADMIN')
-    @DeleteMapping(value = '/api/reporters/{reporterId}', produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = '/api/reporters/{reporterId}')
     void delete(@PathVariable(name = 'reporterId', required = true) Integer reporterId) {
         log.info("ACCESS - delete reporter")
         auditService.audit(HttpMethod.DELETE.name(), "/api/reporters/${reporterId}", this.class.simpleName)

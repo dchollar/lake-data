@@ -23,13 +23,13 @@ $(document).ready(function () {
 function findDocuments() {
     if (siteId) {
         let searchWord = $('#searchPhrase').val();
-        let url = '';
+        let category = $('#categoryPhrase').val();
+        let url = "/public/api/sites/" + siteId + "/documents?timezone=" + timezone;
         if (searchWord) {
-            // get all that contain the search phrase
-            url = "public/api/documents/site/" + siteId + "/search?searchWord=" + searchWord + "&timezone=" + timezone;
-        } else {
-            // get all documents
-            url = "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
+            url += "&searchWord=" + searchWord;
+        }
+        if (category) {
+            url += "&category=" + category;
         }
         getSite();
         getDocuments(url);
@@ -39,33 +39,33 @@ function findDocuments() {
 }
 
 function getSite() {
-    $.ajax(
-        {
-            type: "GET",
-            url: "public/api/sites/" + siteId,
-            dataType: "json",
-            success: function (aSite) {
-                site = aSite;
-            },
-            error: function (xhr) {
-                $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
-            }
-        });
+    $.ajax({
+        async: false,
+        type: "GET",
+        url: "/public/api/sites/" + siteId,
+        dataType: "json",
+        success: function (aSite) {
+            site = aSite;
+        },
+        error: function (xhr) {
+            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
+        }
+    });
 }
 
 function getDocuments(url) {
-    $.ajax(
-        {
-            type: "GET",
-            url: url,
-            dataType: "json",
-            success: function (documents) {
-                buildResultDiv(documents);
-            },
-            error: function (xhr) {
-                $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
-            }
-        });
+    $.ajax({
+        async: false,
+        type: "GET",
+        url: url,
+        dataType: "json",
+        success: function (documents) {
+            buildResultDiv(documents);
+        },
+        error: function (xhr) {
+            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
+        }
+    });
 }
 
 function buildResultDiv(documents) {
@@ -122,7 +122,7 @@ function buildResultDiv(documents) {
             //------------------------------------
 
             html += '<li class="list-group-item list-group-item-secondary">';
-            html += '<a  href="public/api/documents/';
+            html += '<a  href="/public/api/documents/';
             html += document.id;
             html += '/document" target="_blank">';
             html += document.title;

@@ -2,9 +2,9 @@ package com.lake.job
 
 import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
+import com.lake.entity.RoleType
 import com.lake.service.AuditService
 import com.lake.service.MeasurementService
-import com.lake.service.ReporterService
 import com.lake.service.ValidationService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
@@ -20,11 +20,11 @@ import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.access.annotation.Secured
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
 import java.nio.charset.StandardCharsets
-import java.time.Instant
 import java.time.LocalDate
 import java.time.Month
 import java.time.Year
@@ -37,6 +37,8 @@ class SwimsDataCollector {
 
     public static final String FIRST_YEAR = '1950'
     private static final String REPORTER_USERNAME = 'swims'
+    private static final String REPORTER_CREDENTIALS = 'credentials'
+    private static final List AUTHORITIES = [new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name())]
     private static final String CURRENT_YEAR = 'CURRENT_YEAR'
     private static final String START_YEAR = 'START_YEAR'
     private static final String PIPE_LAKE_NAME = 'Pipe Lake'
@@ -69,18 +71,18 @@ class SwimsDataCollector {
     @Autowired
     MeasurementService measurementService
     @Autowired
-    ReporterService reporterService
-    @Autowired
     AuditService auditService
     @Autowired
     ValidationService validationService
 
     @Scheduled(cron = "0 0 0 1 * *")
+    //@Scheduled(cron = "0 * * * * *")
     void fetchData() {
         try {
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'swims_password')
+            final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, REPORTER_CREDENTIALS, AUTHORITIES)
             SecurityContextHolder.getContext().setAuthentication(token)
-            final String year = (Month.from(Instant.now()) == Month.JANUARY) ? lastYear() : currentYear()
+            final LocalDate currentDate = LocalDate.now()
+            final String year = currentDate.month == Month.JANUARY ? lastYear() : currentYear()
             fetchDataInternal(year, year)
         } catch (Exception e) {
             log.error('Issue processing SWIMS data', e)
@@ -90,7 +92,7 @@ class SwimsDataCollector {
 
     // This is called from the controller
     @Secured('ROLE_ADMIN')
-    void fetchData(String year1) {
+    void fetchData(final String year1) {
         fetchDataInternal(year1, currentYear())
     }
 
@@ -98,21 +100,22 @@ class SwimsDataCollector {
         return Year.now().getValue().toString()
     }
 
-    static String lastYear() {
+    private static String lastYear() {
         int lastYear = Year.now().getValue() - 1
         return lastYear.toString()
     }
 
-    private void fetchDataInternal(String year1, String year2) {
+    private void fetchDataInternal(final String year1, final String year2) {
         auditService.audit('JOB', "fetchData ${year1} ${year2}", this.class.simpleName)
         urls.each {
             String urlString = it.replace(CURRENT_YEAR, year2).replace(START_YEAR, year1)
             log.debug(urlString)
             getSwimData(urlString)
         }
+        log.info("Done processing SWIMS Data")
     }
 
-    private void getSwimData(String urlString) {
+    private void getSwimData(final String urlString) {
         URL url = findRealUrl(urlString.toURL())
         String xml = IOUtils.toString(url, StandardCharsets.UTF_8)
         parseXml(xml)
@@ -125,7 +128,7 @@ class SwimsDataCollector {
      *
      * @param xml
      */
-    private void parseXml(String xml) {
+    private void parseXml(final String xml) {
         GPathResult clmnAnnualReport = new XmlSlurper().parseText(xml)
 
         GPathResult srow = clmnAnnualReport.getProperty('srow') as GPathResult
@@ -142,7 +145,7 @@ class SwimsDataCollector {
         }
     }
 
-    private void processProfileRows(GPathResult srow, int siteId, int deepHoleLocationId) {
+    private void processProfileRows(final GPathResult srow, final int siteId, final int deepHoleLocationId) {
         GPathResult profileRows = srow?.getProperty('profile_rows') as GPathResult
         GPathResult profileRow = profileRows?.getProperty('profile_row') as GPathResult
         profileRow?.each { Object row ->
@@ -152,7 +155,7 @@ class SwimsDataCollector {
         }
     }
 
-    private void processSecchiRows(GPathResult srow, int siteId, int topDeepHoleLocationId, int deepHoleLocationId) {
+    private void processSecchiRows(final GPathResult srow, final int siteId, final int topDeepHoleLocationId, final int deepHoleLocationId) {
         GPathResult secchiRows = srow?.getProperty('secchi_rows') as GPathResult
         GPathResult secchiRow = secchiRows?.getProperty('secchi_row') as GPathResult
         secchiRow?.each { Object row ->
@@ -162,7 +165,7 @@ class SwimsDataCollector {
         }
     }
 
-    private void processSecchiRow(Integer siteId, Integer topDeepHoleLocationId, Integer deepHoleLocationId, NodeChild row) {
+    private void processSecchiRow(final Integer siteId, final Integer topDeepHoleLocationId, final Integer deepHoleLocationId, final NodeChild row) {
         String startDate = StringUtils.stripToNull(row.getProperty('start_date')?.toString())
         saveDto(siteId, deepHoleLocationId, SECCHI_ID, startDate, StringUtils.stripToNull(row.getProperty('secchi')?.toString()))
         saveDto(siteId, topDeepHoleLocationId, CHLOROPHYLL_ID, startDate, StringUtils.stripToNull(row.getProperty('chlorophyll')?.toString()))
@@ -172,7 +175,7 @@ class SwimsDataCollector {
         saveDto(siteId, topDeepHoleLocationId, TSI_CHL_ID, startDate, StringUtils.stripToNull(row.getProperty('TSI_CHL')?.toString()))
     }
 
-    private void processProfileRow(Integer siteId, Integer deepHoleLocationId, NodeChild row) {
+    private void processProfileRow(final Integer siteId, final Integer deepHoleLocationId, final NodeChild row) {
         String startDate = StringUtils.stripToNull(row.getProperty('start_date2')?.toString())
         String depth = extractDepth(row)
         saveDto(siteId, deepHoleLocationId, TEMPERATURE_PROFILE_ID, startDate, extractTemperature(row), depth)
@@ -214,12 +217,12 @@ class SwimsDataCollector {
         return temp
     }
 
-    private void saveDto(Integer siteId,
-                         Integer locationId,
-                         Integer characteristicId,
-                         String collectionDate,
-                         String value,
-                         String depth = null) {
+    private void saveDto(final Integer siteId,
+                         final Integer locationId,
+                         final Integer characteristicId,
+                         final String collectionDate,
+                         final String value,
+                         final String depth = null) {
         MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto(siteId: siteId, locationId: locationId, characteristicId: characteristicId, characteristicType: CharacteristicType.WATER)
         dto.collectionDate = LocalDate.parse(collectionDate, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
         dto.value = value && value.isBigDecimal() ? new BigDecimal(value) : null
@@ -244,7 +247,7 @@ class SwimsDataCollector {
      * @param url
      * @return the url after no more redirects
      */
-    private URL findRealUrl(URL url) {
+    private URL findRealUrl(final URL url) {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection()
         conn.followRedirects = false
         conn.requestMethod = 'HEAD'

@@ -1,5 +1,6 @@
 package com.lake.job
 
+import com.lake.entity.RoleType
 import com.lake.service.AuditService
 import com.lake.service.ReporterService
 import groovy.transform.CompileStatic
@@ -7,6 +8,7 @@ import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 
@@ -17,6 +19,8 @@ class AuditTruncate {
 
     private static long DAYS_TO_KEEP = 15
     private static final String REPORTER_USERNAME = 'audit'
+    private static final String REPORTER_CREDENTIALS = 'credentials'
+    private static final List AUTHORITIES = [new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name())]
 
     @Autowired
     ReporterService reporterService
@@ -26,7 +30,7 @@ class AuditTruncate {
 
     @Scheduled(cron = "0 0 0 * * *")
     void truncateJob() {
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, 'audit_password')
+        final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, REPORTER_CREDENTIALS, AUTHORITIES)
         SecurityContextHolder.getContext().setAuthentication(token)
         truncate()
     }

@@ -27,26 +27,26 @@
     <a class="navbar-brand" th:href="@{/index}">Pipe Lake Data</a>
     <div class="container-fluid">
         <ul class="navbar-nav">
-            <li class="nav-item"><a class="nav-link" th:href="@{/documents}">Documents</a></li>
+            <li class="nav-item"><a class="nav-link" th:href="@{/public/page/documents}">Documents</a></li>
             <li class="nav-item"><a class="nav-link" href="https://pipelakes.org/">Pipe Lake District</a></li>
             <li class="nav-item"><a class="nav-link" href="https://dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=2490500">DNR Pipe Lake</a></li>
-            <li class="nav-item" sec:authorize="hasAnyRole('ROLE_REPORTER','ROLE_ADMIN')"><a class="nav-link" th:href="@{/dataEntry}">Enter Data</a></li>
+            <li class="nav-item" sec:authorize="hasAnyRole('ROLE_REPORTER','ROLE_ADMIN')"><a class="nav-link" th:href="@{/page/dataEntry}">Enter Data</a></li>
             <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_DOCUMENT_ADMIN','ROLE_ADMIN')">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-maintenance">Maintenance</a>
                 <div class="dropdown-menu bg-dark">
-                    <a class="dropdown-item text-light" th:href="@{/documentMaintenance}">Documents</a>
+                    <a class="dropdown-item text-light" th:href="@{/page/documentMaintenance}">Documents</a>
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-light" th:href="@{/fundingSourceMaintenance}">Funding Sources</a>
-                        <a class="dropdown-item text-light" th:href="@{/characteristicMaintenance}">Characteristics</a>
-                        <a class="dropdown-item text-light active" th:href="@{/locationMaintenance}">Locations</a>
-                        <a class="dropdown-item text-light" th:href="@{/characteristicLocationMaintenance}">Characteristic Locations</a>
-                        <a class="dropdown-item text-light" th:href="@{/dataMaintenance}">Measurements</a>
-                        <a class="dropdown-item text-light" th:href="@{/dataFileUpload}">Data File Upload</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/fundingSourceMaintenance}">Funding Sources</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/characteristicMaintenance}">Characteristics</a>
+                        <a class="dropdown-item text-light active" th:href="@{/page/locationMaintenance}">Locations</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/characteristicLocationMaintenance}">Characteristic Locations</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/dataMaintenance}">Measurements</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/page/dataFileUpload}">Data File Upload</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-light" th:href="@{/userMaintenance}">Users</a>
-                        <a class="dropdown-item text-light" th:href="@{/audit}">Audit</a>
-                        <a class="dropdown-item text-light" th:href="@{/jobs}">Job Maintenance</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/userMaintenance}">Users</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/audit}">Audit</a>
+                        <a class="dropdown-item text-light" th:href="@{/page/jobs}">Job Maintenance</a>
                         <a class="dropdown-item text-light" th:href="@{/swagger-ui.html}">API Documentation</a>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
     <div class="container-fluid text-center  font-weight-light">
         <div class="row">
             <div class="col-sm-2 text-left">
-                <p><small><a th:href="@{/privacy}">Privacy Statement</a></small></p>
+                <p><small><a th:href="@{/public/page/privacy}">Privacy Statement</a></small></p>
             </div>
             <div class="col-sm-8"></div>
             <div class="col-sm-2 text-right">

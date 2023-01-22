@@ -33,14 +33,6 @@ class SiteController {
     @Autowired
     DocumentService documentService
 
-    @Secured('ROLE_ADMIN')
-    @GetMapping(value = '/api/sites', produces = APPLICATION_JSON_VALUE)
-    Collection<SiteDto> getAll() {
-        log.info("ACCESS - get all sites")
-        auditService.audit(HttpMethod.GET.name(), '/api/sites', this.class.simpleName)
-        return service.getAll()
-    }
-
     @GetMapping(value = '/public/api/sites/{siteId}', produces = APPLICATION_JSON_VALUE)
     SiteDto getSite(@PathVariable(name = 'siteId', required = true) Integer siteId) {
         auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}", this.class.simpleName)
@@ -66,9 +58,19 @@ class SiteController {
     }
 
     @GetMapping(value = '/public/api/sites/{siteId}/documents', produces = APPLICATION_JSON_VALUE)
-    Collection<DocumentDto> getSiteDocuments(@PathVariable(name = 'siteId', required = true) Integer siteId,
-                                             @RequestParam(name = 'timezone', required = true) String timezone) {
-        auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/documents", this.class.simpleName)
-        return documentService.getDocumentsBySite(siteId, timezone)
+    Collection<DocumentDto> search(@PathVariable(name = 'siteId', required = true) Integer siteId,
+                                   @RequestParam(name = 'searchWord', required = false) String searchWord,
+                                   @RequestParam(name = 'category', required = false) String category,
+                                   @RequestParam(name = 'timezone', required = true) String timezone) {
+        auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/documents/search?searchWord=${searchWord} category=${category}", this.class.simpleName)
+        return documentService.findDocumentsContaining(siteId, searchWord, category, timezone)
+    }
+
+    @Secured('ROLE_ADMIN')
+    @GetMapping(value = '/api/sites', produces = APPLICATION_JSON_VALUE)
+    Collection<SiteDto> getAll() {
+        log.info("ACCESS - get all sites")
+        auditService.audit(HttpMethod.GET.name(), '/api/sites', this.class.simpleName)
+        return service.getAll()
     }
 }

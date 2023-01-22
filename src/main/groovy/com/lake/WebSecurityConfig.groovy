@@ -1,44 +1,44 @@
 package com.lake
 
+import com.lake.service.ReporterService
 import groovy.transform.CompileStatic
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-
-import javax.sql.DataSource
+import org.springframework.security.web.SecurityFilterChain
 
 @CompileStatic
 @Configuration
 class WebSecurityConfig {
 
-// TODO need to fix this based on new Spring 6.0
-
-    @Autowired
-    void initialize(AuthenticationManagerBuilder builder, DataSource dataSource) {
-        builder.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select username,password,enabled from reporter where username = ?")
-                .authoritiesByUsernameQuery("select mr.username,rr.role from reporter_role rr, reporter mr where mr.id = rr.reporter_id and mr.username = ?")
-    }
-
-//    @Override
-//    protected void configure(HttpSecurity http) {
-//        http
-//                .csrf().disable()
-//                .rememberMe()
-//                .and().formLogin()
-//                .and().logout().logoutSuccessUrl('/')
-//                .and().httpBasic()
-//                .and().authorizeRequests()
-//                .antMatchers('/', '/index', '/home', '/public/api/**', '/js/**', '/ico/**', '/documents', '/privacy', '/favicon.ico').permitAll()
-//                .anyRequest().authenticated()
-//    }
-
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder()
     }
+
+    @Bean
+    AuthenticationProvider authenticationProvider(ReporterService reporterService, PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider()
+        provider.setUserDetailsService(reporterService)
+        provider.setPasswordEncoder(passwordEncoder)
+        return provider
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
+        http.csrf().disable().authorizeHttpRequests {
+            it.requestMatchers('/', '/index', '/home', '/public/**', '/js/**', '/ico/**', '/favicon.ico').permitAll().anyRequest().authenticated()
+        }.formLogin {
+            it.permitAll()
+        }.logout {
+            it.permitAll().deleteCookies('JSESSIONID').invalidateHttpSession(true).logoutSuccessUrl('/')
+        }
+                .rememberMe()
+        return http.build()
+    }
+
 }

@@ -68,7 +68,7 @@ class MeasurementFileService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    void saveDataFile(MultipartFile dataFile, Location location) {
+    void saveDataFile(final MultipartFile dataFile, final Location location) {
         String fileName = dataFile.originalFilename
         String extension = FilenameUtils.getExtension(fileName).toLowerCase()
         if ('zip' == extension) {
@@ -83,7 +83,7 @@ class MeasurementFileService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    void processZipFile(File file, Location location = null) {
+    void processZipFile(final File file, final Location location = null) {
         ZipFile zipFile = new ZipFile(file)
         zipFile.entries().asIterator().each { ZipEntry entry ->
             if (!entry.directory && FilenameUtils.getExtension(entry.name).toLowerCase() == 'csv') {
@@ -95,22 +95,23 @@ class MeasurementFileService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    void processCsvFile(File file) {
+    void processCsvFile(final File file) {
         processCsvStream(FileUtils.openInputStream(file), file.name)
     }
 
-    private void processCsvStream(final InputStream stream, Location location = null, String filename) {
+    private void processCsvStream(final InputStream stream, final Location location = null, final String filename) {
         FileType fileType = FileType.UNKNOWN
+        Location loc = location
         IOUtils.lineIterator(stream, 'UTF-8').eachWithIndex { String line, int index ->
             if (line) {
                 if (index == 0) {
                     final String[] headers = StringUtils.split(line, '",')
                     fileType = findFileType(headers)
                     if (location == null) {
-                        location = findLocation(headers)
+                        loc = findLocation(headers)
                     }
                 } else {
-                    processLine(fileType, StringUtils.split(line, ','), location, filename)
+                    processLine(fileType, StringUtils.split(line, ','), loc, filename)
                 }
             }
         }
@@ -142,7 +143,7 @@ class MeasurementFileService {
         return null
     }
 
-    private void processLine(FileType fileType, String[] measurements, Location location, String filename) {
+    private void processLine(final FileType fileType, final String[] measurements, final Location location, final String filename) {
         if (location && fileType && measurements.length > 1) {
             if (fileType == FileType.AUTO) {
                 processAutoLine(measurements, location, filename)
@@ -152,7 +153,7 @@ class MeasurementFileService {
         }
     }
 
-    private void processAutoLine(String[] measurements, Location location, String filename) {
+    private void processAutoLine(final String[] measurements, final Location location, final String filename) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_PATTERN).withZone(DATA_COLLECTION_TIME_ZONE)
         Instant collectionDateTime = ZonedDateTime.parse(measurements[DATE], formatter).toInstant()
 
@@ -174,7 +175,7 @@ class MeasurementFileService {
         persist(location, WATER_FLOW_CHARACTERISTIC_ID, waterFlow, collectionDateTime, filename)
     }
 
-    private void processManualLine(String[] measurements, Location location, String filename) {
+    private void processManualLine(final String[] measurements, final Location location, final String filename) {
         // TODO need to calculate water flow rate
         int lineLength = measurements.size()
         if (StringUtils.isNumeric(measurements[MANUAL_LINE_NUMBER]) && lineLength >= 6) {
@@ -195,7 +196,7 @@ class MeasurementFileService {
         }
     }
 
-    private void persist(Location location, Integer characteristicId, BigDecimal value, Instant collectionDateTime, String filename) {
+    private void persist(final Location location, final Integer characteristicId, final BigDecimal value, final Instant collectionDateTime, final String filename) {
         try {
             measurementDetailService.save(location, characteristicId, collectionDateTime, value, filename)
         } catch (Exception e) {

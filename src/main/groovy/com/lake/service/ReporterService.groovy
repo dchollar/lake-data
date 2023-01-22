@@ -12,14 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.security.access.annotation.Secured
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @CompileStatic
 @Service
-class ReporterService {
+class ReporterService implements UserDetailsService {
     @Autowired
     ReporterRepository repository
 
@@ -30,8 +36,28 @@ class ReporterService {
         return SecurityContextHolder?.getContext()?.authentication?.name
     }
 
+    @Override
+    UserDetails loadUserByUsername(final String username) {
+        Reporter reporter = this.getReporter(username)
+        if (reporter) {
+            List<SimpleGrantedAuthority> authorities = reporter.roles.collect {
+                new SimpleGrantedAuthority(it.role.name())
+            }
+            return new User(
+                    reporter.username,
+                    reporter.password,
+                    reporter.enabled,
+                    true,
+                    true,
+                    true,
+                    authorities)
+        } else {
+            return null
+        }
+    }
+
     @Cacheable('reportersByName')
-    Reporter getReporter(String userName) {
+    Reporter getReporter(final String userName) {
         if (userName) {
             return repository.findByUsername(userName)
         } else {
@@ -48,7 +74,7 @@ class ReporterService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     @Transactional
-    ReporterDto save(ReporterDto dto) {
+    ReporterDto save(final ReporterDto dto) {
         Reporter entity = ConverterUtil.convert(dto, new Reporter())
         entity.password = passwordEncoder.encode(dto.password)
         ConverterUtil.convertForMaintenance(repository.saveAndFlush(entity))
@@ -57,7 +83,7 @@ class ReporterService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     @Transactional
-    ReporterDto update(Integer id, ReporterDto dto) {
+    ReporterDto update(final Integer id, final ReporterDto dto) {
         Reporter reporter = repository.getReferenceById(id)
         // if there is a password, then it was changed. otherwise it would be blank
         String password = StringUtils.stripToNull(dto.password)
@@ -77,11 +103,11 @@ class ReporterService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['reporters', 'reportersByName'], allEntries = true)
     @Transactional
-    void delete(Integer id) {
+    void delete(final Integer id) {
         repository.deleteById(id)
     }
 
-    private static void syncRoles(Reporter reporter, RoleType roleType, boolean add) {
+    private static void syncRoles(final Reporter reporter, final RoleType roleType, final boolean add) {
         boolean exists = reporter.roles.any { it.role == roleType }
         if (add && !exists) {
             reporter.roles.add(new ReporterRole(reporter: reporter, role: roleType))

@@ -31,7 +31,7 @@ class MeasurementDetailService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    void save(Location location, Integer characteristicId, Instant collectionTime, BigDecimal value, String source) {
+    void save(final Location location, final Integer characteristicId, final Instant collectionTime, final BigDecimal value, final String source) {
         Characteristic characteristic = characteristicService.getOne(characteristicId)
         if (characteristic) {
             save(location, characteristic, collectionTime, value, source)
@@ -40,7 +40,7 @@ class MeasurementDetailService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    void save(Location location, Characteristic characteristic, Instant collectionTime, BigDecimal value, String source) {
+    void save(final Location location, final Characteristic characteristic, final Instant collectionTime, final BigDecimal value, final String source) {
         characteristicLocationService.getByCharacteristic(characteristic)
         CharacteristicLocation cl = characteristicLocationService.get(characteristic, location)
         if (cl == null) {
@@ -51,7 +51,7 @@ class MeasurementDetailService {
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    void save(CharacteristicLocation cl, Instant collectionTime, BigDecimal value, String source) {
+    void save(final CharacteristicLocation cl, final Instant collectionTime, final BigDecimal value, final String source) {
         MeasurementDetail detail = new MeasurementDetail(
                 characteristicLocation: cl,
                 collectionTime: collectionTime,
@@ -75,7 +75,7 @@ class MeasurementDetailService {
         }
     }
 
-    private void summarizeInstance(LocalDate date, CharacteristicLocation cl) {
+    private void summarizeInstance(final LocalDate date, final CharacteristicLocation cl) {
         List<MeasurementDetail> details = repository.findByDateAndCharacteristicLocation(date, cl.id)
         if (details.size() > 0) {
             BigDecimal average = calculateAverageValue(details)
@@ -84,7 +84,7 @@ class MeasurementDetailService {
         }
     }
 
-    private static BigDecimal calculateAverageValue(List<MeasurementDetail> details) {
+    private static BigDecimal calculateAverageValue(final List<MeasurementDetail> details) {
         BigDecimal total = BigDecimal.ZERO
         details.each { MeasurementDetail detail ->
             total += detail.value
@@ -93,7 +93,7 @@ class MeasurementDetailService {
         return total.divide(size, 3, RoundingMode.HALF_UP)
     }
 
-    private void saveMeasurement(LocalDate date, BigDecimal average, CharacteristicLocation cl) {
+    private void saveMeasurement(final LocalDate date, final BigDecimal average, final CharacteristicLocation cl) {
         MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto(
                 collectionDate: date,
                 value: average,
@@ -111,7 +111,7 @@ class MeasurementDetailService {
         }
     }
 
-    private List<MeasurementDetail> markComplete(List<MeasurementDetail> details) {
+    private List<MeasurementDetail> markComplete(final List<MeasurementDetail> details) {
         details.each { MeasurementDetail detail ->
             detail.status = StatusType.COMPLETE
             detail.lastUpdated = Instant.now()

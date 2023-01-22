@@ -25,22 +25,30 @@ class DocumentService {
     @Autowired
     SiteService siteService
 
-    Collection<DocumentDto> findDocumentsContaining(Integer siteId, String searchWord, String timeZone) {
-        String cleanWord = StringUtils.stripToNull(searchWord)
-        if (cleanWord) {
-            Site site = siteService.getOne(siteId)
-            ConverterUtil.convertDocuments(repository.findBySiteAndTextContainingIgnoreCase(site, searchWord), timeZone)
+    Collection<DocumentDto> findDocumentsContaining(final Integer siteId, final String searchWord, final String category, final String timeZone) {
+        String cleanSearch = createRegularExpression(searchWord)
+        String cleanCategory = createRegularExpression(category)
+
+        if (cleanSearch && cleanCategory) {
+            Collection<Document> documents = repository.findBySearchWordAndCategory(siteId, cleanCategory, cleanSearch)
+            ConverterUtil.convertDocuments(documents, timeZone)
+        } else if (cleanSearch) {
+            Collection<Document> documents = repository.findBySearchWord(siteId, cleanSearch)
+            ConverterUtil.convertDocuments(documents, timeZone)
+        } else if (cleanCategory) {
+            Collection<Document> documents = repository.findByCategory(siteId, cleanCategory)
+            ConverterUtil.convertDocuments(documents, timeZone)
         } else {
             return getDocumentsBySite(siteId, timeZone)
         }
     }
 
-    Collection<DocumentDto> getDocumentsBySite(Integer siteId, String timeZone) {
+    Collection<DocumentDto> getDocumentsBySite(final Integer siteId, final String timeZone) {
         Site site = siteService.getOne(siteId)
         ConverterUtil.convertDocuments(repository.findBySite(site), timeZone)
     }
 
-    byte[] getDocument(Integer id) {
+    byte[] getDocument(final Integer id) {
         Blob blob = repository.getReferenceById(id).document
         byte[] bytes = blob.getBytes(1, (int) blob.length())
         blob.free()
@@ -48,13 +56,13 @@ class DocumentService {
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
-    Collection<DocumentDto> getAll(String timeZone) {
+    Collection<DocumentDto> getAll(final String timeZone) {
         ConverterUtil.convertDocuments(repository.findAll(), timeZone)
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @Transactional
-    DocumentDto save(DocumentDto dto, String timeZone) {
+    DocumentDto save(final DocumentDto dto, final String timeZone) {
         Document entity = ConverterUtil.convert(dto, new Document())
         entity.site = siteService.getOne(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)
@@ -62,7 +70,7 @@ class DocumentService {
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @Transactional
-    DocumentDto update(Integer id, DocumentDto dto, String timeZone) {
+    DocumentDto update(final Integer id, final DocumentDto dto, final String timeZone) {
         Document entity = repository.getReferenceById(id)
         ConverterUtil.convert(dto, entity)
         entity.site = siteService.getOne(dto.siteId)
@@ -71,7 +79,7 @@ class DocumentService {
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
     @Transactional
-    void delete(Integer id) {
+    void delete(final Integer id) {
         repository.deleteById(id)
     }
 
@@ -96,4 +104,10 @@ class DocumentService {
             repository.save(entity)
         }
     }
+
+    private static String createRegularExpression(String searchPhrase) {
+        String string = ConverterUtil.stripNonAscii(searchPhrase)
+        return string != null ? searchPhrase.strip().toUpperCase().replaceAll('\\s+','|') : null
+    }
+
 }

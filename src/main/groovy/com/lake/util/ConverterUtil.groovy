@@ -30,7 +30,7 @@ class ConverterUtil {
     // Collection Converters
     //----------------------------------------------------------------------------------
 
-    static Collection<AuditDto> convertAudits(Collection<Audit> entities, String timezone, AuditDto filter) {
+    static Collection<AuditDto> convertAudits(final Collection<Audit> entities, final String timezone, final AuditDto filter) {
         Set<AuditDto> dtos = new TreeSet<>()
         entities.each {
             AuditDto dto = convert(it, timezone)
@@ -44,7 +44,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<DocumentDto> convertDocuments(Collection<Document> entities, String timezone) {
+    static Collection<DocumentDto> convertDocuments(final Collection<Document> entities, String timezone) {
         Set<DocumentDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it, timezone))
@@ -52,7 +52,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<MeasurementDto> convertEvents(Collection<Event> entities) {
+    static Collection<MeasurementDto> convertEvents(final Collection<Event> entities) {
         Set<MeasurementDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -60,7 +60,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<FundingSourceDto> convertFundingSources(Collection<FundingSource> entities) {
+    static Collection<FundingSourceDto> convertFundingSources(final Collection<FundingSource> entities) {
         Set<FundingSourceDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -68,7 +68,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Set<LocationDto> convertLocations(Collection<Location> entities) {
+    static Set<LocationDto> convertLocations(final Collection<Location> entities) {
         Set<LocationDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -76,7 +76,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Set<CharacteristicLocationDto> convertCharacteristicLocations(Collection<CharacteristicLocation> entities) {
+    static Set<CharacteristicLocationDto> convertCharacteristicLocations(final Collection<CharacteristicLocation> entities) {
         Set<CharacteristicLocationDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -84,7 +84,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<MeasurementDto> convertMeasurements(Collection<Measurement> entities) {
+    static Collection<MeasurementDto> convertMeasurements(final Collection<Measurement> entities) {
         Set<MeasurementDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -100,7 +100,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<MeasurementMaintenanceDto> convertSavedEvents(Collection<Event> entities) {
+    static Collection<MeasurementMaintenanceDto> convertSavedEvents(final Collection<Event> entities) {
         Set<MeasurementMaintenanceDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convertSavedMeasurement(it))
@@ -108,7 +108,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Collection<MeasurementMaintenanceDto> convertSavedMeasurements(Collection<Measurement> entities) {
+    static Collection<MeasurementMaintenanceDto> convertSavedMeasurements(final Collection<Measurement> entities) {
         Set<MeasurementMaintenanceDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convertSavedMeasurement(it))
@@ -116,7 +116,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Set<SiteDto> convertSites(Collection<Site> entities) {
+    static Set<SiteDto> convertSites(final Collection<Site> entities) {
         Set<SiteDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -124,7 +124,7 @@ class ConverterUtil {
         return dtos
     }
 
-    static Set<CharacteristicDto> convertCharacteristics(Collection<Characteristic> entities) {
+    static Set<CharacteristicDto> convertCharacteristics(final Collection<Characteristic> entities) {
         Set<CharacteristicDto> dtos = new TreeSet<>()
         entities.each {
             dtos.add(convert(it))
@@ -136,7 +136,7 @@ class ConverterUtil {
     // Individual Converters
     //----------------------------------------------------------------------------------
 
-    static String convert(Instant time, String timezone) {
+    static String convert(final Instant time, final String timezone) {
         return time.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
     }
 
@@ -155,7 +155,7 @@ class ConverterUtil {
         return dto
     }
 
-    static DocumentDto convert(Document entity, String timezone) {
+    static DocumentDto convert(final Document entity, final String timezone) {
         DocumentDto dto = new DocumentDto()
         dto.id = entity.id
         dto.path = entity.path
@@ -170,7 +170,7 @@ class ConverterUtil {
         return dto
     }
 
-    static MeasurementDto convert(Event entity) {
+    static MeasurementDto convert(final Event entity) {
         MeasurementDto dto = new MeasurementDto()
         dto.id = entity.id
         dto.collectionDate = entity.value
@@ -182,7 +182,7 @@ class ConverterUtil {
         return dto
     }
 
-    static LocationDto convert(Location entity) {
+    static LocationDto convert(final Location entity) {
         LocationDto dto = new LocationDto()
         dto.id = entity.id
         dto.description = entity.description
@@ -194,7 +194,7 @@ class ConverterUtil {
         return dto
     }
 
-    static CharacteristicLocationDto convert(CharacteristicLocation entity) {
+    static CharacteristicLocationDto convert(final CharacteristicLocation entity) {
         CharacteristicLocationDto dto = new CharacteristicLocationDto()
         dto.id = entity.id
         dto.siteId = entity.location.site.id
@@ -203,7 +203,7 @@ class ConverterUtil {
         return dto
     }
 
-    static FundingSourceDto convert(FundingSource entity) {
+    static FundingSourceDto convert(final FundingSource entity) {
         FundingSourceDto dto = new FundingSourceDto()
         dto.id = entity.id
         dto.name = entity.name
@@ -214,7 +214,7 @@ class ConverterUtil {
         return dto
     }
 
-    static MeasurementDto convert(Measurement entity) {
+    static MeasurementDto convert(final Measurement entity) {
         MeasurementDto dto = new MeasurementDto()
         dto.id = entity.id
         dto.collectionDate = entity.collectionDate
@@ -230,7 +230,7 @@ class ConverterUtil {
         return dto
     }
 
-    static ReporterDto convert(Reporter entity) {
+    static ReporterDto convert(final Reporter entity) {
         ReporterDto dto = new ReporterDto()
         dto.id = entity.id
         dto.firstName = entity.firstName
@@ -238,7 +238,7 @@ class ConverterUtil {
         return dto
     }
 
-    static ReporterDto convertForMaintenance(Reporter entity) {
+    static ReporterDto convertForMaintenance(final Reporter entity) {
         ReporterDto dto = new ReporterDto()
         dto.id = entity.id
         dto.firstName = entity.firstName
@@ -254,7 +254,7 @@ class ConverterUtil {
         return dto
     }
 
-    static SiteDto convert(Site entity) {
+    static SiteDto convert(final Site entity) {
         SiteDto dto = new SiteDto()
         dto.id = entity.id
         dto.description = entity.description
@@ -264,7 +264,7 @@ class ConverterUtil {
         return dto
     }
 
-    static CharacteristicDto convert(Characteristic entity) {
+    static CharacteristicDto convert(final Characteristic entity) {
         CharacteristicDto dto = new CharacteristicDto()
         dto.id = entity.id
         dto.unitDescription = entity.unitDescription
@@ -275,7 +275,7 @@ class ConverterUtil {
         return dto
     }
 
-    static MeasurementMaintenanceDto convertSavedMeasurement(Event entity) {
+    static MeasurementMaintenanceDto convertSavedMeasurement(final Event entity) {
         MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto()
         Characteristic characteristic = entity.characteristic
 
@@ -293,7 +293,7 @@ class ConverterUtil {
         return dto
     }
 
-    static MeasurementMaintenanceDto convertSavedMeasurement(Measurement entity) {
+    static MeasurementMaintenanceDto convertSavedMeasurement(final Measurement entity) {
         MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto()
         Characteristic characteristic = entity.characteristicLocation.characteristic
         Location location = entity.characteristicLocation.location
@@ -317,7 +317,7 @@ class ConverterUtil {
     // Merging Methods
     //----------------------------------------------------------------------------------
 
-    static FundingSource convert(FundingSourceDto dto, FundingSource entity) {
+    static FundingSource convert(final FundingSourceDto dto, final FundingSource entity) {
         entity.id = dto.id
         entity.name = StringUtils.stripToNull(dto.name)
         entity.description = StringUtils.stripToNull(dto.description)
@@ -327,7 +327,7 @@ class ConverterUtil {
         return entity
     }
 
-    static Location convert(LocationDto dto, Location entity) {
+    static Location convert(final LocationDto dto, final Location entity) {
         entity.id = dto.id
         entity.description = StringUtils.stripToNull(dto.description)
         entity.comment = StringUtils.stripToNull(stripNonAscii(dto.comment))
@@ -335,7 +335,7 @@ class ConverterUtil {
         return entity
     }
 
-    static Reporter convert(ReporterDto dto, Reporter entity) {
+    static Reporter convert(final ReporterDto dto, final Reporter entity) {
         entity.id = dto.id
         entity.firstName = StringUtils.stripToNull(dto.firstName)
         entity.lastName = StringUtils.stripToNull(dto.lastName)
@@ -363,7 +363,7 @@ class ConverterUtil {
         return entity
     }
 
-    static Characteristic convert(CharacteristicDto dto, Characteristic entity) {
+    static Characteristic convert(final CharacteristicDto dto, final Characteristic entity) {
         entity.id = dto.id
         entity.unitDescription = StringUtils.stripToNull(dto.unitDescription)
         entity.description = StringUtils.stripToNull(dto.description)
@@ -373,7 +373,7 @@ class ConverterUtil {
         return entity
     }
 
-    static Document convert(DocumentDto dto, Document entity) {
+    static Document convert(final DocumentDto dto, final Document entity) {
         entity.id = dto.id
         entity.path = cleanPath(StringUtils.stripToNull(dto.path))
         entity.title = StringUtils.stripToNull(dto.title)
@@ -390,7 +390,7 @@ class ConverterUtil {
     // Helping Methods
     //----------------------------------------------------------------------------------
 
-    private static Point createPoint(LocationDto dto) {
+    private static Point createPoint(final LocationDto dto) {
         String lat = StringUtils.stripToNull(dto.latitude)
         String lon = StringUtils.stripToNull(dto.longitude)
         if (lat && lon) {
@@ -422,7 +422,8 @@ class ConverterUtil {
         stripped = StringUtils.replace(stripped, ' a ', ' ')
         stripped = StringUtils.replace(stripped, ' it ', ' ')
         stripped = StringUtils.replace(stripped, '\\s{2,}', ' ')
-        stripped = StringUtils.stripToEmpty(stripped)
+        stripped = StringUtils.stripToNull(stripped)
+        stripped = StringUtils.upperCase(stripped)
 
         document.close()
 

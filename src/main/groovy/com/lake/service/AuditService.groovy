@@ -24,7 +24,7 @@ class AuditService {
     @Autowired
     ReporterService reporterService
 
-    void audit(String method, String endpoint, String controller, Reporter reporter = null) {
+    void audit(final String method, final String endpoint, final String controller, final Reporter reporter = null) {
         Audit audit = new Audit()
         audit.created = Instant.now()
         audit.endpoint = endpoint?.take(100)
@@ -35,18 +35,19 @@ class AuditService {
         repository.saveAndFlush(audit)
     }
 
-    void audit(Exception e) {
+    void audit(final Exception e) {
         Throwable rootCause = ExceptionUtils.getRootCause(e)
         audit('ERROR', rootCause.getMessage(), rootCause.getClass().getSimpleName())
     }
 
     @Secured('ROLE_ADMIN')
-    Collection<AuditDto> getAll(String timezone, AuditDto filter) {
+    Collection<AuditDto> getAll(final String timezone, final AuditDto filter) {
         Collection<Audit> entities = repository.findAll()
         ConverterUtil.convertAudits(entities, timezone, filter)
     }
 
-    int truncate(long days) {
+    @Secured('ROLE_ADMIN')
+    int truncate(final long days) {
         List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(days, ChronoUnit.DAYS))
         if (audits && !audits.empty) {
             repository.deleteAll(audits)

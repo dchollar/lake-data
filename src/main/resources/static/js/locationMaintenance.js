@@ -19,8 +19,9 @@ $(function () {
             loadData: function (filter) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "GET",
-                    url: "api/locations",
+                    url: "/api/locations",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -31,8 +32,9 @@ $(function () {
             insertItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "POST",
-                    url: "api/locations",
+                    url: "/api/locations",
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -44,8 +46,9 @@ $(function () {
             updateItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "PUT",
-                    url: "api/locations/" + item.id,
+                    url: "/api/locations/" + item.id,
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -57,8 +60,9 @@ $(function () {
             deleteItem: function (item) {
                 $("#message").text("").hide();
                 return $.ajax({
+                    async: false,
                     type: "DELETE",
-                    url: "api/locations/" + item.id,
+                    url: "/api/locations/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }

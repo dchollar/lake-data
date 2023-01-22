@@ -6,6 +6,7 @@ import com.lake.entity.CharacteristicType
 import groovy.transform.CompileStatic
 import jakarta.validation.ValidationException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
 
 import java.time.LocalDate
@@ -17,7 +18,8 @@ class ValidationService {
     @Autowired
     CharacteristicService service
 
-    void isValidForChange(MeasurementMaintenanceDto dto) {
+    @Secured(['ROLE_ADMIN', 'ROLE_REPORTER'])
+    void isValidForChange(final MeasurementMaintenanceDto dto) {
         isValid(dto.siteId, dto.characteristicId, dto.locationId, null, null)
 
         String errorMessage = ''
@@ -40,7 +42,7 @@ class ValidationService {
         }
     }
 
-    void isValid(Integer siteId, Integer characteristicId, Integer locationId, LocalDate fromDate, LocalDate toDate) {
+    void isValid(final Integer siteId, final Integer characteristicId, final Integer locationId, final LocalDate fromDate, final LocalDate toDate) {
         String message = ''
         if (!characteristicId) {
             message += 'characteristic is missing '

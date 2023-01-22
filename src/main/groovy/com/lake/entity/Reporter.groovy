@@ -1,7 +1,6 @@
 package com.lake.entity
 
 import groovy.transform.CompileStatic
-
 import jakarta.persistence.*
 
 @CompileStatic
@@ -38,6 +37,6 @@ class Reporter {
     @Column(name = 'enabled', nullable = false)
     Boolean enabled
 
-    @OneToMany(mappedBy = 'reporter', cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = 'reporter', cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     Set<ReporterRole> roles
 }

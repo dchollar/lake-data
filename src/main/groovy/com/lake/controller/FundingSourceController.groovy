@@ -44,7 +44,7 @@ class FundingSourceController {
     }
 
     @Secured('ROLE_ADMIN')
-    @DeleteMapping(value = '/api/fundingSources/{fundingSourceId}', produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = '/api/fundingSources/{fundingSourceId}')
     void delete(@PathVariable(name = 'fundingSourceId', required = true) Integer fundingSourceId) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/fundingSources/${fundingSourceId}", this.class.simpleName)
         service.delete(fundingSourceId)

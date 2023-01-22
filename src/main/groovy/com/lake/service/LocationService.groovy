@@ -23,7 +23,7 @@ class LocationService {
     SiteRepository siteRepository
 
     @Cacheable('locationDtoById')
-    LocationDto getLocation(Integer id) {
+    LocationDto getLocation(final Integer id) {
         if (id) {
             return ConverterUtil.convert(getOne(id))
         } else {
@@ -37,12 +37,12 @@ class LocationService {
         ConverterUtil.convertLocations(repository.findAll())
     }
 
-    Set<LocationDto> getLocationsBySite(Integer siteId) {
+    Set<LocationDto> getLocationsBySite(final Integer siteId) {
         Site site = siteRepository.getReferenceById(siteId)
         return ConverterUtil.convertLocations(site.locations)
     }
 
-    Set<LocationDto> getLocationsBySite(Integer siteId, Integer characteristicId, Boolean restricted) {
+    Set<LocationDto> getLocationsBySite(final Integer siteId, final Integer characteristicId, final Boolean restricted) {
         Set<LocationDto> dtos = new TreeSet<>()
         Site site = siteRepository.getReferenceById(siteId)
         site.locations.each { location ->
@@ -58,7 +58,7 @@ class LocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     @Transactional
-    LocationDto save(LocationDto dto) {
+    LocationDto save(final LocationDto dto) {
         Location location = ConverterUtil.convert(dto, new Location())
         location.site = siteRepository.getReferenceById(dto.siteId)
         ConverterUtil.convert(repository.saveAndFlush(location))
@@ -67,7 +67,7 @@ class LocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     @Transactional
-    LocationDto update(Integer id, LocationDto dto) {
+    LocationDto update(final Integer id, final LocationDto dto) {
         Location location = repository.getReferenceById(id)
         ConverterUtil.convert(dto, location)
         ConverterUtil.convert(repository.saveAndFlush(location))
@@ -76,12 +76,12 @@ class LocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['locationDtoById', 'locations', 'locationsBySite', 'locationsById'], allEntries = true)
     @Transactional
-    void delete(Integer id) {
+    void delete(final Integer id) {
         repository.deleteById(id)
     }
 
     @Cacheable('locationsById')
-    Location getOne(Integer id) {
+    Location getOne(final Integer id) {
         if (id && id > 0) {
             return repository.findById(id).orElse(null)
         } else {
@@ -89,7 +89,7 @@ class LocationService {
         }
     }
 
-    Location getByDescription(Site site, String description) {
+    Location getByDescription(final Site site, final String description) {
         return repository.findBySiteAndDescriptionIgnoreCase(site, description)
     }
 

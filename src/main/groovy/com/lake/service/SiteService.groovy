@@ -20,8 +20,8 @@ class SiteService {
         ConverterUtil.convertSites(repository.findAll())
     }
 
-    @Cacheable('siteById')
-    SiteDto get(Integer id) {
+    @Cacheable('siteDtoById')
+    SiteDto get(final Integer id) {
         return ConverterUtil.convert(this.getOne(id))
     }
 
@@ -29,7 +29,8 @@ class SiteService {
         ConverterUtil.convertSites(repository.findAllSitesWithDocuments())
     }
 
-    Site getOne(Integer id) {
+    @Cacheable('siteById')
+    Site getOne(final Integer id) {
         if (id) {
             return repository.findById(id).orElse(null)
         } else {

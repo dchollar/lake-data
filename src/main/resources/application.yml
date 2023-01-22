@@ -24,11 +24,22 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     database: mysql
     properties:
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: ENABLE_SELECTIVE
       hibernate:
-        dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+        dialect: org.hibernate.dialect.MySQLDialect
   groovy:
     template:
       check-template-location: false
+server:
+  compression:
+    enabled: true
+  error:
+    include-message: always
+    include-exception: true
+    include-stacktrace: always
 ftp:
   upload-location: /home/lake-data-ftp/ftp/upload
   process-location: /home/lake-data-ftp/process

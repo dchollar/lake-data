@@ -51,7 +51,7 @@ class LocationController {
     }
 
     @Secured('ROLE_ADMIN')
-    @DeleteMapping(value = '/api/locations/{locationId}', produces = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = '/api/locations/{locationId}')
     void delete(@PathVariable(name = 'locationId', required = true) Integer locationId) {
         auditService.audit(HttpMethod.DELETE.name(), "/api/locations/${locationId}", this.class.simpleName)
         service.delete(locationId)

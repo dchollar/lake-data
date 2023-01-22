@@ -27,25 +27,25 @@ class CharacteristicLocationService {
     CharacteristicService characteristicService
 
     @Cacheable('characteristicLocation')
-    CharacteristicLocation get(Characteristic characteristic, Location location) {
+    CharacteristicLocation get(final Characteristic characteristic, final Location location) {
         return repository.findByCharacteristicAndLocation(characteristic, location)
     }
 
     @Secured('ROLE_ADMIN')
     @Cacheable('characteristicLocationBySite')
-    List<CharacteristicLocation> getBySite(Site site) {
+    List<CharacteristicLocation> getBySite(final Site site) {
         return repository.findBySite(site)
     }
 
     @Secured('ROLE_ADMIN')
     @Cacheable('characteristicLocationByLocation')
-    List<CharacteristicLocation> getByLocation(Location location) {
+    List<CharacteristicLocation> getByLocation(final Location location) {
         return repository.findByLocation(location)
     }
 
     @Secured('ROLE_ADMIN')
     @Cacheable('characteristicLocationByCharacteristic')
-    List<CharacteristicLocation> getByCharacteristic(Characteristic characteristic) {
+    List<CharacteristicLocation> getByCharacteristic(final Characteristic characteristic) {
         return repository.findByCharacteristic(characteristic)
     }
 
@@ -58,7 +58,7 @@ class CharacteristicLocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
     @Transactional
-    CharacteristicLocationDto save(CharacteristicLocationDto dto) {
+    CharacteristicLocationDto save(final CharacteristicLocationDto dto) {
         CharacteristicLocation entity = new CharacteristicLocation(
                 location: locationService.getOne(dto.locationId),
                 characteristic: characteristicService.getOne(dto.characteristicId)
@@ -69,14 +69,14 @@ class CharacteristicLocationService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
     @Transactional
-    void delete(Integer id) {
+    void delete(final Integer id) {
         repository.deleteById(id)
     }
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['allCharacteristicLocations', 'characteristicLocation', 'characteristicLocationBySite', 'characteristicLocationByLocation', 'characteristicLocationByCharacteristic'], allEntries = true)
     @Transactional
-    CharacteristicLocation save(Characteristic characteristic, Location location) {
+    CharacteristicLocation save(final Characteristic characteristic, final Location location) {
         CharacteristicLocation entity = new CharacteristicLocation(location: location, characteristic: characteristic)
         return repository.saveAndFlush(entity)
     }

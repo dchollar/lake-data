@@ -36,22 +36,22 @@ class MeasurementFileController {
     BuildProperties buildProperties
 
     @Secured(['ROLE_ADMIN'])
-    @GetMapping('/dataFileUpload')
+    @GetMapping('/page/dataFileUpload')
     String dataFileUpload(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/dataFileUpload', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/page/dataFileUpload', this.class.simpleName)
         model.addAttribute('sites', siteService.getAll())
         model.addAttribute('version', buildProperties.getVersion())
-        return 'dataFileUpload'
+        return TemplateName.dataFileUpload.name()
     }
 
     @Secured(['ROLE_ADMIN'])
-    @PostMapping("/measurementFileUpload")
+    @PostMapping("/page/measurementFileUpload")
     String submit(
             @RequestParam MultipartFile dataFile,
             @RequestParam Integer locationsChoice,
             Model model) {
 
-        auditService.audit(HttpMethod.GET.name(), '/dataFileUpload', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), '/page/measurementFileUpload', this.class.simpleName)
 
         try {
             model.addAttribute('errorMessage', '')
@@ -64,7 +64,7 @@ class MeasurementFileController {
             model.addAttribute('errorMessage', ExceptionUtils.getRootCauseMessage(e))
         }
 
-        return "dataFileUpload"
+        return TemplateName.dataFileUpload.name()
     }
 
 }

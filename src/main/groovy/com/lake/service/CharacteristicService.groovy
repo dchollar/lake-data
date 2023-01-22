@@ -29,15 +29,15 @@ class CharacteristicService {
     }
 
     @Cacheable('characteristics')
-    CharacteristicDto getById(Integer id) {
+    CharacteristicDto getById(final Integer id) {
         ConverterUtil.convert(repository.getReferenceById(id))
     }
 
-    Set<CharacteristicDto> getCharacteristicsBySite(Integer siteId) {
+    Set<CharacteristicDto> getCharacteristicsBySite(final Integer siteId) {
         ConverterUtil.convertCharacteristics(repository.findCharacteristicsBySite(siteId, siteId))
     }
 
-    Set<CharacteristicDto> getCharacteristicsBySiteForDataEntry(Integer siteId) {
+    Set<CharacteristicDto> getCharacteristicsBySiteForDataEntry(final Integer siteId) {
         List<Characteristic> characteristics = repository.findAllForDataEntry(siteId)
         if (siteId && (siteId == NORTH_PIPE_LAKE_SITE_ID || siteId == PIPE_LAKE_SITE_ID)) {
             characteristics.addAll(repository.findByType(CharacteristicType.EVENT))
@@ -48,14 +48,14 @@ class CharacteristicService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     @Transactional
-    CharacteristicDto save(CharacteristicDto dto) {
+    CharacteristicDto save(final CharacteristicDto dto) {
         ConverterUtil.convert(repository.saveAndFlush(ConverterUtil.convert(dto, new Characteristic())))
     }
 
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     @Transactional
-    CharacteristicDto update(Integer id, CharacteristicDto dto) {
+    CharacteristicDto update(final Integer id, final CharacteristicDto dto) {
         Characteristic characteristic = repository.getReferenceById(id)
         ConverterUtil.convert(dto, characteristic)
         ConverterUtil.convert(repository.saveAndFlush(characteristic))
@@ -64,7 +64,7 @@ class CharacteristicService {
     @Secured('ROLE_ADMIN')
     @CacheEvict(cacheNames = ['characteristics', 'allCharacteristics', 'characteristicsById'], allEntries = true)
     @Transactional
-    void delete(Integer id) {
+    void delete(final Integer id) {
         repository.deleteById(id)
     }
 
@@ -73,7 +73,7 @@ class CharacteristicService {
     }
 
     @Cacheable('characteristicsById')
-    Characteristic getOne(Integer id) {
+    Characteristic getOne(final Integer id) {
         if (id) {
             return repository.findById(id).orElse(null)
         } else {

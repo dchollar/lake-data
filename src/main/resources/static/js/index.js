@@ -18,23 +18,23 @@ $(document).ready(function () {
     $('#characteristicsChoice').on('change', function () {
         $("#message").text("").hide();
         characteristicId = $(this).val();
-        $.ajax(
-            {
-                type: "GET",
-                url: "public/api/characteristics/" + characteristicId,
-                dataType: "json",
-                success: function (characteristic) {
-                    selectedCharacteristic = characteristic;
-                    if (siteId) {
-                        getLocations();
-                    } else {
-                        $('#locationSelectionDiv').html('');
-                    }
-                },
-                error: function (response) {
-                    console.log(response);
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "/public/api/characteristics/" + characteristicId,
+            dataType: "json",
+            success: function (characteristic) {
+                selectedCharacteristic = characteristic;
+                if (siteId) {
+                    getLocations();
+                } else {
+                    $('#locationSelectionDiv').html('');
                 }
-            });
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
     });
 
     $('#submitButton').on('click', function () {
@@ -50,26 +50,26 @@ $(document).ready(function () {
 
         if (siteId && characteristicId) {
             let url = buildSubmitUrl(locationId);
-            $.ajax(
-                {
-                    type: "GET",
-                    url: url,
-                    dataType: "json",
-                    success: function (measurements) {
-                        buildResultDiv(measurements);
-                        buildChartDiv(measurements);
-                    },
-                    error: function (xhr) {
-                        $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
-                    }
-                });
+            $.ajax({
+                async: false,
+                type: "GET",
+                url: url,
+                dataType: "json",
+                success: function (measurements) {
+                    buildResultDiv(measurements);
+                    buildChartDiv(measurements);
+                },
+                error: function (xhr) {
+                    $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
+                }
+            });
         }
     });
 })
 ;
 
 function buildSubmitUrl(locationId) {
-    let url = "public/api/measurements?siteId=" + siteId + "&characteristicId=" + characteristicId;
+    let url = "/public/api/measurements?siteId=" + siteId + "&characteristicId=" + characteristicId;
     if (locationId) {
         url += '&locationId=' + locationId;
     }
@@ -89,18 +89,18 @@ function buildSubmitUrl(locationId) {
 }
 
 function getCharacteristics() {
-    $.ajax(
-        {
-            type: "GET",
-            url: "public/api/sites/" + siteId + "/characteristics",
-            dataType: "json",
-            success: function (characteristics) {
-                buildCharacteristicsChoice(characteristics);
-            },
-            error: function (response) {
-                console.log(response);
-            }
-        });
+    $.ajax({
+        async: false,
+        type: "GET",
+        url: "/public/api/sites/" + siteId + "/characteristics",
+        dataType: "json",
+        success: function (characteristics) {
+            buildCharacteristicsChoice(characteristics);
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
 }
 
 function buildCharacteristicsChoice(characteristics) {
@@ -113,18 +113,18 @@ function buildCharacteristicsChoice(characteristics) {
 
 function getLocations() {
     if (siteId && selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
-        $.ajax(
-            {
-                type: "GET",
-                url: "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId + "&restricted=true",
-                dataType: "json",
-                success: function (locations) {
-                    buildLocationsChoice(locations);
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-            });
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "/public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId + "&restricted=true",
+            dataType: "json",
+            success: function (locations) {
+                buildLocationsChoice(locations);
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
     } else {
         $('#locationSelectionDiv').html('');
     }
@@ -151,18 +151,18 @@ function buildLocationsChoice(locations) {
 
 function getSelectedLocation(locationId) {
     if (locationId && selectedCharacteristic && selectedCharacteristic.type !== 'EVENT') {
-        $.ajax(
-            {
-                type: "GET",
-                url: "public/api/locations/" + locationId,
-                dataType: "json",
-                success: function (location) {
-                    selectedLocation = location
-                },
-                error: function (response) {
-                    console.log(response);
-                }
-            });
+        $.ajax({
+            async: false,
+            type: "GET",
+            url: "/public/api/locations/" + locationId,
+            dataType: "json",
+            success: function (location) {
+                selectedLocation = location
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        });
     } else {
         selectedLocation = undefined;
     }
