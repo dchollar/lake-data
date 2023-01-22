@@ -1,6 +1,7 @@
 $(function () {
     $("#message").text("").hide();
 
+    const baseUri = location.href.substring(0,location.href.indexOf('page/'));
     let sites = JSON.parse($('#siteOptions').val());
 
     $("#jsGrid").jsGrid({
@@ -21,7 +22,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "GET",
-                    url: "api/locations",
+                    url: baseUri + "api/locations",
                     data: filter,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
@@ -34,7 +35,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "POST",
-                    url: "api/locations",
+                    url: baseUri + "api/locations",
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -48,7 +49,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "PUT",
-                    url: "api/locations/" + item.id,
+                    url: baseUri + "api/locations/" + item.id,
                     contentType: 'application/json; charset=UTF-8',
                     data: JSON.stringify(item),
                     error: function (xhr) {
@@ -62,7 +63,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "DELETE",
-                    url: "api/locations/" + item.id,
+                    url: baseUri + "api/locations/" + item.id,
                     error: function (xhr) {
                         $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
                     }

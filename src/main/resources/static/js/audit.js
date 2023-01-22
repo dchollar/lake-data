@@ -1,6 +1,7 @@
 $(function () {
 
-    let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const baseUri = location.href.substring(0,location.href.indexOf('page/'));
 
     $("#jsGrid").jsGrid({
 
@@ -22,7 +23,7 @@ $(function () {
                 return $.ajax({
                     async: false,
                     type: "GET",
-                    url: "api/audits?timezone=" + timezone,
+                    url: baseUri + "api/audits?timezone=" + timezone,
                     contentType: 'application/json; charset=UTF-8',
                     data: filter
                 });

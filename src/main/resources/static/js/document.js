@@ -1,4 +1,5 @@
-let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+const baseUri = location.href.substring(0,location.href.indexOf('public/'));
 let siteId;
 let site;
 
@@ -24,7 +25,7 @@ function findDocuments() {
     if (siteId) {
         let searchWord = $('#searchPhrase').val();
         let category = $('#categoryPhrase').val();
-        let url = "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
+        let url = baseUri + "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
         if (searchWord) {
             url += "&searchWord=" + searchWord;
         }
@@ -42,7 +43,7 @@ function getSite() {
     $.ajax({
         async: false,
         type: "GET",
-        url: "public/api/sites/" + siteId,
+        url: baseUri + "public/api/sites/" + siteId,
         dataType: "json",
         success: function (aSite) {
             site = aSite;
@@ -122,7 +123,9 @@ function buildResultDiv(documents) {
             //------------------------------------
 
             html += '<li class="list-group-item list-group-item-secondary">';
-            html += '<a  href="public/api/documents/';
+            html += '<a href=';
+            html += baseUri;
+            html += 'public/api/documents/';
             html += document.id;
             html += '/document" target="_blank">';
             html += document.title;
