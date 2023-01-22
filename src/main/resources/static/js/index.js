@@ -21,7 +21,7 @@ $(document).ready(function () {
         $.ajax({
             async: false,
             type: "GET",
-            url: "/public/api/characteristics/" + characteristicId,
+            url: "public/api/characteristics/" + characteristicId,
             dataType: "json",
             success: function (characteristic) {
                 selectedCharacteristic = characteristic;
@@ -69,7 +69,7 @@ $(document).ready(function () {
 ;
 
 function buildSubmitUrl(locationId) {
-    let url = "/public/api/measurements?siteId=" + siteId + "&characteristicId=" + characteristicId;
+    let url = "public/api/measurements?siteId=" + siteId + "&characteristicId=" + characteristicId;
     if (locationId) {
         url += '&locationId=' + locationId;
     }
@@ -92,7 +92,7 @@ function getCharacteristics() {
     $.ajax({
         async: false,
         type: "GET",
-        url: "/public/api/sites/" + siteId + "/characteristics",
+        url: "public/api/sites/" + siteId + "/characteristics",
         dataType: "json",
         success: function (characteristics) {
             buildCharacteristicsChoice(characteristics);
@@ -116,7 +116,7 @@ function getLocations() {
         $.ajax({
             async: false,
             type: "GET",
-            url: "/public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId + "&restricted=true",
+            url: "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId + "&restricted=true",
             dataType: "json",
             success: function (locations) {
                 buildLocationsChoice(locations);
@@ -154,7 +154,7 @@ function getSelectedLocation(locationId) {
         $.ajax({
             async: false,
             type: "GET",
-            url: "/public/api/locations/" + locationId,
+            url: "public/api/locations/" + locationId,
             dataType: "json",
             success: function (location) {
                 selectedLocation = location
