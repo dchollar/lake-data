@@ -19,7 +19,7 @@ $(document).ready(function () {
         $.ajax({
             async: false,
             type: "GET",
-            url: "public/api/characteristics/" + characteristicId,
+            url: "/public/api/characteristics/" + characteristicId,
             dataType: "json",
             success: function (characteristic) {
                 selectedCharacteristic = characteristic;
@@ -45,7 +45,7 @@ $(document).ready(function () {
             $.ajax({
                 async: false,
                 type: "POST",
-                url: "api/measurements",
+                url: "/api/measurements",
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(data),
                 success: function () {
@@ -89,7 +89,7 @@ function getCharacteristics() {
         $.ajax({
             async: false,
             type: "GET",
-            url: "api/characteristics?siteId=" + siteId,
+            url: "/api/characteristics?siteId=" + siteId,
             dataType: "json",
             success: function (characteristics) {
                 buildCharacteristicsChoice(characteristics);
@@ -116,7 +116,7 @@ function getLocations() {
         $.ajax({
             async: false,
             type: "GET",
-            url: "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
+            url: "/public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
             dataType: "json",
             success: function (locations) {
                 buildLocationsChoice(locations);
