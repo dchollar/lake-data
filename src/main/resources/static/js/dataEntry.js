@@ -1,6 +1,9 @@
 let siteId;
 let characteristicId;
 let selectedCharacteristic;
+const baseUri = location.origin;
+const baseUri_h = location.href;
+const baseUri_p = location.pathname;
 
 $(document).ready(function () {
 
@@ -19,7 +22,7 @@ $(document).ready(function () {
         $.ajax({
             async: false,
             type: "GET",
-            url: "${pageContext.request.contextPath}/public/api/characteristics/" + characteristicId,
+            url: baseUri + "public/api/characteristics/" + characteristicId,
             dataType: "json",
             success: function (characteristic) {
                 selectedCharacteristic = characteristic;
@@ -45,7 +48,7 @@ $(document).ready(function () {
             $.ajax({
                 async: false,
                 type: "POST",
-                url: "${pageContext.request.contextPath}/api/measurements",
+                url: baseUri + "api/measurements",
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(data),
                 success: function () {
@@ -89,7 +92,7 @@ function getCharacteristics() {
         $.ajax({
             async: false,
             type: "GET",
-            url: "${pageContext.request.contextPath}/api/characteristics?siteId=" + siteId,
+            url: baseUri + "api/characteristics?siteId=" + siteId,
             dataType: "json",
             success: function (characteristics) {
                 buildCharacteristicsChoice(characteristics);
@@ -116,7 +119,7 @@ function getLocations() {
         $.ajax({
             async: false,
             type: "GET",
-            url: "${pageContext.request.contextPath}/public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
+            url: baseUri + "public/api/sites/" + siteId + "/locations?characteristicId=" + characteristicId,
             dataType: "json",
             success: function (locations) {
                 buildLocationsChoice(locations);
