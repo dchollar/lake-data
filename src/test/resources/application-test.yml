@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    show-sql: true
+server:
+  port: 8081
+  tomcat:
+    max-swallow-size: 16MB
+ftp:
+  upload-location: C:\\temp\\upload
+  process-location: C:\\temp\\process
+  archive-location: C:\\temp\\archive
+  error-location: C:\\temp\\error

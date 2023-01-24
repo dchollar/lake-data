@@ -29,23 +29,17 @@ class DocumentService {
         String cleanSearch = createRegularExpression(searchWord)
         String cleanCategory = createRegularExpression(category)
 
+        final Collection<Document> documents
         if (cleanSearch && cleanCategory) {
-            Collection<Document> documents = repository.findBySearchWordAndCategory(siteId, cleanCategory, cleanSearch)
-            ConverterUtil.convertDocuments(documents, timeZone)
+            documents = repository.findBySearchWordAndCategory(siteId, cleanCategory, cleanSearch)
         } else if (cleanSearch) {
-            Collection<Document> documents = repository.findBySearchWord(siteId, cleanSearch)
-            ConverterUtil.convertDocuments(documents, timeZone)
+            documents = repository.findBySearchWord(siteId, cleanSearch)
         } else if (cleanCategory) {
-            Collection<Document> documents = repository.findByCategory(siteId, cleanCategory)
-            ConverterUtil.convertDocuments(documents, timeZone)
+            documents = repository.findByCategory(siteId, cleanCategory)
         } else {
-            return getDocumentsBySite(siteId, timeZone)
+            documents = repository.findBySite(siteId)
         }
-    }
-
-    Collection<DocumentDto> getDocumentsBySite(final Integer siteId, final String timeZone) {
-        Site site = siteService.getOne(siteId)
-        ConverterUtil.convertDocuments(repository.findBySite(site), timeZone)
+        return ConverterUtil.convertDocuments(documents, timeZone)
     }
 
     byte[] getDocument(final Integer id) {
@@ -105,9 +99,13 @@ class DocumentService {
         }
     }
 
-    private static String createRegularExpression(String searchPhrase) {
+    private static String createRegularExpression(final String searchPhrase) {
         String string = ConverterUtil.stripNonAscii(searchPhrase)
-        return string != null ? searchPhrase.strip().toUpperCase().replaceAll('\\s+','|') : null
+        if (string) {
+            return string.toUpperCase().replaceAll('\\s+', '|')
+        } else {
+            return null
+        }
     }
 
 }

@@ -10,7 +10,8 @@ import org.springframework.data.jpa.repository.Query
 @CompileStatic
 interface DocumentRepository extends JpaRepository<Document, Integer> {
 
-    List<Document> findBySite(Site site)
+    @Query(value = 'select * from document d where d.site_id=?1', nativeQuery = true)
+    List<Document> findBySite(Integer siteId)
 
     @Query(value = 'select * from document d where d.site_id=?1 and d.text REGEXP ?2', nativeQuery = true)
     List<Document> findBySearchWord(Integer siteId, String word)
