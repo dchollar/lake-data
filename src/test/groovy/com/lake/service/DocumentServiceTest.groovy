@@ -13,8 +13,8 @@ class DocumentServiceTest extends Specification {
         'bob'             | 'BOB'
         null              | null
         ''                | null
-        'bob bob'         | 'BOB|BOB'
-        '  bob     bob  ' | 'BOB|BOB'
+        'bob bob'         | 'BOB BOB'
+        '  bob     bob  ' | 'BOB BOB'
     }
 
 }

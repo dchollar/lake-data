@@ -16,10 +16,10 @@ interface DocumentRepository extends JpaRepository<Document, Integer> {
     @Query(value = 'select * from document d where d.site_id=?1 and d.text REGEXP ?2', nativeQuery = true)
     List<Document> findBySearchWord(Integer siteId, String word)
 
-    @Query(value = 'select * from document d where d.site_id=?1 and upper(d.path) REGEXP ?2', nativeQuery = true)
-    List<Document> findByCategory(Integer siteId, String category)
+    @Query(value = 'select * from document d where d.site_id=?1 and (upper(d.path) REGEXP ?2 or upper(d.title) REGEXP ?3)', nativeQuery = true)
+    List<Document> findByCategory(Integer siteId, String category, String title)
 
-    @Query(value = 'select * from document d where d.site_id=?1 and upper(d.path) REGEXP ?2 and d.text REGEXP ?3', nativeQuery = true)
-    List<Document> findBySearchWordAndCategory(Integer siteId, String category, String word)
+    @Query(value = 'select * from document d where d.site_id=?1 and (upper(d.path) REGEXP ?2 or upper(d.title) REGEXP ?3) and d.text REGEXP ?4', nativeQuery = true)
+    List<Document> findBySearchWordAndCategory(Integer siteId, String category, String title, String word)
 
 }

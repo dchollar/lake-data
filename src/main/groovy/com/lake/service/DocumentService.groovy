@@ -2,7 +2,6 @@ package com.lake.service
 
 import com.lake.dto.DocumentDto
 import com.lake.entity.Document
-import com.lake.entity.Site
 import com.lake.repository.DocumentRepository
 import com.lake.util.ConverterUtil
 import groovy.transform.CompileStatic
@@ -28,14 +27,15 @@ class DocumentService {
     Collection<DocumentDto> findDocumentsContaining(final Integer siteId, final String searchWord, final String category, final String timeZone) {
         String cleanSearch = createRegularExpression(searchWord)
         String cleanCategory = createRegularExpression(category)
+        String cleanTitle = cleanCategory
 
         final Collection<Document> documents
         if (cleanSearch && cleanCategory) {
-            documents = repository.findBySearchWordAndCategory(siteId, cleanCategory, cleanSearch)
+            documents = repository.findBySearchWordAndCategory(siteId, cleanCategory, cleanTitle, cleanSearch)
         } else if (cleanSearch) {
             documents = repository.findBySearchWord(siteId, cleanSearch)
         } else if (cleanCategory) {
-            documents = repository.findByCategory(siteId, cleanCategory)
+            documents = repository.findByCategory(siteId, cleanCategory, cleanTitle)
         } else {
             documents = repository.findBySite(siteId)
         }
@@ -100,9 +100,10 @@ class DocumentService {
     }
 
     private static String createRegularExpression(final String searchPhrase) {
+        //TODO figure something out where we can do a phrase and individual words
         String string = ConverterUtil.stripNonAscii(searchPhrase)
         if (string) {
-            return string.toUpperCase().replaceAll('\\s+', '|')
+            return string.toUpperCase().replaceAll('\\s+', ' ')
         } else {
             return null
         }
