@@ -43,7 +43,7 @@
                         <a class="dropdown-item active" th:href="@{/page/locationMaintenance}">Locations</a>
                         <a class="dropdown-item" th:href="@{/page/characteristicLocationMaintenance}">Characteristic Locations</a>
                         <a class="dropdown-item" th:href="@{/page/dataMaintenance}">Measurements</a>
-                        <a class="dropdown-item" th:href="@{/page/page/dataFileUpload}">Data File Upload</a>
+                        <a class="dropdown-item" th:href="@{/page/dataFileUpload}">Data File Upload</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" th:href="@{/page/userMaintenance}">Users</a>
                         <a class="dropdown-item" th:href="@{/page/audit}">Audit</a>
@@ -60,7 +60,7 @@
     </div>
 </nav>
 
-<div class="container-fluid text-center">
+<div class="container-fluid text-left">
     <input id="siteOptions" name="siteOptions" th:value="${siteOptions}" type="hidden"/>
     <div class="row content">
         <div class="col-sm-12 text-left" id="resultDiv">

@@ -51,6 +51,7 @@ web application for maintaining lake water quality data on pipe lake
 - Bootstrap
 - js-grid for maintenance pages: http://js-grid.com/
 - ChartJS: https://www.chartjs.org/
+- style sheet: https://bootswatch.com/4/
 
 Wisconsin DNR data site is https://dnrx.wisconsin.gov/swims/login.jsp
 
