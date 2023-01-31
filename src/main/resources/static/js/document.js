@@ -122,7 +122,7 @@ function buildResultDiv(documents) {
 
             //------------------------------------
 
-            html += '<li class="list-group-item list-group-item-secondary">';
+            html += '<li class="list-group-item list-group-item-primary">';
             html += '<a href="';
             html += baseUri;
             html += 'public/api/documents/';

@@ -31,7 +31,7 @@ class WebSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.csrf().disable().authorizeHttpRequests {
-            it.requestMatchers('/', '/index', '/home', '/public/**', '/js/**', '/ico/**', '/favicon.ico').permitAll().anyRequest().authenticated()
+            it.requestMatchers('/', '/index', '/home', '/public/**', '/js/**', '/css/**', '/ico/**', '/favicon.ico').permitAll().anyRequest().authenticated()
         }.formLogin {
             it.permitAll()
         }.logout {
