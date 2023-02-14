@@ -63,7 +63,7 @@ class SiteController {
                                    @RequestParam(name = 'category', required = false) String category,
                                    @RequestParam(name = 'timezone', required = true) String timezone) {
         auditService.audit(HttpMethod.GET.name(), "/public/api/sites/${siteId}/documents/search?searchWord=${searchWord} category=${category}", this.class.simpleName)
-        return documentService.findDocumentsContaining(siteId, searchWord, category, timezone)
+        return documentService.findDocuments(siteId, searchWord, category, timezone)
     }
 
     @Secured('ROLE_ADMIN')

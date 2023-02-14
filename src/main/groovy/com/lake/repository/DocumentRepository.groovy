@@ -1,8 +1,6 @@
 package com.lake.repository
 
-
 import com.lake.entity.Document
-import com.lake.entity.Site
 import groovy.transform.CompileStatic
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
