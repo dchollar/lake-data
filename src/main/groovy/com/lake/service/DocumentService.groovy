@@ -31,10 +31,16 @@ class DocumentService {
         return ConverterUtil.convertDocuments(documents, timeZone)
     }
 
-    byte[] getLatestDocument(final String category) {
+    Collection<Document> findDocuments(final String category) {
+        Collection<Document> documents = search(DEFAULT_SITE_ID, null, category)
+        documents.each {it.path = it.path.replace(category,'')}
+        return documents
+    }
+
+    Integer getLatestDocumentId(final String category) {
         final Collection<Document> documents = search(DEFAULT_SITE_ID, null, category)
         Document doc = documents.sort { a, b -> a.created <=> b.created }.first()
-        return getBytes(doc)
+        return doc.id
     }
 
     byte[] getDocument(final Integer id) {

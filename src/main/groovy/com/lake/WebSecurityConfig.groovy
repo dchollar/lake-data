@@ -2,6 +2,7 @@ package com.lake
 
 import com.lake.service.ReporterService
 import groovy.transform.CompileStatic
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationProvider
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+
+import java.net.http.HttpRequest
 
 @CompileStatic
 @Configuration
@@ -30,14 +33,15 @@ class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.csrf().disable().authorizeHttpRequests {
-            it.requestMatchers('/', '/index', '/home', '/public/**', '/js/**', '/css/**', '/ico/**', '/favicon.ico').permitAll().anyRequest().authenticated()
+        http.csrf().disable().headers {
+                it.frameOptions().disable()
+        }.authorizeHttpRequests {
+            it.requestMatchers('/', '/index', '/home', '/public/**', '/favicon.ico').permitAll().anyRequest().authenticated()
         }.formLogin {
             it.permitAll()
         }.logout {
             it.permitAll().deleteCookies('JSESSIONID').invalidateHttpSession(true).logoutSuccessUrl('/')
-        }
-                .rememberMe()
+        }.rememberMe()
         return http.build()
     }
 

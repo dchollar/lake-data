@@ -1,86 +1,36 @@
 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 const baseUri = location.href.substring(0,location.href.indexOf('public/'));
-let siteId;
-let site;
 
 $(document).ready(function () {
-    // when the site changes go and get the document details for that site
-    // based on the document details build the page based on the path of the document.
+    let documents = JSON.parse($('#documentList').val());
+    buildDocumentDiv(documents)
+});
 
-    $('#sitesChoice').on('change', function () {
-        $("#message").text("").hide();
-        siteId = $(this).val();
-        findDocuments();
-    });
-
-    $('#submitButton').on('click', function () {
-        $("#message").text("").hide();
-        findDocuments();
-
-    });
-})
-;
-
-function findDocuments() {
-    if (siteId) {
-        let searchWord = $('#searchPhrase').val();
-        let category = $('#categoryPhrase').val();
-        let url = baseUri + "public/api/sites/" + siteId + "/documents?timezone=" + timezone;
-        if (searchWord) {
-            url += "&searchWord=" + searchWord;
-        }
-        if (category) {
-            url += "&category=" + category;
-        }
-        getSite();
-        getDocuments(url);
-    } else {
-        $('#documentDiv').html('');
-    }
+function buildDocumentUrl(html, document) {
+    html += '<a href="';
+    html += baseUri;
+    html += 'public/api/documents/';
+    html += document.id;
+    html += '/document" target="_blank">';
+    html += document.title;
+    html += ' (';
+    html += document.fileSize;
+    html += ' KB)';
+    html += '</a>';
+    html += '</li>';
+    return html;
 }
 
-function getSite() {
-    $.ajax({
-        async: false,
-        type: "GET",
-        url: baseUri + "public/api/sites/" + siteId,
-        dataType: "json",
-        success: function (aSite) {
-            site = aSite;
-        },
-        error: function (xhr) {
-            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
-        }
-    });
-}
-
-function getDocuments(url) {
-    $.ajax({
-        async: false,
-        type: "GET",
-        url: url,
-        dataType: "json",
-        success: function (documents) {
-            buildResultDiv(documents);
-        },
-        error: function (xhr) {
-            $("#message").text("There was an issue with your request. " + xhr.responseJSON.errorMessage).show();
-        }
-    });
-}
-
-function buildResultDiv(documents) {
+function buildDocumentDiv(documents) {
 
     let html = '';
     if (documents === undefined || documents.length === 0) {
         html += '<h4>No Documents Found</h4>';
     } else {
-        html += '<h2>' + site.description + ' Record Archive</h2>';
         html += '<h6><i> Number of Documents retrieved: ';
         html += documents.length;
         html += '</i></h6>'
         html += '<div id="accordion"><div class="panel list-group"><ul>';
-
 
         let previousHeaders;
         let openDepth = 0;
@@ -123,17 +73,7 @@ function buildResultDiv(documents) {
             //------------------------------------
 
             html += '<li class="list-group-item list-group-item-primary">';
-            html += '<a href="';
-            html += baseUri;
-            html += 'public/api/documents/';
-            html += document.id;
-            html += '/document" target="_blank">';
-            html += document.title;
-            html += ' (';
-            html += document.fileSize;
-            html += ' KB)';
-            html += '</a>';
-            html += '</li>';
+            html = buildDocumentUrl(html, document);
 
             previousHeaders = headers;
         }

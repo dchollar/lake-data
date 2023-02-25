@@ -26,6 +26,8 @@ import java.time.ZoneOffset
 @Slf4j
 class ConverterUtil {
 
+    private static final DEFAULT_TIMEZONE = 'America/Chicago'
+
     //----------------------------------------------------------------------------------
     // Collection Converters
     //----------------------------------------------------------------------------------
@@ -137,7 +139,8 @@ class ConverterUtil {
     //----------------------------------------------------------------------------------
 
     static String convert(final Instant time, final String timezone) {
-        return time.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(timezone)).format('yyyy-MM-dd HH:mm')
+        String tz = timezone ?: DEFAULT_TIMEZONE
+        return time.atZone(ZoneOffset.UTC).withZoneSameInstant(ZoneId.of(tz)).format('yyyy-MM-dd HH:mm')
     }
 
     static AuditDto convert(Audit entity, String timezone) {
