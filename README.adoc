@@ -1,6 +1,6 @@
 = lake-data
 
-web application for maintaining lake water quality data on pipe lake
+Web application for maintaining lake water quality data for the Pipe Lake district
 
 == Swagger UI
 http://localhost:8081/swagger-ui/
@@ -27,7 +27,6 @@ http://localhost:8081/swagger-ui/
 * Change style sheet to make site look more like the pipe lake site.
 * Create instructions or help documentation for data entry page and all maintenance pages. Have this info appear in an overlay.
 * Set up https://superset.apache.org/
-* Enable https on the server - https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-20-04
 * Create a mapping between event type characteristics and sites. This would create a characteristic_site table.
  This is analogous to the characteristic_location table. I do not want to do this. This would limit the
  events to a specific site for data entry.
