@@ -93,11 +93,7 @@ class PageController {
     @GetMapping('/public/page/documentFrame')
     String documentFrame(Model model, @RequestParam(name = 'category', required = true) String category) {
         Collection<Document> documents = documentService.findDocuments(category)
-        // TODO not sure I want to do latest document
-        Document latestDocument = documents.sort { a, b -> a.created <=> b.created }.first()
         model.addAttribute(DOCUMENTS, JsonOutput.toJson(ConverterUtil.convertDocuments(documents, null)))
-        // could use the document id to build a url on the page.
-        model.addAttribute('latestDocumentId', latestDocument.id)
         return TemplateName.documentFrame.name()
     }
 
