@@ -8,6 +8,7 @@ import net.sourceforge.tess4j.ITesseract
 import net.sourceforge.tess4j.Tesseract
 import net.sourceforge.tess4j.util.LoadLibs
 import org.apache.commons.lang3.StringUtils
+import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.ImageType
 import org.apache.pdfbox.rendering.PDFRenderer
@@ -411,7 +412,7 @@ class ConverterUtil {
     }
 
     static String convertPdf(final byte[] pdf) {
-        PDDocument document = PDDocument.load(pdf)
+        PDDocument document = Loader.loadPDF(pdf)
         PDFTextStripper stripper = new PDFTextStripper()
         String allText = stripper.getText(document)
 
