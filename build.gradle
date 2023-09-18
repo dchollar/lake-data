@@ -28,7 +28,7 @@ springBoot {
 }
 
 dependencies {
-    implementation('org.apache.groovy:groovy-all:4.0.14')
+    implementation('org.apache.groovy:groovy-all:4.0.15')
 
     implementation('org.apache.commons:commons-lang3:3.13.0')
     implementation('commons-io:commons-io:2.13.0')
