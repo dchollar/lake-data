@@ -51,7 +51,7 @@ class MeasurementController {
                                               @RequestParam(name = 'fromDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
                                               @RequestParam(name = 'fundingSourceId', required = false) Integer fundingSourceId) {
-        auditService.audit(HttpMethod.GET.name(), "SEARCH site=${siteId} characteristicId=${characteristicId} locationId=${locationId} from=${fromDate} to+${toDate} fundingSourceId=${fundingSourceId}", this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), "SEARCH site=${siteId} characteristicId=${characteristicId} locationId=${locationId} from=${fromDate} to=${toDate} fundingSourceId=${fundingSourceId}", this.class.simpleName)
         validationService.isValid(siteId, characteristicId, locationId, fromDate, toDate)
         return measurementService.doSearch(siteId, characteristicId, locationId, fromDate, toDate, fundingSourceId)
     }
