@@ -1,9 +1,17 @@
 package com.lake.entity
 
 import groovy.transform.CompileStatic
+import jakarta.persistence.Basic
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
 import org.locationtech.jts.geom.Point
-
-import jakarta.persistence.*
 
 @CompileStatic
 @Entity

@@ -8,7 +8,13 @@ import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.security.access.annotation.Secured
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE
 
@@ -24,7 +30,6 @@ class FundingSourceController {
 
     @GetMapping(value = '/public/api/fundingSources', produces = APPLICATION_JSON_VALUE)
     Collection<FundingSourceDto> getAll() {
-        auditService.audit(HttpMethod.GET.name(), '/api/fundingSources', this.class.simpleName)
         return service.getAll()
     }
 
@@ -51,6 +56,3 @@ class FundingSourceController {
     }
 
 }
-
-//PIPE &amp; N PIPE LAKE P&amp;R DISTRICT: Pipe and North Pipe Lake Geochemistry Study	2019	ACTIVE	LAKE_GRANT	Large Scale Lake Planning	02/15/2019	12/31/2021	LPL170719	Activities: lake level monitoring; management plan meetings; watershed delineation and modeling update; groundwater, surface water, and precipitation monitoring using stable isotopes to understand water and nutrient budgets  Project deliverables include:  monitoring data in SWIMS, final monitoring report, and an updated management plan  Specific project conditions:  This scope summarizes the project detail provided in the application and does not negate tasks/deliverables described therein.  The grant sponsor shall submit all data, records, and reports, including GIS-based maps and digital images, to the Department in a format specified by the regional Lakes Biologist.
-//PIPE &amp; N PIPE LAKE P&amp;R DISTRICT: Pipe and North Pipe Lake internal Load Study	2019	ACTIVE	LAKE_GRANT	Large Scale Lake Planning	02/15/2019	12/31/2021	LPL170619	Activities: In-lake chemistry monitoring, monitor phosphorus release from lake sediments, alum dosage study, management plan update  Project deliverables include:  Monitoring data in SWIMS database, report summarizing internal phosphorus load, updated management plan  Specific project conditions:  This scope summarizes the project detail provided in the application and does not negate tasks/deliverables described therein.  The grant sponsor shall submit all data, records, and reports, including GIS-based maps and digital images, to the Department in a format specified by the regional Lakes Biologist.

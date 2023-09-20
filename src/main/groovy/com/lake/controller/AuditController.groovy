@@ -28,8 +28,6 @@ class AuditController {
                                 @RequestParam(name = 'controller', required = false) String controller,
                                 @RequestParam(name = 'reporterName', required = false) String reporterName) {
 
-        //auditService.audit(HttpMethod.GET, "/api/audits?${timezone}", this.class.simpleName)
-
         AuditDto filter = new AuditDto()
         filter.httpMethod = httpMethod
         filter.endpoint = endpoint

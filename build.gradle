@@ -27,8 +27,12 @@ springBoot {
     buildInfo()
 }
 
+configurations.configureEach {
+    exclude group: 'commons-logging', module: 'commons-logging'
+}
+
 dependencies {
-    implementation('org.apache.groovy:groovy-all:4.0.14')
+    implementation('org.apache.groovy:groovy-all:4.0.15')
 
     implementation('org.apache.commons:commons-lang3:3.13.0')
     implementation('commons-io:commons-io:2.13.0')
@@ -48,6 +52,7 @@ dependencies {
     implementation('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0')
     implementation('org.springdoc:springdoc-openapi-starter-common:2.2.0')
     implementation('com.mysql:mysql-connector-j:8.1.0')
+    implementation ('org.yaml:snakeyaml:2.2')
 
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')

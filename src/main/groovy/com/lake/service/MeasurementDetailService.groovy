@@ -1,7 +1,12 @@
 package com.lake.service
 
 import com.lake.dto.MeasurementMaintenanceDto
-import com.lake.entity.*
+import com.lake.entity.Characteristic
+import com.lake.entity.CharacteristicLocation
+import com.lake.entity.CharacteristicType
+import com.lake.entity.Location
+import com.lake.entity.MeasurementDetail
+import com.lake.entity.StatusType
 import com.lake.repository.MeasurementDetailRepository
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j

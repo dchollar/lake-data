@@ -3,7 +3,11 @@ package com.lake.controller
 import com.lake.dto.MeasurementDto
 import com.lake.dto.MeasurementMaintenanceDto
 import com.lake.entity.CharacteristicType
-import com.lake.service.*
+import com.lake.service.AuditService
+import com.lake.service.LocationService
+import com.lake.service.MeasurementService
+import com.lake.service.SiteService
+import com.lake.service.ValidationService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.apache.commons.lang3.StringUtils
@@ -11,7 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.HttpMethod
 import org.springframework.security.access.annotation.Secured
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 
 import java.time.LocalDate
 
@@ -40,7 +51,7 @@ class MeasurementController {
                                               @RequestParam(name = 'fromDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
                                               @RequestParam(name = 'toDate', required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
                                               @RequestParam(name = 'fundingSourceId', required = false) Integer fundingSourceId) {
-        auditService.audit(HttpMethod.GET.name(), '/public/api/measurements', this.class.simpleName)
+        auditService.audit(HttpMethod.GET.name(), "SEARCH site=${siteId} characteristicId=${characteristicId} locationId=${locationId} from=${fromDate} to+${toDate} fundingSourceId=${fundingSourceId}", this.class.simpleName)
         validationService.isValid(siteId, characteristicId, locationId, fromDate, toDate)
         return measurementService.doSearch(siteId, characteristicId, locationId, fromDate, toDate, fundingSourceId)
     }

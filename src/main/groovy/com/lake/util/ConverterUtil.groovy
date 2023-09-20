@@ -1,7 +1,29 @@
 package com.lake.util
 
-import com.lake.dto.*
-import com.lake.entity.*
+
+import com.lake.dto.AuditDto
+import com.lake.dto.CharacteristicDto
+import com.lake.dto.CharacteristicLocationDto
+import com.lake.dto.DocumentDto
+import com.lake.dto.FundingSourceDto
+import com.lake.dto.LocationDto
+import com.lake.dto.MeasurementDto
+import com.lake.dto.MeasurementMaintenanceDto
+import com.lake.dto.ReporterDto
+import com.lake.dto.SiteDto
+import com.lake.entity.Audit
+import com.lake.entity.Characteristic
+import com.lake.entity.CharacteristicLocation
+import com.lake.entity.Document
+import com.lake.entity.Event
+import com.lake.entity.FundingSource
+import com.lake.entity.FundingSourceType
+import com.lake.entity.Location
+import com.lake.entity.Measurement
+import com.lake.entity.Reporter
+import com.lake.entity.ReporterRole
+import com.lake.entity.RoleType
+import com.lake.entity.Site
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import net.sourceforge.tess4j.ITesseract

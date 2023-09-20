@@ -1,0 +1,47 @@
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">File Upload Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h5>Overview</h5>
+                <p>
+                    The purpose of this page is for the uploading of data files that contain data from automatic monitoring devices. These devices are currently used to monitor
+                    stream flow and levels. There are currently two different types of data files. One is collected automatically and transferred directly to this system. If that
+                    automatic process were to fail this page provides a means for uploading that missing file. The other type of file is obtained manually from devices not
+                    connected directly to the system. This page will be the primary means of uploading that data into this system.
+                </p>
+                <h5>Site</h5>
+                <p>Choose the general site the monitoring device is associated with.</p>
+                <h5>Location</h5>
+                <p>
+                    The list of locations is associated to the site chosen. You will need to select the location associated to the monitoring device the data file is associated
+                    with.
+                </p>
+
+                <h5>The Data File</h5>
+                <p>
+                    The data file should either be a single CSV file or a ZIP file containing one or more CSV files. If uploading multiple files in a ZIP file, ALL files need to be
+                    from the same sensor.
+                </p>
+                <h5>Submit</h5>
+                <p>
+                    When done press the Submit button to save your data entry. If all goes well you will get a message that it is saved and the screen will be reset, so you can
+                    upload a new data file. If something went wrong the error message will be displayed at the top of the page, and you will need to fix your data or contact the
+                    administrator.
+                </p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

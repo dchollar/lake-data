@@ -1,0 +1,15 @@
+<div th:fragment="footerField (includeLink)">
+    <footer class="page-footer bg-light font-small font-weight-light">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2 text-left">
+                    <p th:if="${includeLink} == 'yes'"><small><a th:href="@{/public/page/privacy}" class="link-secondary">Privacy Statement</a></small></p>
+                </div>
+                <div class="col-sm-8"></div>
+                <div class="col-sm-2 text-right">
+                    <p class="text-primary"><small>Version: <span th:text="${version}"></span></small></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

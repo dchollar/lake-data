@@ -2,21 +2,21 @@ package com.lake
 
 import com.lake.service.ReporterService
 import groovy.transform.CompileStatic
-import jakarta.servlet.http.HttpServletRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 
-import java.net.http.HttpRequest
-
 @CompileStatic
 @Configuration
 class WebSecurityConfig {
+
+    private static final String SESSION_COOKIE_NAME = 'JSESSIONID'
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -33,15 +33,15 @@ class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        http.csrf().disable().headers {
-                it.frameOptions().disable()
+        http.csrf(csrf -> csrf.disable()).headers {
+            it.frameOptions { it.disable() }
         }.authorizeHttpRequests {
             it.requestMatchers('/', '/index', '/home', '/public/**', '/favicon.ico').permitAll().anyRequest().authenticated()
         }.formLogin {
             it.permitAll()
         }.logout {
-            it.permitAll().deleteCookies('JSESSIONID').invalidateHttpSession(true).logoutSuccessUrl('/')
-        }.rememberMe()
+            it.permitAll().deleteCookies(SESSION_COOKIE_NAME).invalidateHttpSession(true).logoutSuccessUrl('/')
+        }.rememberMe(Customizer.withDefaults())
         return http.build()
     }
 

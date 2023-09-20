@@ -1,0 +1,77 @@
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">Document Maintenance Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>You have the ability to add, delete, or update PDF documents here. This page lists all documents currently stored in the system. You can click on each column
+                    heading to sort the list of documents by that column. By clicking on the column heading it will sort the column ascending. Click on the column heading again to
+                    sort descending. Saving or downloading a document cannot be done on here because that can be done on the Documents tab that is available to all.</p>
+                <p>If something goes wrong, a message will appear at the top of the page. Correct the issue and try again. If you continue to have issues copy the error messaging
+                    or take a screenshot and contact the administrator.</p>
+                <h5>Inserting</h5>
+                <p>To add a new document to the system you can press the + icon in the upper right corner of the header of the grid. You can only save PDF type files in the
+                    system. Files are limited to 20Meg in size. If your PDF is larger than 20Meg, you can try re-creating the PDF to make it smaller or contact the system
+                    administrator. Once you click on the + button a row of blank fields will appear directly below the header row. Fill in the data appropriately and then click on
+                    the + icon at the end of the row to save the data to the system. If you decide to not insert a document after clicking on the + icon in the header row, just
+                    click on that same + icon in the header row and the blank row will go away. See below for additional details about each attribute.</p>
+                <p><b>LEGAL NOTICE:</b> All documents in this system are publicly available and are provided as free use. Be sure that any document you insert into this system is
+                    licensed in this manner and that you have the proper copyright permissions to provide the document in this system. This is your responsibility as an
+                    administrator of this system.</p>
+                <h5>Deleting</h5>
+                <p>Any document can be <b>PERMANENTLY</b> removed from the system by clicking on the trashcan symbol at the end of the row for the document you want to delete. This
+                    is a PERMANENT action. The document will be removed from the system. Because of this, you will be asked to confirm your action. Once confirmed the document will
+                    be removed.</p>
+                <h5>Updating</h5>
+                <p>Any document can be updated or changed by clicking on the pencil icon at the end of the row for the document you want to change. When you click on the pencil
+                    icon, the row will change to reflect the fields you can change. If you change your mind, and want to cancel you edits you can click on the X icon at the end of
+                    the row. When you are done making your updates, you will need to click on the checkmark icon at the end of the row to save your changes. Once you click on the
+                    checkmark icon to save your changes they will be instantly saved. If an error does occur, you will get a message at the top of the grid. The system will
+                    automatically change the "Last Changed" date, thus you are not able to edit that. You do not have to always upload a new document. If you only want to change
+                    the "Title" of the document, for example, you can do that without changing the document. The document will only change if you actually upload a new document. In
+                    other words only the fields you alter will be altered in the system. If you do upload a new document, the old document is <b>PERMANENTLY</b> replaced. There is
+                    no confirmation step for this, like there is for deleting. The existing document is replaced with the new document you provide in this step.
+                </p>
+                <h5>Attribute Descriptions</h5>
+                <h6>Site</h6>
+                <p>You can assign documents to a specific site in order to better classify what the document pertains too. For example if the document is specific to "North Pipe
+                    Lake" you can assign the document to that site. When you go to view documents in the Documents tab you are first asked to choose which site you are interested
+                    in. Only Documents you assign to a site will then be displayed for the site choosen in the Documents tab. The list of sites in the Documents tab will only
+                    contain sites that have documents. If the document pertains to the entire Pipe Lake area, and not to a specific site, then choose "Pipe & North Pipe Lakes" as
+                    the site. This specific site relates to the general area.</p>
+                <h6>Path</h6>
+                <p>The path determines the "directory" structure used in the displaying of documents. This is how the user will drill down to get to the document. This is used to
+                    organize the documents and has nothing to do with how they are physically stored. The / is used to designate the different levels or layers, so you cannot use
+                    this character in the name of your level. The path name does not start with or end with a /. This can be updated without affecting the document. It only affects
+                    the display of the document and how you organize the documents into layers or levels. There are no bulk edit capabilities so if you want to change the hierarchy
+                    of how documents are displayed, you will need to update each individual document. It could be helpful to have a different tab in your browser open to the
+                    Documents tab so that you can see how the current path values work. You are limited to 1,000 total characters for the path</p>
+                <h6>Title</h6>
+                <p>This is the title of the document that is displayed on the document view page. This has nothing to do with the actual title of the document nor the file name and
+                    does not physically alter or change the document itself. The title of the document has nothing to do with how the document is physically stored. You are
+                    providing a document title here to help the person view and understand the document before physically viewing it. It is recommended that you use the actual
+                    title of the document here. If the document does not have a title then create something that properly describes the document in 400 characters or fewer.</p>
+                <h6>Document</h6>
+                <p>In normal view, the size of the file in kilobytes will be displayed. The view is not sortable by this value. When inserting or updating you are presented with a
+                    button that will allow you to choose a file from your local computer. Where the file exists on your local computer does not matter. Only PDF type files no
+                    bigger than 20Meg can be uploaded into the system. Once you choose a file, the file name of the file is shown in the box next to the button to show you
+                    what local file you have picked to upload into the system. The path and filename are not used by the system and only have relevance to your local computer.</p>
+                <h6>Last Changed</h6>
+                <p>This displays the date the document or anything associated to the document was changed or inserted. For example if the document has only ever been inserted then
+                    that would be considered the last time it was changed. If only the title was updated then this is a change. This is maintained by the system and is not
+                    editable.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
