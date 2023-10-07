@@ -4,13 +4,16 @@ import com.lake.service.ReporterService
 import groovy.transform.CompileStatic
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.task.TaskExecutor
 import org.springframework.http.HttpMethod
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.task.DelegatingSecurityContextAsyncTaskExecutor
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector
@@ -56,6 +59,16 @@ class WebSecurityConfig {
             it.permitAll().deleteCookies(SESSION_COOKIE_NAME).invalidateHttpSession(true).logoutSuccessUrl('/')
         }.rememberMe(Customizer.withDefaults())
         return http.build()
+    }
+
+    @Bean
+    TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor()
+        executor.setCorePoolSize(5)
+        executor.setMaxPoolSize(10)
+        executor.setQueueCapacity(25)
+        executor.initialize()
+        new DelegatingSecurityContextAsyncTaskExecutor(executor);
     }
 
 }

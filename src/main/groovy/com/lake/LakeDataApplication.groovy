@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.scheduling.annotation.EnableAsync
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -20,6 +21,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableMethodSecurity(securedEnabled = true)
 @EnableJpaAuditing
 @EnableConfigurationProperties
+@EnableAsync
 class LakeDataApplication {
 
     static void main(String[] args) {
