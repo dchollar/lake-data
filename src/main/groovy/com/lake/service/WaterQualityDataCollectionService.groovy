@@ -26,7 +26,6 @@ class WaterQualityDataCollectionService extends SwimsDataCollectionService {
     private static final int TSI_TP_ID = 12
     private static final int TSI_CHL_ID = 13
 
-
     private static final int GROUP_SEQ_NO_CELL_INDEX = 0
     private static final int START_DATE_CELL_INDEX = 1
     private static final int START_MONTH_CELL_INDEX = 2

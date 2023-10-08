@@ -47,8 +47,8 @@ class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable()).headers {
             it.frameOptions { it.disable() }
         }.authorizeHttpRequests {
-            //it.requestMatchers('/', '/index', '/home', '/public/**', '/favicon.ico').permitAll().anyRequest().authenticated()
             it.requestMatchers(mvc.pattern(HttpMethod.GET, '/')).permitAll()
+            it.requestMatchers(mvc.pattern(HttpMethod.GET, '/index')).permitAll()
             it.requestMatchers(mvc.pattern(HttpMethod.GET, '/home')).permitAll()
             it.requestMatchers(mvc.pattern(HttpMethod.GET, '/favicon.ico')).permitAll()
             it.requestMatchers(mvc.pattern( '/public/**')).permitAll()

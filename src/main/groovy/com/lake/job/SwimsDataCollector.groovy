@@ -51,35 +51,4 @@ class SwimsDataCollector {
         log.info("Done processing SWIMS Data")
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Need to follow all the redirects in order to get to the real site.
-     * Method is recursive.
-     * @param url
-     * @return the url after no more redirects
-     */
-    private URL findRealUrl(final URL url) {
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection()
-        conn.followRedirects = false
-        conn.requestMethod = 'HEAD'
-        if (conn.responseCode in [301, 302]) {
-            if (conn.headerFields.'Location') {
-                return findRealUrl(conn.headerFields.Location.first().toURL())
-            } else {
-                throw new RuntimeException("Failed to follow redirect for ${url}")
-            }
-        }
-        return url
-    }
-
 }
