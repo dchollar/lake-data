@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component
 @Component
 class AuditTruncate {
 
-    private static long DAYS_TO_KEEP = 15
     private static final String REPORTER_USERNAME = 'audit'
     private static final String REPORTER_CREDENTIALS = 'credentials'
     private static final List AUTHORITIES = [new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name())]
@@ -35,10 +34,10 @@ class AuditTruncate {
         truncate()
     }
 
-    void truncate() {
+    private void truncate() {
         auditService.audit('JOB', "audit truncate", this.class.simpleName)
         try {
-            int count = auditService.truncate(DAYS_TO_KEEP)
+            int count = auditService.truncate()
             log.info("Truncated audit log by ${count} records")
         } catch (Exception e) {
             log.error('Issues in truncate job', e)

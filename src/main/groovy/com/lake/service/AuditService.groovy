@@ -19,6 +19,8 @@ import java.time.temporal.ChronoUnit
 @Transactional
 @Service
 class AuditService {
+    private static long DAYS_TO_KEEP = 32
+
     @Autowired
     AuditRepository repository
     @Autowired
@@ -47,8 +49,8 @@ class AuditService {
     }
 
     @Secured('ROLE_ADMIN')
-    int truncate(final long days) {
-        List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(days, ChronoUnit.DAYS))
+    int truncate() {
+        List<Audit> audits = repository.findAllByCreatedLessThan(Instant.now().minus(DAYS_TO_KEEP, ChronoUnit.DAYS))
         if (audits && !audits.empty) {
             repository.deleteAll(audits)
         }

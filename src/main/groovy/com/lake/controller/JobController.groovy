@@ -1,6 +1,6 @@
 package com.lake.controller
 
-import com.lake.job.AuditTruncate
+
 import com.lake.job.FtpFileProcessor
 import com.lake.service.AuditService
 import com.lake.service.ProfileDataCollectionService
@@ -10,7 +10,6 @@ import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 
 @CompileStatic
@@ -18,14 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping
 @Controller
 class JobController {
 
+    private static final String REDIRECT_HOME = 'redirect:/index'
+
     @Autowired
     AuditService auditService
     @Autowired
-    AuditTruncate auditTruncate
-    @Autowired
     FtpFileProcessor ftpFileProcessor
-    @Autowired
-    PageController pageController
     @Autowired
     WaterQualityDataCollectionService waterQualityDataCollectionService
     @Autowired
@@ -33,27 +30,29 @@ class JobController {
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/swims')
-    String getSwimsData(Model model) {
-        auditService.audit('JOB', "Fetch SWIMS Data Manual Request", this.class.simpleName)
+    String getSwimsData() {
+        auditService.audit('JOB', 'Fetch SWIMS Data Manual Request', this.class.simpleName)
         waterQualityDataCollectionService.collectNorthPipeLakeData()
         waterQualityDataCollectionService.collectPipeLakeData()
         profileDataCollectionService.collectNorthPipeLakeData()
         profileDataCollectionService.collectPipeLakeData()
-        pageController.index(model)
+        return REDIRECT_HOME
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/audit/truncate')
-    String auditTruncate(Model model) {
-        auditTruncate.truncate()
-        pageController.index(model)
+    String auditTruncate() {
+        auditService.audit('JOB', "audit truncate manual request", this.class.simpleName)
+        int count = auditService.truncate()
+        log.info("Truncated audit log by ${count} records")
+        return REDIRECT_HOME
     }
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/ftp/process')
-    String ftpFileProcessor(Model model) {
+    String ftpFileProcessor() {
         ftpFileProcessor.processUploadedFiles()
-        pageController.index(model)
+        return REDIRECT_HOME
     }
 
 }

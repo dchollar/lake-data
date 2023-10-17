@@ -42,68 +42,11 @@ class PageController {
     @Autowired
     CharacteristicService characteristicService
     @Autowired
-    DocumentService documentService
-    @Autowired
     FundingSourceService fundingSourceService
     @Autowired
     LocationService locationService
     @Autowired
-    ReporterService reporterService
-    @Autowired
     SiteService siteService
-
-    @GetMapping(['favicon.ico'])
-    @ResponseBody
-    String favicon() {
-        return "forward:/public/ico/favicon.ico"
-    }
-
-    @GetMapping(['/', '/index', '/home'])
-    String index(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/index', this.class.simpleName)
-        model.addAttribute(SITES, siteService.getAll())
-        model.addAttribute(FUNDING_SOURCES, fundingSourceService.getAll())
-        model.addAttribute(VERSION, buildProperties.getVersion())
-        return TemplateName.index.name()
-    }
-
-    @GetMapping('/public/page/dataFrame')
-    String dataFrame(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/dataFrame', this.class.simpleName)
-        model.addAttribute(SITES, siteService.getAll())
-        model.addAttribute(FUNDING_SOURCES, fundingSourceService.getAll())
-        return TemplateName.dataFrame.name()
-    }
-
-    @GetMapping('/public/page/documents')
-    String documents(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/public/page/documents', this.class.simpleName)
-        model.addAttribute(SITES, siteService.getSitesWithDocuments())
-        model.addAttribute(VERSION, buildProperties.getVersion())
-        return TemplateName.documents.name()
-    }
-
-    @GetMapping('/public/page/privacy')
-    String privacyStatement(Model model) {
-        auditService.audit(HttpMethod.GET.name(), '/public/page/privacy', this.class.simpleName)
-        model.addAttribute(VERSION, buildProperties.getVersion())
-        return TemplateName.privacy.name()
-    }
-
-    @GetMapping('/public/page/test')
-    String iframeTest() {
-        // TODO this is just temporary
-        return 'iframeTest'
-    }
-
-    @GetMapping('/public/page/documentFrame')
-    String documentFrame(Model model, @RequestParam(name = 'category', required = true) String category) {
-        Collection<Document> documents = documentService.findDocuments(category)
-        model.addAttribute(DOCUMENTS, JsonOutput.toJson(ConverterUtil.convertDocuments(documents, null)))
-        return TemplateName.documentFrame.name()
-    }
-
-    //--------------------------------------------------------------------------------------
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/page/audit')
