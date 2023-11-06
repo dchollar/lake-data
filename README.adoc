@@ -25,13 +25,12 @@ http://localhost:8081/swagger-ui/
 * Enhance the users to include more details to include property and plot maps and email capabilities.
 * Add a new role for managing and contacting residents.
 * Change style sheet to make site look more like the pipe lake site.
-* Create instructions or help documentation for data entry page and all maintenance pages. Have this info appear in an overlay.
+* Add help pages to all maintenance pages.
 * Set up https://superset.apache.org/
 * Create a mapping between event type characteristics and sites. This would create a characteristic_site table.
  This is analogous to the characteristic_location table. I do not want to do this. This would limit the
  events to a specific site for data entry.
 * Bulk upload and download of documents. I do not want to do this. Will do as an on-demand request.
-* Re-factor the html pages to have a shared menu, header, and footer segments
 * Change the document storage to include other documents like excel and word docs.
 ** I do not want to do this. Reason is that PDF documents are not really editable.
 ** How would searching an Excel file work?
