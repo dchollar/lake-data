@@ -32,8 +32,9 @@ configurations.configureEach {
 }
 
 ext {
-    POI_VERSION = '5.2.4'
     OPENAPI_VERSION = '2.2.0'
+    POI_VERSION = '5.2.4'
+    SPOCK_VERSION = '2.4-M1-groovy-4.0'
 }
 
 dependencies {
@@ -49,8 +50,8 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('org.springframework.boot:spring-boot-starter-security')
-    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.springframework.boot:spring-boot-starter-cache')
+    implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6')
 
     implementation('org.hibernate.orm:hibernate-spatial:6.3.1.Final')
@@ -64,10 +65,10 @@ dependencies {
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 
-    testImplementation('org.spockframework:spock-core')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.security:spring-security-test')
-    testImplementation('org.spockframework:spock-spring:2.4-M1-groovy-4.0')
+    testImplementation("org.spockframework:spock-core:${SPOCK_VERSION}")
+    testImplementation("org.spockframework:spock-spring:${SPOCK_VERSION}")
 }
 
 tasks.named('test') {

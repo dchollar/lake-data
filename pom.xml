@@ -130,7 +130,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+      <artifactId>spring-boot-starter-cache</artifactId>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
@@ -141,7 +141,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-cache</artifactId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
