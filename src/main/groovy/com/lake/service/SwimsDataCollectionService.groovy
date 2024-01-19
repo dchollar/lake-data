@@ -59,11 +59,11 @@ abstract class SwimsDataCollectionService {
     }
 
     protected void saveData(final int siteId,
-                         final int locationId,
-                         final int characteristicId,
-                         final LocalDate collectionDate,
-                         final BigDecimal value,
-                         final BigDecimal depth = null) {
+                            final int locationId,
+                            final int characteristicId,
+                            final LocalDate collectionDate,
+                            final BigDecimal value,
+                            final BigDecimal depth = null) {
 
         MeasurementMaintenanceDto dto = new MeasurementMaintenanceDto(
                 siteId: siteId,

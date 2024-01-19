@@ -1,7 +1,7 @@
 $(function () {
     $("#message").text("").hide();
 
-    const baseUri = location.href.substring(0,location.href.indexOf('page/'));
+    const baseUri = location.href.substring(0, location.href.indexOf('page/'));
 
     $.get(baseUri + "api/characteristicTypes").done(function (characteristicTypes) {
 

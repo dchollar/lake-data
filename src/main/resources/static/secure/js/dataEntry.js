@@ -1,7 +1,7 @@
 let siteId;
 let characteristicId;
 let selectedCharacteristic;
-const baseUri = location.href.substring(0,location.href.indexOf('page/'));
+const baseUri = location.href.substring(0, location.href.indexOf('page/'));
 
 $(document).ready(function () {
 

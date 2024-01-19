@@ -9,7 +9,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -44,20 +43,26 @@ class WebSecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) {
-        http.csrf(csrf -> csrf.disable()).headers {
-            it.frameOptions { it.disable() }
-        }.authorizeHttpRequests {
-            it.requestMatchers(mvc.pattern(HttpMethod.GET, '/')).permitAll()
-            it.requestMatchers(mvc.pattern(HttpMethod.GET, '/index')).permitAll()
-            it.requestMatchers(mvc.pattern(HttpMethod.GET, '/home')).permitAll()
-            it.requestMatchers(mvc.pattern(HttpMethod.GET, '/favicon.ico')).permitAll()
-            it.requestMatchers(mvc.pattern( '/public/**')).permitAll()
-            it.anyRequest().authenticated()
-        }.formLogin {
-            it.permitAll()
-        }.logout {
-            it.permitAll().deleteCookies(SESSION_COOKIE_NAME).invalidateHttpSession(true).logoutSuccessUrl('/')
-        }.rememberMe(Customizer.withDefaults())
+        http.csrf {
+                it.disable()
+            }.headers {
+                it.frameOptions { it.disable() }
+            }.authorizeHttpRequests {
+                it.requestMatchers(mvc.pattern(HttpMethod.GET, '/')).permitAll()
+                it.requestMatchers(mvc.pattern(HttpMethod.GET, '/index')).permitAll()
+                it.requestMatchers(mvc.pattern(HttpMethod.GET, '/home')).permitAll()
+                it.requestMatchers(mvc.pattern(HttpMethod.GET, '/favicon.ico')).permitAll()
+                it.requestMatchers(mvc.pattern('/public/**')).permitAll()
+                it.anyRequest().authenticated()
+            }.formLogin {
+                it.permitAll()
+            }.logout {
+                it.permitAll()
+                    .deleteCookies(SESSION_COOKIE_NAME)
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .logoutSuccessUrl('/')
+            }
         return http.build()
     }
 

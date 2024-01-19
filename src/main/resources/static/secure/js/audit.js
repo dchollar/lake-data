@@ -1,7 +1,7 @@
 $(function () {
 
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const baseUri = location.href.substring(0,location.href.indexOf('page/'));
+    const baseUri = location.href.substring(0, location.href.indexOf('page/'));
 
     $("#jsGrid").jsGrid({
 

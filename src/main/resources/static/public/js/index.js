@@ -3,7 +3,7 @@ let characteristicId;
 let selectedCharacteristic;
 let selectedLocation;
 let chart;
-const baseUri = location.href.substring(0,location.href.indexOf('public/'));
+const baseUri = location.href.substring(0, location.href.indexOf('public/'));
 
 $(document).ready(function () {
 

@@ -1,5 +1,5 @@
 const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-const baseUri = location.href.substring(0,location.href.indexOf('public/'));
+const baseUri = location.href.substring(0, location.href.indexOf('public/'));
 
 $(document).ready(function () {
     let documents = JSON.parse($('#documentList').val());

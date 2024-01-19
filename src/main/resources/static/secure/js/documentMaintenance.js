@@ -2,7 +2,7 @@ $(function () {
 
     $("#message").text("").hide();
 
-    const baseUri = location.href.substring(0,location.href.indexOf('page/'));
+    const baseUri = location.href.substring(0, location.href.indexOf('page/'));
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     let sites = JSON.parse($('#siteOptions').val());
 

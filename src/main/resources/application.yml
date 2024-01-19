@@ -22,14 +22,12 @@ spring:
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    database: mysql
     properties:
       jakarta:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: true
   groovy:
     template:
       check-template-location: false

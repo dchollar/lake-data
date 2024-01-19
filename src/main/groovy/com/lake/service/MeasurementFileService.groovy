@@ -81,8 +81,6 @@ class MeasurementFileService {
         }
     }
 
-
-
     @Secured('ROLE_ADMIN')
     @Transactional
     void processZipFile(final File file, final Location location = null) {

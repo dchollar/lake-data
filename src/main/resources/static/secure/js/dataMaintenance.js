@@ -1,7 +1,7 @@
 $(function () {
     $("#message").text("").hide();
 
-    const baseUri = location.href.substring(0,location.href.indexOf('page/'));
+    const baseUri = location.href.substring(0, location.href.indexOf('page/'));
     let characteristics = JSON.parse($('#characteristicOptions').val());
     let locations = JSON.parse($('#locationOptions').val());
     let sites = JSON.parse($('#siteOptions').val());

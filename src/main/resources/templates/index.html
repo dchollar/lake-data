@@ -46,7 +46,8 @@
                     <h5><label for="fundingSourceChoice">Funding Source:</label></h5>
                     <select class="form-control" id="fundingSourceChoice" name="fundingSourceChoice">
                         <option value=""></option>
-                        <option th:each="fundingSource : ${fundingSources}" th:title="${fundingSource.description}" th:utext="${fundingSource.name}" th:value="${fundingSource.id}"></option>
+                        <option th:each="fundingSource : ${fundingSources}" th:title="${fundingSource.description}" th:utext="${fundingSource.name}"
+                                th:value="${fundingSource.id}"></option>
                     </select>
                 </div>
                 <div class="row form-group pt-3" id="submitSelectionDiv">

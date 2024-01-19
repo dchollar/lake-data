@@ -33,7 +33,7 @@ class DocumentService {
 
     Collection<Document> findDocuments(final String category) {
         Collection<Document> documents = search(DEFAULT_SITE_ID, null, category)
-        documents.each {it.path = it.path.replace(category,'')}
+        documents.each { it.path = it.path.replace(category, '') }
         return documents
     }
 
