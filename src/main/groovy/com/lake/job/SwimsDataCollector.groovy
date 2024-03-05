@@ -29,8 +29,8 @@ class SwimsDataCollector {
     @Autowired
     ProfileDataCollectionService profileDataCollectionService
 
-    @Scheduled(cron = "0 0 0 1 * *")
-    //@Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = '0 0 0 1 * *')
+    //@Scheduled(cron = '0 * * * * *')
     void fetchData() {
         try {
             final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, REPORTER_CREDENTIALS, AUTHORITIES)

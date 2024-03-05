@@ -27,7 +27,7 @@ class AuditTruncate {
     @Autowired
     AuditService auditService
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = '0 0 0 * * *')
     void truncateJob() {
         final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(REPORTER_USERNAME, REPORTER_CREDENTIALS, AUTHORITIES)
         SecurityContextHolder.getContext().setAuthentication(token)

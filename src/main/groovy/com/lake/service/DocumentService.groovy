@@ -5,6 +5,7 @@ import com.lake.entity.Document
 import com.lake.repository.DocumentRepository
 import com.lake.util.ConverterUtil
 import groovy.transform.CompileStatic
+import jakarta.persistence.EntityExistsException
 import org.apache.commons.io.FileUtils
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
@@ -56,8 +57,13 @@ class DocumentService {
     @Transactional
     DocumentDto save(final DocumentDto dto, final String timeZone) {
         Document entity = ConverterUtil.convert(dto, new Document())
-        entity.site = siteService.getOne(dto.siteId)
-        ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)
+        List<Document> matches = repository.findByText(entity.text)
+        if (matches.isEmpty()) {
+            entity.site = siteService.getOne(dto.siteId)
+            ConverterUtil.convert(repository.saveAndFlush(entity), timeZone)
+        } else {
+            throw new EntityExistsException("Document already exists and matches ${matches.first().title}")
+        }
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_DOCUMENT_ADMIN'])
