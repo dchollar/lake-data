@@ -5,7 +5,7 @@ plugins {
     id 'idea'
     id 'jvm-test-suite'
     id 'maven-publish'
-    id 'org.springframework.boot' version '3.2.1'
+    id 'org.springframework.boot' version '3.2.3'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -34,18 +34,18 @@ configurations.configureEach {
 }
 
 ext {
-    OPENAPI_VERSION = '2.2.0'
-    POI_VERSION = '5.2.4'
-    SPOCK_VERSION = '2.4-M1-groovy-4.0'
+    OPENAPI_VERSION = '2.4.0'
+    POI_VERSION = '5.2.5'
+    SPOCK_VERSION = '2.4-M2-groovy-4.0'
 }
 
 dependencies {
-    implementation('org.apache.groovy:groovy-all:4.0.15')
+    implementation('org.apache.groovy:groovy-all:4.0.19')
 
-    implementation('org.apache.commons:commons-lang3:3.13.0')
-    implementation('commons-io:commons-io:2.15.0')
-    implementation('org.apache.pdfbox:pdfbox:3.0.0')
-    implementation('net.sourceforge.tess4j:tess4j:5.8.0')
+    implementation('org.apache.commons:commons-lang3:3.14.0')
+    implementation('commons-io:commons-io:2.15.1')
+    implementation('org.apache.pdfbox:pdfbox:3.0.1')
+    implementation('net.sourceforge.tess4j:tess4j:5.11.0')
     implementation("org.apache.poi:poi:${POI_VERSION}")
     implementation("org.apache.poi:poi-ooxml:${POI_VERSION}")
 
@@ -56,12 +56,12 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6')
 
-    implementation('org.hibernate.orm:hibernate-spatial:6.3.1.Final')
+    implementation('org.hibernate.orm:hibernate-spatial:6.4.4.Final')
     implementation('org.hibernate.validator:hibernate-validator:8.0.1.Final')
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${OPENAPI_VERSION}")
     implementation("org.springdoc:springdoc-openapi-starter-common:${OPENAPI_VERSION}")
-    implementation('com.mysql:mysql-connector-j:8.2.0')
+    implementation('com.mysql:mysql-connector-j:8.3.0')
     implementation('org.yaml:snakeyaml:2.2')
 
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
