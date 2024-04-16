@@ -30,7 +30,7 @@ class WebSecurityConfig {
 
     @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
+        return new MvcRequestMatcher.Builder(introspector)
     }
 
     @Bean
@@ -61,7 +61,7 @@ class WebSecurityConfig {
                     .deleteCookies(SESSION_COOKIE_NAME)
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
-                    .logoutSuccessUrl('/')
+                    .logoutSuccessUrl('/index')
             }
         return http.build()
     }
@@ -73,7 +73,7 @@ class WebSecurityConfig {
         executor.setMaxPoolSize(10)
         executor.setQueueCapacity(25)
         executor.initialize()
-        new DelegatingSecurityContextAsyncTaskExecutor(executor);
+        new DelegatingSecurityContextAsyncTaskExecutor(executor)
     }
 
 }

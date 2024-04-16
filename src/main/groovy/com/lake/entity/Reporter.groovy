@@ -46,6 +46,10 @@ class Reporter {
     @Column(name = 'enabled', nullable = false)
     Boolean enabled
 
+    @Basic
+    @Column(name = 'change_password', nullable = false)
+    Boolean changePassword
+
     @OneToMany(mappedBy = 'reporter', cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     Set<ReporterRole> roles
 }

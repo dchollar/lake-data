@@ -75,7 +75,7 @@ Is a complete open source system that uses lucine. Not needed currently
 
 Larry's Example: https://optidat.com/pl/pipe-lakes-district-records-archive/
 
-== Map Data Research:
+== Map Data Research
 * https://polkcowi.wgxtreme.com/
 * https://www.co.polk.wi.us/landinfoparcelmapping
 * https://www.sco.wisc.edu/data/parcels/
@@ -85,3 +85,37 @@ Larry's Example: https://optidat.com/pl/pipe-lakes-district-records-archive/
 * https://mapservices.legis.wisconsin.gov/arcgis/rest/services/WLIP
 * https://www.co.polk.wi.us/landrecords
 * https://www.co.polk.wi.us/landinfogisdataportal
+
+== Administrator Maintenance
+Thinking of adding the ability to better manage administrators.
+First change reporter to administrator. Update the table names, foreign keys, and indexes. Update the menus and the ui and everything to have administrator instead of reporter.
+
+Create a page for people to request to be administrators.
+
+* A username, password, first name, last name, and email address will be required.
+* The username cannot be an email address. It cannot already exist in the system.
+* Ask what type of administrator they want to be
+* Describe each type and what that means.
+* The system will notify the other administrators and request for a review via email. The system will add the user into the system, but they will be disabled. Upon notification the administrator can choose to delete the user from the system or leave them disabled or enable them.
+* Upon enabling the user, an email will be sent to the user notifying them they have been enabled.
+* The administrator can choose to force the user to create a new password upon logging in.
+* This page will be accessible from the login page only.
+
+Add a new login page that allows users to request to be an administrator, change there password, forgot their password besides logging in.
+
+Implement a password change process that will allow a user to change their password. The user will need to know their current password to do this.
+
+Do I need a forgot username process? Yes. User will be required to enter their first name and last name and email address. The system will verify this data against what is stored and generate an email back to the user that contains their username.
+
+Implement a forgot their password flow. The user will need to enter their username, first name, last name and email address. The system will validate all this data against what is stored. This process will send the user a new temporary password via email. Once the user logs in they will be required to change their password. A new boolean value will be added to the database to indicate if the person is required to change their password. The new temporary password will be generated randomly and saved in the password field and the force change attribute will be updated to true.
+
+Update the administrator maintenance page to include the checkbox to force the password update.
+
+Work todo:
+
+* New page for requesting administrator access
+* New dedicated login page
+* New forgot username page
+* New forgot password page
+* New change password page
+* New change_password attribute added to administrator table

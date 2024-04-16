@@ -5,7 +5,7 @@ plugins {
     id 'idea'
     id 'jvm-test-suite'
     id 'maven-publish'
-    id 'org.springframework.boot' version '3.2.3'
+    id 'org.springframework.boot' version '3.2.4'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -34,17 +34,17 @@ configurations.configureEach {
 }
 
 ext {
-    OPENAPI_VERSION = '2.4.0'
+    OPENAPI_VERSION = '2.5.0'
     POI_VERSION = '5.2.5'
     SPOCK_VERSION = '2.4-M2-groovy-4.0'
 }
 
 dependencies {
-    implementation('org.apache.groovy:groovy-all:4.0.19')
+    implementation('org.apache.groovy:groovy-all:4.0.20')
 
     implementation('org.apache.commons:commons-lang3:3.14.0')
-    implementation('commons-io:commons-io:2.15.1')
-    implementation('org.apache.pdfbox:pdfbox:3.0.1')
+    implementation('commons-io:commons-io:2.16.0')
+    implementation('org.apache.pdfbox:pdfbox:3.0.2')
     implementation('net.sourceforge.tess4j:tess4j:5.11.0')
     implementation("org.apache.poi:poi:${POI_VERSION}")
     implementation("org.apache.poi:poi-ooxml:${POI_VERSION}")
