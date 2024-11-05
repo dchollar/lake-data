@@ -61,7 +61,7 @@ dependencies {
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${OPENAPI_VERSION}")
     implementation("org.springdoc:springdoc-openapi-starter-common:${OPENAPI_VERSION}")
-    implementation('com.mysql:mysql-connector-j:9.0.0')
+    implementation('com.mysql:mysql-connector-j:9.1.0')
     implementation('org.yaml:snakeyaml:2.3')
 
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
