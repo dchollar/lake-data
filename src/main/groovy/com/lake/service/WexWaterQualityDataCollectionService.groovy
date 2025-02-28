@@ -14,9 +14,9 @@ import java.time.LocalDate
 @CompileStatic
 @Slf4j
 @Service
-class WaterQualityDataCollectionService extends SwimsDataCollectionService {
+class WexWaterQualityDataCollectionService extends DnrDataCollectionService {
 
-    private static final String BASE_URL = 'https://apps.dnr.wi.gov/swims/LakesReport/DownloadWaterQualityReport?stationId='
+    private static final String TREND_DATA_DOWNLOAD_ID = 'DLRawTrendData'
 
     // characteristic IDs
     private static final int SECCHI_ID = 9
@@ -26,39 +26,35 @@ class WaterQualityDataCollectionService extends SwimsDataCollectionService {
     private static final int TSI_TP_ID = 12
     private static final int TSI_CHL_ID = 13
 
-    private static final int GROUP_SEQ_NO_CELL_INDEX = 0
-    private static final int START_DATE_CELL_INDEX = 1
-    private static final int START_MONTH_CELL_INDEX = 2
-    private static final int START_DAY_CELL_INDEX = 3
-    private static final int START_YEAR_CELL_INDEX = 4
-    private static final int SECCHI_CELL_INDEX = 5
-    private static final int SECCHI_HIT_BOTTOM_CELL_INDEX = 6
-    private static final int SECCHI_METERS_CELL_INDEX = 7
-    private static final int CHL_CELL_INDEX = 8
-    private static final int TP_CELL_INDEX = 9
-    private static final int TSI_SD_CELL_INDEX = 10
-    private static final int TSI_TP_CELL_INDEX = 11
-    private static final int TSI_CHL_CELL_INDEX = 12
-    private static final int LAKE_LEVEL_CELL_INDEX = 13
-    private static final int STAFF_GAUGE_CELL_INDEX = 14
-    private static final int APPEARANCE_CELL_INDEX = 15
-    private static final int COLOR_CELL_INDEX = 16
-    private static final int PERCEPTION_CELL_INDEX = 17
+    private static final int SECCHI_CELL_INDEX = 0
+    private static final int SECCHI_HIT_BOTTOM_CELL_INDEX = 1
+    private static final int TSI_SD_CELL_INDEX = 2
+    private static final int TP_CELL_INDEX = 3
+    private static final int TSI_TP_CELL_INDEX = 4
+    private static final int CHL_CELL_INDEX = 5
+    private static final int TSI_CHL_CELL_INDEX = 6
+    private static final int COLOR_CELL_INDEX = 7
+    private static final int PERCEPTION_CELL_INDEX = 8
+    private static final int START_DATE_CELL_INDEX = 9
+    private static final int START_YEAR_CELL_INDEX = 10
+
 
     @Async
     @Secured('ROLE_ADMIN')
     void collectNorthPipeLakeData() {
-        URL url = new URL(BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        final URL mainPageUrl = new URL(WEX_BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        final URL url = getDataDownloadUrl(mainPageUrl, TREND_DATA_DOWNLOAD_ID)
         collectData(url, NORTH_PIPE_LAKE_SITE_ID)
-        log.info('Completed the collection of North Pipe Lake Water Quality Data')
+        log.info('Completed the collection of WEx North Pipe Lake Water Quality Data')
     }
 
     @Async
     @Secured('ROLE_ADMIN')
     void collectPipeLakeData() {
-        URL url = new URL(BASE_URL + PIPE_LAKE_STATION_ID)
+        final URL mainPageUrl = new URL(WEX_BASE_URL + PIPE_LAKE_STATION_ID)
+        final URL url = getDataDownloadUrl(mainPageUrl, TREND_DATA_DOWNLOAD_ID)
         collectData(url, PIPE_LAKE_SITE_ID)
-        log.info('Completed the collection of Pipe Lake Water Quality Data')
+        log.info('Completed the collection of WEx Pipe Lake Water Quality Data')
     }
 
     @Override

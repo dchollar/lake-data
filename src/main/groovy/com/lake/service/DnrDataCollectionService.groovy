@@ -8,6 +8,7 @@ import jakarta.validation.ValidationException
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.jsoup.Jsoup
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -16,11 +17,14 @@ import java.time.format.DateTimeFormatter
 
 @CompileStatic
 @Slf4j
-abstract class SwimsDataCollectionService {
+abstract class DnrDataCollectionService {
+
+    protected static final String WEX_BASE_URL = 'https://dnr-wisconsin.shinyapps.io/WaterExplorer/?stationid='
+    protected static final String WEX_BASE_SESSION_URL = 'https://dnr-wisconsin.shinyapps.io/WaterExplorer/_w_b662a457/'
 
     // DNR Station Ids
-    protected static final NORTH_PIPE_LAKE_STATION_ID = '493105'
-    protected static final PIPE_LAKE_STATION_ID = '493097'
+    protected static final String NORTH_PIPE_LAKE_STATION_ID = '493105'
+    protected static final String PIPE_LAKE_STATION_ID = '493097'
 
     // site ids
     protected static final int PIPE_LAKE_SITE_ID = 1
@@ -40,13 +44,24 @@ abstract class SwimsDataCollectionService {
     ValidationService validationService
 
     protected void collectData(final URL url, final int siteId) {
-        InputStream is = url.openStream()
-        Workbook workbook = new XSSFWorkbook(is)
-        processWorkbook(workbook, siteId)
-        workbook.close()
+        if (url != null) {
+            InputStream is = url.openStream()
+            Workbook workbook = new XSSFWorkbook(is)
+            processWorkbook(workbook, siteId)
+            workbook.close()
+        }
     }
 
     abstract protected void processWorkbook(final Workbook workbook, final int siteId)
+
+    protected static URL getDataDownloadUrl(final URL url, final String htmlAnchorId) {
+        Jsoup.connect(url.toString()).followRedirects(true).get().select('a').each { element ->
+            if (element.attr('id') == htmlAnchorId) {
+                return new URL(WEX_BASE_SESSION_URL + element.attr('href'))
+            }
+        }
+        return null
+    }
 
     protected static LocalDate extractCollectionDate(final Row row, int index) {
         final String value = row.getCell(index).getStringCellValue()

@@ -14,7 +14,7 @@ import java.time.LocalDate
 @CompileStatic
 @Slf4j
 @Service
-class ProfileDataCollectionService extends SwimsDataCollectionService {
+class SwimsProfileDataCollectionService extends DnrDataCollectionService {
 
     private static final String BASE_URL = 'https://apps.dnr.wi.gov/swims/LakesReport/DownloadTemperatureReport?stationId='
 
@@ -40,7 +40,7 @@ class ProfileDataCollectionService extends SwimsDataCollectionService {
     void collectNorthPipeLakeData() {
         final URL url = new URL(BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
         collectData(url, NORTH_PIPE_LAKE_SITE_ID)
-        log.info('Completed the collection of North Pipe Lake Profile Data')
+        log.info('Completed the collection of SWIMS North Pipe Lake Profile Data')
     }
 
     @Async
@@ -48,7 +48,7 @@ class ProfileDataCollectionService extends SwimsDataCollectionService {
     void collectPipeLakeData() {
         final URL url = new URL(BASE_URL + PIPE_LAKE_STATION_ID)
         collectData(url, PIPE_LAKE_SITE_ID)
-        log.info('Completed the collection of Pipe Lake Profile Data')
+        log.info('Completed the collection of SWIMS Pipe Lake Profile Data')
     }
 
     @Override

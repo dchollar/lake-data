@@ -3,8 +3,10 @@ package com.lake.controller
 
 import com.lake.job.FtpFileProcessor
 import com.lake.service.AuditService
-import com.lake.service.ProfileDataCollectionService
-import com.lake.service.WaterQualityDataCollectionService
+import com.lake.service.SwimsProfileDataCollectionService
+import com.lake.service.SwimsWaterQualityDataCollectionService
+import com.lake.service.WexProfileDataCollectionService
+import com.lake.service.WexWaterQualityDataCollectionService
 import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,18 +26,28 @@ class JobController {
     @Autowired
     FtpFileProcessor ftpFileProcessor
     @Autowired
-    WaterQualityDataCollectionService waterQualityDataCollectionService
+    SwimsProfileDataCollectionService swimsProfileDataCollectionService
     @Autowired
-    ProfileDataCollectionService profileDataCollectionService
+    SwimsWaterQualityDataCollectionService swimsWaterQualityDataCollectionService
+    @Autowired
+    WexProfileDataCollectionService wexProfileDataCollectionService
+    @Autowired
+    WexWaterQualityDataCollectionService wexWaterQualityDataCollectionService
+
 
     @Secured('ROLE_ADMIN')
     @GetMapping('/jobs/swims')
     String getSwimsData() {
         auditService.audit('JOB', 'Fetch SWIMS Data Manual Request', this.class.simpleName)
-        waterQualityDataCollectionService.collectNorthPipeLakeData()
-        waterQualityDataCollectionService.collectPipeLakeData()
-        profileDataCollectionService.collectNorthPipeLakeData()
-        profileDataCollectionService.collectPipeLakeData()
+        swimsWaterQualityDataCollectionService.collectNorthPipeLakeData()
+        swimsWaterQualityDataCollectionService.collectPipeLakeData()
+        swimsProfileDataCollectionService.collectNorthPipeLakeData()
+        swimsProfileDataCollectionService.collectPipeLakeData()
+
+        wexWaterQualityDataCollectionService.collectNorthPipeLakeData()
+        wexWaterQualityDataCollectionService.collectPipeLakeData()
+        wexProfileDataCollectionService.collectNorthPipeLakeData()
+        wexProfileDataCollectionService.collectPipeLakeData()
         return REDIRECT_HOME
     }
 
