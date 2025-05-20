@@ -2,7 +2,7 @@ package com.lake.service
 
 import spock.lang.Specification
 
-class DocumentServiceTest extends Specification {
+class DocumentServiceSpec extends Specification {
 
     def "createRegularExpression"(String phrase, String result) {
         expect:
