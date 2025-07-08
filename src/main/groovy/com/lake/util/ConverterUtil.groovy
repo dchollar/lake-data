@@ -435,13 +435,24 @@ class ConverterUtil {
 
     static String convertPdf(final byte[] pdf) {
         PDDocument document = Loader.loadPDF(pdf)
+        String allText = getText(document)
+        String stripped = cleanText(allText)
+        document.close()
+        return stripped
+    }
+
+    private static String getText(PDDocument document) {
         PDFTextStripper stripper = new PDFTextStripper()
         String allText = stripper.getText(document)
 
         if (StringUtils.isBlank(allText)) {
-            allText = extractTextFromScannedDocument(document)
+            return extractTextFromScannedDocument(document)
+        } else {
+            return allText
         }
+    }
 
+    private static String cleanText(String allText) {
         String stripped = stripNonAscii(allText)
         stripped = StringUtils.replace(stripped, ' the ', ' ')
         stripped = StringUtils.replace(stripped, ' of ', ' ')
@@ -450,9 +461,6 @@ class ConverterUtil {
         stripped = StringUtils.replace(stripped, '\\s{2,}', ' ')
         stripped = StringUtils.stripToNull(stripped)
         stripped = StringUtils.upperCase(stripped)
-
-        document.close()
-
         return stripped
     }
 
@@ -465,6 +473,7 @@ class ConverterUtil {
         ITesseract instance = new Tesseract()
         File tessDataFolder = LoadLibs.extractTessResources(TESSERACT_DATA_RESOURCE_NAME)
         instance.setDatapath(tessDataFolder.getPath())
+        instance.setVariable('user_defined_dpi', '70')
 
         StringBuilder out = new StringBuilder()
         for (int page = 0; page < document.getNumberOfPages(); page++) {
