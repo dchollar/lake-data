@@ -7,7 +7,7 @@ import com.lake.util.ConverterUtil
 import groovy.transform.CompileStatic
 import jakarta.persistence.EntityExistsException
 import org.apache.commons.io.FileUtils
-import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.Strings
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.access.annotation.Secured
 import org.springframework.stereotype.Service
@@ -100,8 +100,8 @@ class DocumentService {
         Document entity = new Document()
         entity.document = new SerialBlob(bytes)
         entity.fileSize = (bytes.length / 1024).toInteger()
-        entity.path = ConverterUtil.cleanPath(StringUtils.replace(StringUtils.replace(file.parent, subPath, ''), '\\', '/'))
-        entity.title = StringUtils.replace(file.name, '.pdf', '')
+        entity.path = ConverterUtil.cleanPath(Strings.CS.replace(Strings.CS.replace(file.parent, subPath, ''), '\\', '/'))
+        entity.title = Strings.CS.replace(file.name, '.pdf', '')
         entity.text = ConverterUtil.convertPdf(bytes)
         entity.created = now
         entity.lastUpdated = now

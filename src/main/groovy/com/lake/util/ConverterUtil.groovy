@@ -30,6 +30,7 @@ import net.sourceforge.tess4j.ITesseract
 import net.sourceforge.tess4j.Tesseract
 import net.sourceforge.tess4j.util.LoadLibs
 import org.apache.commons.lang3.StringUtils
+import org.apache.commons.lang3.Strings
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.rendering.ImageType
@@ -435,13 +436,13 @@ class ConverterUtil {
 
     static String convertPdf(final byte[] pdf) {
         PDDocument document = Loader.loadPDF(pdf)
-        String allText = getText(document)
-        String stripped = cleanText(allText)
+        String allText = getPdfText(document)
+        String stripped = cleanPdfText(allText)
         document.close()
         return stripped
     }
 
-    private static String getText(PDDocument document) {
+    private static String getPdfText(PDDocument document) {
         PDFTextStripper stripper = new PDFTextStripper()
         String allText = stripper.getText(document)
 
@@ -452,13 +453,13 @@ class ConverterUtil {
         }
     }
 
-    private static String cleanText(String allText) {
+    private static String cleanPdfText(String allText) {
         String stripped = stripNonAscii(allText)
-        stripped = StringUtils.replace(stripped, ' the ', ' ')
-        stripped = StringUtils.replace(stripped, ' of ', ' ')
-        stripped = StringUtils.replace(stripped, ' a ', ' ')
-        stripped = StringUtils.replace(stripped, ' it ', ' ')
-        stripped = StringUtils.replace(stripped, '\\s{2,}', ' ')
+        stripped = Strings.CS.replace(stripped, ' the ', ' ')
+        stripped = Strings.CS.replace(stripped, ' of ', ' ')
+        stripped = Strings.CS.replace(stripped, ' a ', ' ')
+        stripped = Strings.CS.replace(stripped, ' it ', ' ')
+        stripped = Strings.CS.replace(stripped, '\\s{2,}', ' ')
         stripped = StringUtils.stripToNull(stripped)
         stripped = StringUtils.upperCase(stripped)
         return stripped

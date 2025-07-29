@@ -42,7 +42,8 @@ class WexWaterQualityDataCollectionService extends DnrDataCollectionService {
     @Async
     @Secured('ROLE_ADMIN')
     void collectNorthPipeLakeData() {
-        final URL mainPageUrl = new URL(WEX_BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        final URI mainPageUri = new URI(WEX_BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        final URL mainPageUrl = mainPageUri.toURL()
         final URL url = getDataDownloadUrl(mainPageUrl, TREND_DATA_DOWNLOAD_ID)
         collectData(url, NORTH_PIPE_LAKE_SITE_ID)
         log.info('Completed the collection of WEx North Pipe Lake Water Quality Data')
@@ -51,7 +52,8 @@ class WexWaterQualityDataCollectionService extends DnrDataCollectionService {
     @Async
     @Secured('ROLE_ADMIN')
     void collectPipeLakeData() {
-        final URL mainPageUrl = new URL(WEX_BASE_URL + PIPE_LAKE_STATION_ID)
+        final URI mainPageUri = new URI(WEX_BASE_URL + PIPE_LAKE_STATION_ID)
+        final URL mainPageUrl = mainPageUri.toURL()
         final URL url = getDataDownloadUrl(mainPageUrl, TREND_DATA_DOWNLOAD_ID)
         collectData(url, PIPE_LAKE_SITE_ID)
         log.info('Completed the collection of WEx Pipe Lake Water Quality Data')

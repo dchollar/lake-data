@@ -57,7 +57,8 @@ abstract class DnrDataCollectionService {
     protected static URL getDataDownloadUrl(final URL url, final String htmlAnchorId) {
         Jsoup.connect(url.toString()).followRedirects(true).get().select('a').each { element ->
             if (element.attr('id') == htmlAnchorId) {
-                return new URL(WEX_BASE_SESSION_URL + element.attr('href'))
+                URI uri = new URI(WEX_BASE_SESSION_URL + element.attr('href'))
+                return uri.toURL()
             }
         }
         return null

@@ -38,7 +38,8 @@ class SwimsProfileDataCollectionService extends DnrDataCollectionService {
     @Async
     @Secured('ROLE_ADMIN')
     void collectNorthPipeLakeData() {
-        final URL url = new URL(BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        final URI uri = new URI(BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        final URL url = uri.toURL()
         collectData(url, NORTH_PIPE_LAKE_SITE_ID)
         log.info('Completed the collection of SWIMS North Pipe Lake Profile Data')
     }
@@ -46,7 +47,8 @@ class SwimsProfileDataCollectionService extends DnrDataCollectionService {
     @Async
     @Secured('ROLE_ADMIN')
     void collectPipeLakeData() {
-        final URL url = new URL(BASE_URL + PIPE_LAKE_STATION_ID)
+        final URI uri = new URI(BASE_URL + PIPE_LAKE_STATION_ID)
+        final URL url = uri.toURL()
         collectData(url, PIPE_LAKE_SITE_ID)
         log.info('Completed the collection of SWIMS Pipe Lake Profile Data')
     }

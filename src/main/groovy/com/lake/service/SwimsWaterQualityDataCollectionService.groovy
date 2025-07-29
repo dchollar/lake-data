@@ -48,7 +48,8 @@ class SwimsWaterQualityDataCollectionService extends DnrDataCollectionService {
     @Async
     @Secured('ROLE_ADMIN')
     void collectNorthPipeLakeData() {
-        URL url = new URL(BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        URI uri = new URI(BASE_URL + NORTH_PIPE_LAKE_STATION_ID)
+        URL url = uri.toURL()
         collectData(url, NORTH_PIPE_LAKE_SITE_ID)
         log.info('Completed the collection of SWIMS North Pipe Lake Water Quality Data')
     }
@@ -56,7 +57,8 @@ class SwimsWaterQualityDataCollectionService extends DnrDataCollectionService {
     @Async
     @Secured('ROLE_ADMIN')
     void collectPipeLakeData() {
-        URL url = new URL(BASE_URL + PIPE_LAKE_STATION_ID)
+        URI uri = new URI(BASE_URL + PIPE_LAKE_STATION_ID)
+        URL url = uri.toURL()
         collectData(url, PIPE_LAKE_SITE_ID)
         log.info('Completed the collection of SWIMS Pipe Lake Water Quality Data')
     }
