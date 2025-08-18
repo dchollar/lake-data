@@ -1,5 +1,5 @@
 <div th:fragment="navigationField (page, includeHelp)">
-    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+    <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
         <div class="container-fluid">
             <ul class="navbar-nav">
                 <li class="nav-item" th:classappend="${page == 'index' ? 'active':''}">
@@ -13,21 +13,21 @@
                 </li>
                 <li class="nav-item dropdown" sec:authorize="hasAnyRole('ROLE_DOCUMENT_ADMIN','ROLE_ADMIN')">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" id="nav-maintenance">Maintenance</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" th:classappend="${page == 'documentMaintenance' ? 'active':''}" th:href="@{/page/documentMaintenance}">Documents</a>
+                    <div class="dropdown-menu bg-secondary text-white">
+                        <a class="dropdown-item text-white" th:classappend="${page == 'documentMaintenance' ? 'active':''}" th:href="@{/page/documentMaintenance}">Documents</a>
                         <div sec:authorize="hasRole('ROLE_ADMIN')">
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" th:classappend="${page == 'fundingSourceMaintenance' ? 'active':''}" th:href="@{/page/fundingSourceMaintenance}">Funding Sources</a>
-                            <a class="dropdown-item" th:classappend="${page == 'characteristicMaintenance' ? 'active':''}" th:href="@{/page/characteristicMaintenance}">Characteristics</a>
-                            <a class="dropdown-item" th:classappend="${page == 'locationMaintenance' ? 'active':''}" th:href="@{/page/locationMaintenance}">Locations</a>
-                            <a class="dropdown-item" th:classappend="${page == 'characteristicLocationMaintenance' ? 'active':''}" th:href="@{/page/characteristicLocationMaintenance}">Characteristic Locations</a>
-                            <a class="dropdown-item" th:classappend="${page == 'dataMaintenance' ? 'active':''}" th:href="@{/page/dataMaintenance}">Measurements</a>
-                            <a class="dropdown-item" th:classappend="${page == 'dataFileUpload' ? 'active':''}" th:href="@{/page/dataFileUpload}">Data File Upload</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'fundingSourceMaintenance' ? 'active':''}" th:href="@{/page/fundingSourceMaintenance}">Funding Sources</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'characteristicMaintenance' ? 'active':''}" th:href="@{/page/characteristicMaintenance}">Characteristics</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'locationMaintenance' ? 'active':''}" th:href="@{/page/locationMaintenance}">Locations</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'characteristicLocationMaintenance' ? 'active':''}" th:href="@{/page/characteristicLocationMaintenance}">Characteristic Locations</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'dataMaintenance' ? 'active':''}" th:href="@{/page/dataMaintenance}">Measurements</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'dataFileUpload' ? 'active':''}" th:href="@{/page/dataFileUpload}">Data File Upload</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" th:classappend="${page == 'userMaintenance' ? 'active':''}" th:href="@{/page/userMaintenance}">Users</a>
-                            <a class="dropdown-item" th:classappend="${page == 'audit' ? 'active':''}" th:href="@{/page/audit}">Audit</a>
-                            <a class="dropdown-item" th:classappend="${page == 'jobs' ? 'active':''}" th:href="@{/page/jobs}">Job Maintenance</a>
-                            <a class="dropdown-item" th:classappend="${page == 'swagger' ? 'active':''}" th:href="@{/swagger-ui.html}" target="_blank">API Documentation</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'userMaintenance' ? 'active':''}" th:href="@{/page/userMaintenance}">Users</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'audit' ? 'active':''}" th:href="@{/page/audit}">Audit</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'jobs' ? 'active':''}" th:href="@{/page/jobs}">Job Maintenance</a>
+                            <a class="dropdown-item text-white" th:classappend="${page == 'swagger' ? 'active':''}" th:href="@{/swagger-ui.html}" target="_blank">API Documentation</a>
                         </div>
                     </div>
                 </li>
