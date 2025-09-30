@@ -44,6 +44,7 @@ class WebSecurityConfig {
             it.requestMatchers('/home').permitAll()
             it.requestMatchers('/favicon.ico').permitAll()
             it.requestMatchers('/public/**').permitAll()
+            it.requestMatchers('/actuator/health').permitAll()
             it.anyRequest().authenticated()
         }.formLogin {
             it.permitAll()
