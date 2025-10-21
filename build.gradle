@@ -43,7 +43,7 @@ dependencies {
 
     implementation('org.apache.commons:commons-lang3:3.19.0')
     implementation('commons-io:commons-io:2.20.0')
-    implementation('org.apache.pdfbox:pdfbox:3.0.5')
+    implementation('org.apache.pdfbox:pdfbox:3.0.6')
     implementation('net.sourceforge.tess4j:tess4j:5.16.0')
     implementation("org.apache.poi:poi:${POI_VERSION}")
     implementation("org.apache.poi:poi-ooxml:${POI_VERSION}")
