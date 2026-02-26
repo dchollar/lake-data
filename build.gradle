@@ -39,7 +39,7 @@ ext {
 }
 
 dependencies {
-    implementation('org.apache.groovy:groovy-all:5.0.2')
+    implementation('org.apache.groovy:groovy-all:5.0.4')
 
     implementation('org.apache.commons:commons-lang3:3.20.0')
     implementation('commons-io:commons-io:2.21.0')
