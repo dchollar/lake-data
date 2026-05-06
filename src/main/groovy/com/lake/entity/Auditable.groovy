@@ -18,7 +18,8 @@ import java.time.Instant
 @CompileStatic
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-abstract class Auditable {
+abstract class Auditable implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Basic
     @CreatedDate
@@ -39,5 +40,4 @@ abstract class Auditable {
     @JoinColumn(name = 'modified_by', referencedColumnName = 'id', nullable = false)
     @LastModifiedBy
     Reporter modifiedBy
-
 }

@@ -16,7 +16,8 @@ import java.time.Instant
 @CompileStatic
 @Entity
 @Table(name = 'audit')
-class Audit {
+class Audit implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

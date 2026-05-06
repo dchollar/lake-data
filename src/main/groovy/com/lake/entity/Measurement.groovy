@@ -16,7 +16,8 @@ import java.time.LocalDate
 @CompileStatic
 @Entity
 @Table(name = 'measurement')
-class Measurement extends Auditable {
+class Measurement extends Auditable implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -16,7 +16,8 @@ import org.locationtech.jts.geom.Point
 @CompileStatic
 @Entity
 @Table(name = 'location')
-class Location {
+class Location implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +32,7 @@ class Location {
     @Column(name = 'comment', nullable = true, length = 200)
     String comment
 
-    @Basic
-    @Column(name = 'coordinates', nullable = true)
+    @Column(name = 'coordinates', nullable = true, columnDefinition = 'POINT')
     Point coordinates
     // x is Latitude and y is Longitude
     //44.888325946504935, -93.25492567440092
@@ -43,6 +43,4 @@ class Location {
 
     @OneToMany(mappedBy = 'location')
     Set<CharacteristicLocation> characteristicLocations
-
-
 }

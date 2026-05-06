@@ -59,10 +59,10 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.5.RELEASE')
 
-    // hibernate-spatial merged into hibernate-core in Hibernate 7 (managed by Spring Boot 4);
     // JTS is an optional transitive dep of hibernate-core, so it must be declared explicitly
     implementation('org.locationtech.jts:jts-core:1.19.0')
     implementation('org.hibernate.validator:hibernate-validator')
+    implementation('org.hibernate.orm:hibernate-spatial')
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${OPENAPI_VERSION}")
     implementation("org.springdoc:springdoc-openapi-starter-common:${OPENAPI_VERSION}")

@@ -15,7 +15,8 @@ import jakarta.persistence.Table
 @CompileStatic
 @Entity
 @Table(name = 'characteristic')
-class Characteristic {
+class Characteristic implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +40,6 @@ class Characteristic {
     Boolean enableDepth
 
     @Enumerated(EnumType.STRING)
-    @Basic
     @Column(name = 'type', nullable = false, length = 50)
     CharacteristicType type
 

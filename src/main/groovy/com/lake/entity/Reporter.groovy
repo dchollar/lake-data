@@ -15,7 +15,8 @@ import jakarta.persistence.Table
 @CompileStatic
 @Entity
 @Table(name = 'reporter')
-class Reporter {
+class Reporter implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

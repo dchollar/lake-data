@@ -16,7 +16,8 @@ import java.time.LocalDate
 @CompileStatic
 @Entity
 @Table(name = 'funding_source')
-class FundingSource {
+class FundingSource implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +44,4 @@ class FundingSource {
     @Basic
     @Column(name = 'type', nullable = false, length = 15)
     FundingSourceType type
-
-
 }

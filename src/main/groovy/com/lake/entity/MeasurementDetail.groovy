@@ -20,7 +20,8 @@ import java.time.Instant
 @CompileStatic
 @Entity
 @Table(name = 'measurement_detail')
-class MeasurementDetail {
+class MeasurementDetail implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,12 +51,10 @@ class MeasurementDetail {
     String source
 
     @Enumerated(EnumType.STRING)
-    @Basic
     @Column(name = 'status', nullable = true, length = 25)
     StatusType status
 
     @ManyToOne(optional = false)
     @JoinColumn(name = 'characteristic_location_id', referencedColumnName = 'id', nullable = false)
     CharacteristicLocation characteristicLocation
-
 }

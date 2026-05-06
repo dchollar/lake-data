@@ -16,7 +16,8 @@ import jakarta.persistence.Table
 @CompileStatic
 @Entity
 @Table(name = 'reporter_role')
-class ReporterRole {
+class ReporterRole implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +32,4 @@ class ReporterRole {
     @ManyToOne(optional = false)
     @JoinColumn(name = 'reporter_id', referencedColumnName = 'id', nullable = false)
     Reporter reporter
-
 }

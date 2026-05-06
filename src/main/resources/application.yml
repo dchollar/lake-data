@@ -27,7 +27,6 @@ spring:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
-    open-in-view: true
   web:
     error:
       include-message: always

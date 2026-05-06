@@ -14,7 +14,8 @@ import jakarta.persistence.Table
 @CompileStatic
 @Entity
 @Table(name = 'characteristic_location')
-class CharacteristicLocation {
+class CharacteristicLocation implements Serializable {
+    private static final long serialVersionUID = 1L
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
