@@ -28,16 +28,14 @@ spring:
           sharedCache:
             mode: ENABLE_SELECTIVE
     open-in-view: true
-  groovy:
-    template:
-      check-template-location: false
+  web:
+    error:
+      include-message: always
+      include-exception: true
+      include-stacktrace: always
 server:
   compression:
     enabled: true
-  error:
-    include-message: always
-    include-exception: true
-    include-stacktrace: always
 ftp:
   upload-location: /home/lake-data-ftp/ftp/upload
   process-location: /home/lake-data-ftp/process
