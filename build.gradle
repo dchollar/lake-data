@@ -38,7 +38,7 @@ ext {
 }
 
 dependencies {
-    implementation('org.apache.groovy:groovy-all:5.0.5')
+    implementation('org.apache.groovy:groovy-all:5.0.6')
     // spring-jcl was removed in Spring Framework 7; jcl-over-slf4j bridges JCL → SLF4J for
     // any transitive dependencies (tess4j, pdfbox, POI, etc.) that use the commons-logging API
     implementation('org.slf4j:jcl-over-slf4j')
