@@ -60,7 +60,7 @@ dependencies {
     implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.5.RELEASE')
 
     // JTS is an optional transitive dep of hibernate-core, so it must be declared explicitly
-    implementation('org.locationtech.jts:jts-core:1.19.0')
+    implementation('org.locationtech.jts:jts-core:1.20.0')
     implementation('org.hibernate.validator:hibernate-validator')
     implementation('org.hibernate.orm:hibernate-spatial')
 
