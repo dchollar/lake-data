@@ -51,17 +51,16 @@ class DnrDataCollector {
     private void fetchDataInternal() {
         auditService.audit('JOB', "Fetch SWIMS Data", this.class.simpleName)
 
-//        swimsWaterQualityDataCollectionService.collectNorthPipeLakeData()
-//        swimsWaterQualityDataCollectionService.collectPipeLakeData()
-//        swimsProfileDataCollectionService.collectNorthPipeLakeData()
-//        swimsProfileDataCollectionService.collectPipeLakeData()
+        swimsWaterQualityDataCollectionService.collectNorthPipeLakeData()
+        swimsWaterQualityDataCollectionService.collectPipeLakeData()
+        swimsProfileDataCollectionService.collectNorthPipeLakeData()
+        swimsProfileDataCollectionService.collectPipeLakeData()
         log.info("Done processing SWIMS Data")
 
         wexWaterQualityDataCollectionService.collectNorthPipeLakeData()
         wexWaterQualityDataCollectionService.collectPipeLakeData()
         wexProfileDataCollectionService.collectNorthPipeLakeData()
         wexProfileDataCollectionService.collectPipeLakeData()
-
         log.info("Done processing WEx Data")
     }
 

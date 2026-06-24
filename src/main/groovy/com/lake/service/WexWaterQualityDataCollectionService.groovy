@@ -38,7 +38,6 @@ class WexWaterQualityDataCollectionService extends DnrDataCollectionService {
     private static final int START_DATE_CELL_INDEX = 9
     private static final int START_YEAR_CELL_INDEX = 10
 
-
     @Async
     @Secured('ROLE_ADMIN')
     void collectNorthPipeLakeData() {
