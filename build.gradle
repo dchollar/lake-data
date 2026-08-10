@@ -32,7 +32,7 @@ configurations.configureEach {
 }
 
 ext {
-    OPENAPI_VERSION = '3.0.3'
+    OPENAPI_VERSION = '3.1.0'
     POI_VERSION = '5.5.1'
     SPOCK_VERSION = '2.4-groovy-5.0'
 }
