@@ -43,7 +43,7 @@ dependencies {
     // any transitive dependencies (tess4j, pdfbox, POI, etc.) that use the commons-logging API
     implementation('org.slf4j:jcl-over-slf4j')
 
-    implementation('org.apache.commons:commons-lang3:3.20.0')
+    implementation('org.apache.commons:commons-lang3:3.21.0')
     implementation('commons-io:commons-io:2.22.0')
     implementation('org.apache.pdfbox:pdfbox:3.0.8')
     implementation('net.sourceforge.tess4j:tess4j:5.20.0')
