@@ -1,0 +1,29 @@
+[versions]
+commons-io = "2.22.0"
+commons-lang3 = "3.21.0"
+groovy = "6.0.0"
+jsoup = "1.23.2"
+jts = "1.20.0"
+mysql = "26.10.0"
+openapi = "3.1.1"
+pdfbox = "3.0.8"
+poi = "6.0.0"
+spock = "2.5-groovy-6.0"
+tess4j = "5.20.0"
+thymeleaf-extras = "3.1.5.RELEASE"
+
+[libraries]
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+groovy-all = { module = "org.apache.groovy:groovy-all", version.ref = "groovy" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+jts-core = { module = "org.locationtech.jts:jts-core", version.ref = "jts" }
+mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "mysql" }
+pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+poi-core = { module = "org.apache.poi:poi", version.ref = "poi" }
+poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
+spock-core = { module = "org.spockframework:spock-core", version.ref = "spock" }
+springdoc-openapi-common = { module = "org.springdoc:springdoc-openapi-starter-common", version.ref = "openapi" }
+springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "openapi" }
+tess4j = { module = "net.sourceforge.tess4j:tess4j", version.ref = "tess4j" }
+thymeleaf-extras-springsecurity6 = { module = "org.thymeleaf.extras:thymeleaf-extras-springsecurity6", version.ref = "thymeleaf-extras" }

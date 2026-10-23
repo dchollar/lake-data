@@ -1,21 +1,14 @@
 plugins {
-    id 'base'
     id 'war'
     id 'groovy'
     id 'idea'
-    id 'jvm-test-suite'
-    id 'org.springframework.boot' version '4.1.1'
+    id 'org.springframework.boot' version '4.1.2'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -32,24 +25,22 @@ configurations.configureEach {
 }
 
 ext {
-    OPENAPI_VERSION = '3.1.0'
-    POI_VERSION = '5.5.1'
-    SPOCK_VERSION = '2.4-groovy-5.0'
+    set('groovy.version', libs.versions.groovy.get())
 }
 
 dependencies {
-    implementation('org.apache.groovy:groovy-all:5.1.0')
+    implementation(libs.groovy.all)
     // spring-jcl was removed in Spring Framework 7; jcl-over-slf4j bridges JCL → SLF4J for
     // any transitive dependencies (tess4j, pdfbox, POI, etc.) that use the commons-logging API
     implementation('org.slf4j:jcl-over-slf4j')
 
-    implementation('org.apache.commons:commons-lang3:3.20.0')
-    implementation('commons-io:commons-io:2.22.0')
-    implementation('org.apache.pdfbox:pdfbox:3.0.8')
-    implementation('net.sourceforge.tess4j:tess4j:5.20.0')
-    implementation("org.apache.poi:poi:${POI_VERSION}")
-    implementation("org.apache.poi:poi-ooxml:${POI_VERSION}")
-    implementation('org.jsoup:jsoup:1.23.2')
+    implementation(libs.commons.lang3)
+    implementation(libs.commons.io)
+    implementation(libs.pdfbox)
+    implementation(libs.tess4j)
+    implementation(libs.poi.core)
+    implementation(libs.poi.ooxml)
+    implementation(libs.jsoup)
 
     implementation('org.springframework.boot:spring-boot-starter-webmvc')
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -57,27 +48,33 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-actuator')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
-    implementation('org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.5.RELEASE')
+    implementation(libs.thymeleaf.extras.springsecurity6)
 
     // JTS is an optional transitive dep of hibernate-core, so it must be declared explicitly
-    implementation('org.locationtech.jts:jts-core:1.20.0')
+    implementation(libs.jts.core)
     implementation('org.hibernate.validator:hibernate-validator')
     implementation('org.hibernate.orm:hibernate-spatial')
 
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:${OPENAPI_VERSION}")
-    implementation("org.springdoc:springdoc-openapi-starter-common:${OPENAPI_VERSION}")
-    implementation('com.mysql:mysql-connector-j:9.7.0')
+    implementation(libs.springdoc.openapi.ui)
+    implementation(libs.springdoc.openapi.common)
+    implementation(libs.mysql.connector.j)
     implementation('org.yaml:snakeyaml')
 
     annotationProcessor('org.springframework.boot:spring-boot-configuration-processor')
     providedRuntime('org.springframework.boot:spring-boot-starter-tomcat-runtime')
 
-    testImplementation('org.springframework.boot:spring-boot-starter-webmvc-test')
-    testImplementation('org.springframework.boot:spring-boot-starter-data-jpa-test')
-    testImplementation('org.springframework.boot:spring-boot-starter-security-test')
-    testImplementation("org.spockframework:spock-core:${SPOCK_VERSION}")
+    testImplementation project()
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation libs.spock.core
 }
 
-tasks.named('test') {
+tasks.named('test', Test) {
     useJUnitPlatform()
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+    }
 }

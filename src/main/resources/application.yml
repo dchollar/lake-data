@@ -1,23 +1,34 @@
 spring:
   application:
     name: lake-data
+
+  web:
+    error:
+      include-message: never
+      include-exception: false
+      include-stacktrace: never
+
   servlet:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
       enabled: true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/pipe_lake?verifyServerCertificate=false&useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    username: lake_data_app
-    password: Pa$$word8
+    url: jdbc:mysql://localhost:3306/pipe_lake?sslMode=DISABLED&allowPublicKeyRetrieval=true&connectionTimeZone=UTC
+    username: ${DB_USERNAME:lake_data_app}
+    password: ${DB_PASSWORD:Pa$$word8}
     hikari:
-      connection-test-query: select 1
+      pool-name: LakeDataHikariPool
       maximum-pool-size: 15
-      connection-init-sql: select 1
-    tomcat:
-      jmx-enabled: false
+      minimum-idle: 5
+      max-lifetime: 1800000 # 30 minutes
+      connection-timeout: 30000 # 30 seconds
+      idle-timeout: 600000 # 10 minutes
+
   jpa:
+    open-in-view: true
     show-sql: false
     hibernate:
       naming:
@@ -27,14 +38,15 @@ spring:
         persistence:
           sharedCache:
             mode: ENABLE_SELECTIVE
-  web:
-    error:
-      include-message: always
-      include-exception: true
-      include-stacktrace: always
+
+  threads:
+    virtual:
+      enabled: true
+
 server:
   compression:
     enabled: true
+
 ftp:
   upload-location: /home/lake-data-ftp/ftp/upload
   process-location: /home/lake-data-ftp/process
