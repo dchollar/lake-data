@@ -75,6 +75,6 @@ tasks.named('test', Test) {
     maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
     testLogging {
         events 'passed', 'skipped', 'failed'
-        exceptionFormat 'full'
+        exceptionFormat = 'full'
     }
 }
