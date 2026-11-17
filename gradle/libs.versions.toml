@@ -9,7 +9,7 @@ openapi = "3.2.0"
 pdfbox = "3.0.8"
 poi = "6.0.0"
 spock = "2.5-groovy-6.0"
-tess4j = "5.20.0"
+tess4j = "5.21.0"
 thymeleaf-extras = "3.1.7.RELEASE"
 
 [libraries]
