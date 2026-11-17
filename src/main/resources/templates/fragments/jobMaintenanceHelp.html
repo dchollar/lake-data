@@ -1,0 +1,32 @@
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">Job Maintenance Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>This page allows you to run scheduled system jobs on demand. The buttons on this page trigger the normal background processing tasks that the system usually runs in
+                    the background at set intervals. When you press a button, the job begins immediately and may take several minutes to complete.</p>
+                <p>When the job finishes, you will be returned to the home page. If a problem occurs during processing, an error message will be displayed at the top of the page.</p>
+                <h5>Collect SWIMS Data since beginning of time</h5>
+                <p>This option runs the process that imports historic SWIMS data into the system. Use this only when you need to load or refresh older SWIMS records that are not yet
+                    present in the database.</p>
+                <h5>Truncate audit logs</h5>
+                <p>This option removes the current audit log entries to keep the system log data to a manageable size. Use this only when you are intentionally clearing audit records.</p>
+                <h5>Process FTP files</h5>
+                <p>This option runs the data import process for files received through FTP. It is used to ingest uploaded data files that have been transferred to the system and are
+                    awaiting processing.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

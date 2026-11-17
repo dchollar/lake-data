@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/navigation :: navigationField ('characteristicMaintenance', 'no')}"></div>
+<div th:replace="~{fragments/navigation :: navigationField ('characteristicMaintenance', 'yes')}"></div>
 
 <div class="container-fluid text-left">
     <div class="row content">
@@ -26,6 +26,7 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footerField('yes')}"></div>
+<div th:replace="~{fragments/characteristicMaintenanceHelp}"></div>
 
 </body>
 </html>

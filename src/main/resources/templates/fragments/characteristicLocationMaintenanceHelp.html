@@ -1,0 +1,40 @@
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">Characteristic Location Maintenance Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>This page defines which characteristics are valid for each site and location combination. It links a monitoring site, a specific location, and a characteristic so the
+                    system knows what kinds of measurements can be collected at that location. You can click on a column heading to sort the list by that field. Clicking once sorts
+                    ascending; clicking again sorts descending.</p>
+                <p>If something goes wrong, a message will appear at the top of the page. Correct the issue and try again. If you continue to have issues, copy the error message or
+                    take a screenshot and contact the administrator.</p>
+                <h5>Inserting</h5>
+                <p>To add a new site-location-characteristic relationship, press the + icon in the upper-right corner of the grid header. A blank row will appear below the header.
+                    Select the site, location, and characteristic for the valid combination and then click the + icon at the end of the row to save it. If you decide not to add the
+                    relationship, click the same + icon in the header again to remove the blank row.</p>
+                <h5>Deleting</h5>
+                <p>Any valid relationship can be removed by clicking the trashcan icon at the end of the row. This removes the association so that the selected characteristic is no
+                    longer valid for that site and location combination.</p>
+                <h5>Attribute Descriptions</h5>
+                <h6>Site</h6>
+                <p>This is the general site associated with the measurement location.</p>
+                <h6>Location</h6>
+                <p>This is the specific monitoring location used for the measurement.</p>
+                <h6>Characteristic</h6>
+                <p>This is the measurement type that is valid for the selected site and location combination.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="modal fade" id="helpModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title">Measurement Maintenance Help</h3>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p>You are able to review, update, and delete measurement records here. This page lists the individual data points that have already been entered into the system and can
+                    be filtered by site, location, characteristic, and other values. You can click on any column heading to sort the list by that field. Clicking the heading once sorts
+                    ascending; clicking it again sorts descending.</p>
+                <p>If something goes wrong, a message will appear at the top of the page. Correct the issue and try again. If you continue to have issues, copy the error message or
+                    take a screenshot and contact the administrator.</p>
+                <h5>Adding Measurements</h5>
+                <p>New measurements are not created from this page. Use the <b>Enter Data</b> tab to add new observations. This maintenance page is intended for correcting and
+                    managing measurement records that already exist in the system.</p>
+                <h5>Deleting</h5>
+                <p>Any measurement can be <b>PERMANENTLY</b> removed from the system by clicking the trashcan icon at the end of the row. This is a permanent action and the record
+                    will be removed immediately after confirmation. Use this only when a data point should no longer exist in the dataset.</p>
+                <h5>Updating</h5>
+                <p>Any measurement can be updated by clicking the pencil icon at the end of the row. When you click the pencil icon, the row becomes editable and you can change the
+                    values available for that record. If you decide not to keep the changes, click the X icon to cancel. When you are done, click the checkmark icon to save the
+                    changes. Once saved, the database record is updated immediately. If an error occurs, you will see a message at the top of the grid.</p>
+                <h5>Filtering and Search</h5>
+                <p>The grid includes filtering controls that allow you to narrow the list of records. Use the filter fields to limit the display by site, location, characteristic,
+                    funding source, or the person who created or modified the record. This is useful when you need to review a subset of measurements for quality control or editing.</p>
+                <h5>Attribute Descriptions</h5>
+                <h6>Site</h6>
+                <p>This identifies the general site associated with the measurement. It is assigned when the data was entered and is not editable from this page.</p>
+                <h6>Location</h6>
+                <p>This identifies the specific monitoring location associated with the measurement. It is assigned when the data was entered and is not editable from this page.</p>
+                <h6>Characteristic</h6>
+                <p>This identifies the type of measurement being recorded, such as stream flow, water level, or another monitored condition. It is assigned when the data was entered
+                    and is not editable from this page.</p>
+                <h6>Funding</h6>
+                <p>If the measurement was collected under a specific funding source or project, select that funding source here. This field can be updated if the record needs to be
+                    reassigned.</p>
+                <h6>Collection Date</h6>
+                <p>This is the date the measurement was collected. This is the most important date associated with the measurement and is required.</p>
+                <h6>Depth</h6>
+                <p>This is the depth in feet at which the specific measurement was taken, if applicable. Not all characteristics require a depth value.</p>
+                <h6>Value</h6>
+                <p>This is the actual measurement value recorded for the sample. The value must match the unit and method associated with the selected characteristic.</p>
+                <h6>Comment</h6>
+                <p>Any notes or remarks associated with the measurement can be entered here. This field is optional and should be used to document unusual conditions, observations, or
+                    clarifications.</p>
+                <h6>Created By / Modified By</h6>
+                <p>These fields show the user who created the measurement and the user who last modified it. They are informational and are maintained by the system.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" type="button">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>

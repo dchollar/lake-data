@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<div th:replace="~{fragments/navigation :: navigationField ('characteristicLocationMaintenance', 'no')}"></div>
+<div th:replace="~{fragments/navigation :: navigationField ('characteristicLocationMaintenance', 'yes')}"></div>
 
 <div class="container-fluid text-left">
     <input id="siteOptions" name="siteOptions" th:value="${sites}" type="hidden"/>
@@ -30,6 +30,7 @@
 </div>
 
 <div th:replace="~{fragments/footer :: footerField('yes')}"></div>
+<div th:replace="~{fragments/characteristicLocationMaintenanceHelp}"></div>
 
 </body>
 </html>
